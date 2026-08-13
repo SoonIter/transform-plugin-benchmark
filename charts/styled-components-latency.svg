@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390"
-    viewBox="0 0 1200 390" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="490"
+    viewBox="0 0 1200 490" role="img"
     aria-label="Styled-components transform latency, lower is better">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
@@ -13,27 +13,36 @@
     <text x="240" y="103" text-anchor="end" class="label">
         Yuku + JS plugin
       </text>
-      <rect x="260" y="72" width="136.16" height="58"
+      <rect x="260" y="72" width="133.40" height="58"
         rx="8" fill="#f97316" />
-      <text x="414.16" y="108" class="value">
-        17.84 ms
+      <text x="411.40" y="108" class="value">
+        17.32 ms
       </text>
 
       <text x="240" y="203" text-anchor="end" class="label">
-        SWC + WASM plugin
+        OXC + Yuku JS plugin
       </text>
-      <rect x="260" y="172" width="175.14" height="58"
-        rx="8" fill="#3b82f6" />
-      <text x="453.14" y="208" class="value">
-        22.95 ms
+      <rect x="260" y="172" width="144.51" height="58"
+        rx="8" fill="#22c55e" />
+      <text x="422.51" y="208" class="value">
+        18.76 ms
       </text>
 
       <text x="240" y="303" text-anchor="end" class="label">
+        SWC + WASM plugin
+      </text>
+      <rect x="260" y="272" width="177.25" height="58"
+        rx="8" fill="#3b82f6" />
+      <text x="455.25" y="308" class="value">
+        23.01 ms
+      </text>
+
+      <text x="240" y="403" text-anchor="end" class="label">
         Babel + JS plugin
       </text>
-      <rect x="260" y="272" width="810.00" height="58"
+      <rect x="260" y="372" width="810.00" height="58"
         rx="8" fill="#8b5cf6" />
-      <text x="1088.00" y="308" class="value">
-        106.13 ms
+      <text x="1088.00" y="408" class="value">
+        105.14 ms
       </text>
   </svg>

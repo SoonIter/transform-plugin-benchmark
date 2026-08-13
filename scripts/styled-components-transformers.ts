@@ -1,9 +1,11 @@
 import { transformSync as babelTransformSync } from "@babel/core";
 import { transformSync as swcTransformSync } from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
+import { printSync as oxcPrintSync } from "oxc-codegen";
+import { parseSync as oxcParseSync } from "oxc-parser";
 import { walk } from "yuku-ast";
 import { generate as yukuGenerate } from "yuku-codegen";
-import { parse as yukuParse } from "yuku-parser";
+import { parse as yukuParse, type Program } from "yuku-parser";
 import type { StyledComponentsFixture } from "./styled-components-fixture";
 import { STYLED_COMPONENTS_FILENAME } from "./styled-components-fixture";
 import {
@@ -28,6 +30,7 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Babel + JS plugin",
   "SWC + WASM plugin",
   "Yuku + JS plugin",
+  "OXC + Yuku JS plugin",
 ] as const;
 
 export type StyledComponentsTransformerName =
@@ -106,6 +109,24 @@ export function transformStyledComponentsYukuPipeline(source: string): string {
   return result.code;
 }
 
+export function transformStyledComponentsOxcPipeline(source: string): string {
+  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, {
+    lang: "jsx",
+    sourceType: "module",
+  });
+  if (parsed.errors.length > 0) {
+    throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
+  }
+  const program = parsed.program as unknown as Program;
+  transformStyledComponentsYuku(
+    program,
+    source,
+    STYLED_COMPONENTS_FILENAME,
+    STYLED_COMPONENTS_OPTIONS,
+  );
+  return oxcPrintSync(parsed.program, { jsx: true });
+}
+
 export function transformStyledComponentsFor(
   name: StyledComponentsTransformerName,
   source: string,
@@ -117,6 +138,8 @@ export function transformStyledComponentsFor(
       return transformStyledComponentsSwc(source);
     case "Yuku + JS plugin":
       return transformStyledComponentsYukuPipeline(source);
+    case "OXC + Yuku JS plugin":
+      return transformStyledComponentsOxcPipeline(source);
   }
 }
 
@@ -181,7 +204,11 @@ export function validateStyledComponentsOutput(
     throw new Error(`${name} generated duplicate component IDs`);
   }
   const pureAnnotationsMinimum = fixture.transformedComponentCount + 3;
-  if (validation.pureAnnotations < pureAnnotationsMinimum) {
+  if (name === "OXC + Yuku JS plugin") {
+    if (validation.pureAnnotations !== 0) {
+      throw new Error(`${name} unexpectedly emitted comments`);
+    }
+  } else if (validation.pureAnnotations < pureAnnotationsMinimum) {
     throw new Error(
       `${name} generated ${validation.pureAnnotations} PURE annotations, ` +
         `expected at least ${pureAnnotationsMinimum}`,

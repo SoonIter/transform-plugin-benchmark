@@ -14,7 +14,7 @@ const SETTINGS = {
 const NODE_VERSION = "24.18.1";
 const REPRODUCTION_COMMAND = "npm run reproduce:styled-components";
 const RESULT_FILE = "styled-components.json";
-const SOURCE_TAG = "styled-components-full-port-v2";
+const SOURCE_TAG = "styled-components-oxc-v3";
 
 interface ReproductionResult {
   benchmark: {
@@ -28,6 +28,7 @@ interface ReproductionResult {
     transformedComponents: number;
   };
   profile: {
+    results: Array<{ name: string }>;
     runs: number;
     timeMs: number;
     warmupMs: number;
@@ -37,7 +38,15 @@ interface ReproductionResult {
     resultFile: string;
     sourceTag: string;
   };
+  results: Array<{
+    name: string;
+    pureAnnotations: number;
+  }>;
   runtime: string;
+  versions: {
+    oxcCodegen: string;
+    oxcParser: string;
+  };
 }
 
 function assertRuntime(): void {
@@ -79,6 +88,25 @@ function assertResult(result: ReproductionResult): void {
   }
   if (result.runtime !== `Node ${NODE_VERSION}`) {
     throw new Error(`Expected runtime Node ${NODE_VERSION}, received ${result.runtime}`);
+  }
+  if (result.versions.oxcParser !== "0.144.0") {
+    throw new Error("Reproduction result has an unexpected OXC parser version");
+  }
+  if (result.versions.oxcCodegen !== "0.144.0") {
+    throw new Error("Reproduction result has an unexpected OXC codegen version");
+  }
+  if (result.results.length !== 4) {
+    throw new Error("Reproduction result has an unexpected transformer count");
+  }
+  if (result.profile.results.length !== 4) {
+    throw new Error("Reproduction result has an unexpected profile transformer count");
+  }
+  const oxcResult = result.results.find(({ name }) => name === "OXC + Yuku JS plugin");
+  if (oxcResult === undefined) {
+    throw new Error("Reproduction result does not include the OXC pipeline");
+  }
+  if (oxcResult.pureAnnotations !== 0) {
+    throw new Error("OXC codegen unexpectedly emitted comments");
   }
   if (result.reproduction.command !== REPRODUCTION_COMMAND) {
     throw new Error("Reproduction result did not record the invoking command");
@@ -137,6 +165,7 @@ async function main(): Promise<void> {
   const resultPath = join(process.cwd(), "result", RESULT_FILE);
   const result = JSON.parse(await readFile(resultPath, "utf8")) as ReproductionResult;
   assertResult(result);
+  runScript("scripts/generate-artifacts.ts");
   runScript("scripts/generate-charts.ts");
   console.log(`\nVerified reproduction result: ${resultPath}`);
 }

@@ -107,6 +107,8 @@ interface StyledComponentsBenchResult {
   versions: {
     babelCore: string;
     babelPlugin: string;
+    oxcCodegen: string;
+    oxcParser: string;
     swcCore: string;
     swcPlugin: string;
     yukuAst: string;
@@ -467,6 +469,8 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
     versions: {
       babelCore: await readPackageVersion("@babel/core"),
       babelPlugin: await readPackageVersion("babel-plugin-styled-components"),
+      oxcCodegen: await readPackageVersion("oxc-codegen"),
+      oxcParser: await readPackageVersion("oxc-parser"),
       swcCore: await readPackageVersion("@swc/core"),
       swcPlugin: await readPackageVersion("@swc/plugin-styled-components"),
       yukuAst: await readPackageVersion("yuku-ast"),

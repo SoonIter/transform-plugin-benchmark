@@ -25,6 +25,7 @@ interface BenchmarkResult {
 
 const COLORS = {
   babel: "#8b5cf6",
+  oxc: "#22c55e",
   swc: "#3b82f6",
   yuku: "#f97316",
 } as const;
@@ -51,6 +52,7 @@ function escapeXML(value: string): string {
 
 function transformerColor(name: string): string {
   if (name.startsWith("Babel")) return COLORS.babel;
+  if (name.startsWith("OXC")) return COLORS.oxc;
   if (name.startsWith("SWC")) return COLORS.swc;
   return COLORS.yuku;
 }
@@ -71,7 +73,7 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
 
 function latencyChart(results: TransformResult[]): string {
   const width = 1_200;
-  const height = 390;
+  const height = 90 + results.length * 100;
   const labelWidth = 260;
   const chartWidth = 810;
   const maximum = Math.max(...results.map((result) => result.median));
@@ -106,7 +108,8 @@ function latencyChart(results: TransformResult[]): string {
 
 function stageChart(profiles: ProfileResult[]): string {
   const width = 1_400;
-  const height = 610;
+  const axisY = 78 + profiles.length * 114;
+  const height = axisY + 190;
   const labelWidth = 260;
   const chartWidth = 1_080;
   const categories = Array.from(STAGE_COLORS.keys());
@@ -137,7 +140,7 @@ function stageChart(profiles: ProfileResult[]): string {
     const column = index % 3;
     const row = Math.floor(index / 3);
     const x = 60 + column * 440;
-    const y = 445 + row * 42;
+    const y = axisY + 25 + row * 42;
     return `
       <rect x="${x}" y="${y}" width="20" height="20" rx="4"
         fill="${STAGE_COLORS.get(category)}" />
@@ -155,9 +158,11 @@ function stageChart(profiles: ProfileResult[]): string {
     <rect width="100%" height="100%" rx="14" fill="#111827" />
     <text x="36" y="42" class="title">Pipeline stage share</text>
     ${rows.join("\n").trim()}
-    <text x="${labelWidth}" y="420" class="axis">0%</text>
-    <text x="${labelWidth + chartWidth / 2}" y="420" text-anchor="middle" class="axis">50%</text>
-    <text x="${labelWidth + chartWidth}" y="420" text-anchor="end" class="axis">100%</text>
+    <text x="${labelWidth}" y="${axisY}" class="axis">0%</text>
+    <text x="${labelWidth + chartWidth / 2}" y="${axisY}"
+      text-anchor="middle" class="axis">50%</text>
+    <text x="${labelWidth + chartWidth}" y="${axisY}"
+      text-anchor="end" class="axis">100%</text>
     ${legend.join("\n").trim()}
   </svg>\n`;
 }

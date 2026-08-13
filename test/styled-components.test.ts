@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { join } from "node:path";
 import { createStyledComponentsFixture } from "../scripts/styled-components-fixture";
 import {
   profileStageDefinitions,
@@ -20,7 +23,11 @@ for (const name of STYLED_COMPONENTS_TRANSFORMERS) {
 
     assert.equal(validation.withConfigCalls, fixture.transformedComponentCount);
     assert.equal(validation.uniqueComponentIds, fixture.transformedComponentCount);
-    assert.ok(validation.pureAnnotations >= fixture.transformedComponentCount + 3);
+    if (name === "OXC + Yuku JS plugin") {
+      assert.equal(validation.pureAnnotations, 0);
+    } else {
+      assert.ok(validation.pureAnnotations >= fixture.transformedComponentCount + 3);
+    }
     assert.equal(validation.taggedTemplates, 0);
   });
 
@@ -34,3 +41,27 @@ for (const name of STYLED_COMPONENTS_TRANSFORMERS) {
     assert.equal(validation.taggedTemplates, 0);
   });
 }
+
+test("committed artifacts reproduce the benchmark fixture and outputs", () => {
+  const artifactsPath = join(process.cwd(), "artifacts", "styled-components");
+  const manifest = JSON.parse(
+    readFileSync(join(artifactsPath, "manifest.json"), "utf8"),
+  ) as {
+    input: { file: string; sha256: string };
+    outputs: Array<{ file: string; sha256: string; transformer: string }>;
+  };
+  const input = readFileSync(join(artifactsPath, manifest.input.file), "utf8");
+  assert.equal(input, createStyledComponentsFixture(240).source);
+  assert.equal(createHash("sha256").update(input).digest("hex"), manifest.input.sha256);
+
+  assert.equal(manifest.outputs.length, STYLED_COMPONENTS_TRANSFORMERS.length);
+  for (const output of manifest.outputs) {
+    const transformer = STYLED_COMPONENTS_TRANSFORMERS.find(
+      (name) => name === output.transformer,
+    );
+    assert.notEqual(transformer, undefined);
+    const code = readFileSync(join(artifactsPath, output.file), "utf8");
+    assert.equal(createHash("sha256").update(code).digest("hex"), output.sha256);
+    assert.equal(code, transformStyledComponentsFor(transformer!, input));
+  }
+});

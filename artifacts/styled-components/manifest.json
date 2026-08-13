@@ -1,0 +1,83 @@
+{
+  "fixture": {
+    "cssProps": 60,
+    "styledComponents": 240,
+    "templates": 483,
+    "transformedComponents": 300
+  },
+  "input": {
+    "bytes": 142274,
+    "file": "input.jsx",
+    "sha256": "cde6d195675ae1580857cf5f1b983c73fccb86d9c7090c1a93e4b786adb46466"
+  },
+  "outputs": [
+    {
+      "bytes": 170640,
+      "file": "babel-output.jsx",
+      "sha256": "3b0c795c1f104b8449d10c375c2dc7eabf99af7f88fa5b5b3e0c13a8549d5763",
+      "transformer": "Babel + JS plugin",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 170640,
+        "outputCodeUnits": 170640,
+        "pureAnnotations": 303,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    },
+    {
+      "bytes": 193296,
+      "file": "swc-output.jsx",
+      "sha256": "bd4b79794cdda88d5ba19ef5ca90c7ba40bc0ffa6a796184a057b6f825eb8a75",
+      "transformer": "SWC + WASM plugin",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 193296,
+        "outputCodeUnits": 193296,
+        "pureAnnotations": 603,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    },
+    {
+      "bytes": 170809,
+      "file": "yuku-output.jsx",
+      "sha256": "50140bd158aca057db250900664ad332af1d2eaf1f46069d432e77d910a60db4",
+      "transformer": "Yuku + JS plugin",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 170809,
+        "outputCodeUnits": 170809,
+        "pureAnnotations": 303,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    },
+    {
+      "bytes": 169268,
+      "file": "oxc-output.jsx",
+      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
+      "transformer": "OXC + Yuku JS plugin",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 169268,
+        "outputCodeUnits": 169268,
+        "pureAnnotations": 0,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    }
+  ]
+}

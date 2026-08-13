@@ -7,10 +7,13 @@ import {
   transformSync as swcTransformSync,
 } from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
+import { printSync as oxcPrintSync } from "oxc-codegen";
+import { parseSync as oxcParseSync } from "oxc-parser";
 import yukuCodegenBinding from "yuku-codegen/binding.js";
 import { encode as yukuEncode } from "yuku-codegen/encode.js";
 import yukuParserBinding from "yuku-parser/binding.js";
 import { decode as yukuDecode } from "yuku-parser/decode.js";
+import type { Program } from "yuku-parser";
 import { STYLED_COMPONENTS_FILENAME } from "./styled-components-fixture";
 import {
   STYLED_COMPONENTS_OPTIONS,
@@ -51,6 +54,11 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "plugin transform", runtime: "JS" },
     { name: "AST encode", runtime: "JS" },
     { name: "codegen", runtime: "native" },
+  ],
+  "OXC + Yuku JS plugin": [
+    { name: "parse + AST transfer", runtime: "native + JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "codegen", runtime: "JS" },
   ],
 };
 
@@ -197,6 +205,36 @@ function profileYuku(source: string): ProfileIteration {
   };
 }
 
+function profileOxc(source: string): ProfileIteration {
+  const start = process.hrtime.bigint();
+  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, {
+    lang: "jsx",
+    sourceType: "module",
+  });
+  const parsedAt = process.hrtime.bigint();
+  if (parsed.errors.length > 0) {
+    throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
+  }
+  transformStyledComponentsYuku(
+    parsed.program as unknown as Program,
+    source,
+    STYLED_COMPONENTS_FILENAME,
+    STYLED_COMPONENTS_OPTIONS,
+  );
+  const transformedAt = process.hrtime.bigint();
+  const output = oxcPrintSync(parsed.program, { jsx: true });
+  const generatedAt = process.hrtime.bigint();
+
+  return {
+    durationsNs: [
+      durationNs(start, parsedAt),
+      durationNs(parsedAt, transformedAt),
+      durationNs(transformedAt, generatedAt),
+    ],
+    output,
+  };
+}
+
 export function profileStyledComponentsOnce(
   name: StyledComponentsTransformerName,
   source: string,
@@ -208,5 +246,7 @@ export function profileStyledComponentsOnce(
       return profileSwc(source);
     case "Yuku + JS plugin":
       return profileYuku(source);
+    case "OXC + Yuku JS plugin":
+      return profileOxc(source);
   }
 }
