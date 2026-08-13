@@ -66,7 +66,41 @@
       "bytes": 169268,
       "file": "oxc-output.jsx",
       "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
-      "transformer": "OXC + Yuku JS plugin",
+      "transformer": "OXC + Yuku walk plugin",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 169268,
+        "outputCodeUnits": 169268,
+        "pureAnnotations": 0,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    },
+    {
+      "bytes": 169268,
+      "file": "oxc-raw-transfer-output.jsx",
+      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
+      "transformer": "OXC raw transfer + Yuku walk",
+      "validation": {
+        "componentIds": 300,
+        "displayNames": 300,
+        "minifiedRules": 240,
+        "outputBytes": 169268,
+        "outputCodeUnits": 169268,
+        "pureAnnotations": 0,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 300,
+        "withConfigCalls": 300
+      }
+    },
+    {
+      "bytes": 169268,
+      "file": "oxc-visitor-output.jsx",
+      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
+      "transformer": "OXC + OXC Visitor plugin",
       "validation": {
         "componentIds": 300,
         "displayNames": 300,

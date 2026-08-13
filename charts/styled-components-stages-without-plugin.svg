@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="898"
+    viewBox="0 0 1600 898" role="img"
+    aria-label="Non-plugin transform stage shares, remaining stages normalized to 100 percent">
+    <style>
+      .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
+      .subtitle { fill: #9ca3af; font: 15px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 18px system-ui, sans-serif; }
+      .total { fill: #9ca3af; font: 14px ui-monospace, monospace; }
+      .segment { fill: #111827; font: 700 14px ui-monospace, monospace; }
+      .unavailable { fill: #d1d5db; font: 16px system-ui, sans-serif; }
+      .legend { fill: #d1d5db; font: 15px system-ui, sans-serif; }
+    </style>
+    <rect width="100%" height="100%" rx="14" fill="#111827" />
+    <text x="36" y="38" class="title">Stage share without plugin execution</text>
+    <text x="36" y="64" class="subtitle">
+      directly measured remaining stages, renormalized to 100%
+    </text>
+    <text x="360" y="114" text-anchor="end" class="label">
+        Babel + JS plugin
+      </text>
+      <text x="360" y="138" text-anchor="end" class="total">
+        20.96 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-0)">
+<rect x="380.00" y="84" width="188.93"
+        height="66" fill="#38bdf8"><title>Parse:
+        16.3%, 3.413 ms</title></rect><text x="474.47" y="124"
+            text-anchor="middle" class="segment">16.3%</text>
+
+
+
+
+<rect x="568.93" y="84" width="971.07"
+        height="66" fill="#84cc16"><title>Codegen:
+        83.7%, 17.543 ms</title></rect><text x="1054.47" y="124"
+            text-anchor="middle" class="segment">83.7%</text></g>
+      <clipPath id="without-plugin-0"><rect x="380" y="84"
+        width="1160" height="66" rx="8" /></clipPath>
+
+      <text x="360" y="230" text-anchor="end" class="label">
+        SWC + WASM plugin
+      </text>
+      <rect x="380" y="192" width="1160" height="66"
+        rx="8" fill="#374151" />
+      <text x="960" y="232"
+        text-anchor="middle" class="unavailable">plugin is not separable in the public API</text>
+
+      <text x="360" y="330" text-anchor="end" class="label">
+        Yuku + JS plugin
+      </text>
+      <text x="360" y="354" text-anchor="end" class="total">
+        5.79 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-2)"><rect x="380.00" y="300" width="24.61"
+        height="66" fill="#facc15"><title>Source encode:
+        2.1%, 0.123 ms</title></rect>
+<rect x="404.61" y="300" width="97.09"
+        height="66" fill="#38bdf8"><title>Parse:
+        8.4%, 0.484 ms</title></rect><text x="453.15" y="340"
+            text-anchor="middle" class="segment">8.4%</text>
+
+
+<rect x="501.69" y="300" width="97.79"
+        height="66" fill="#34d399"><title>AST decode:
+        8.4%, 0.488 ms</title></rect><text x="550.59" y="340"
+            text-anchor="middle" class="segment">8.4%</text>
+<rect x="599.48" y="300" width="758.35"
+        height="66" fill="#fb923c"><title>AST encode:
+        65.4%, 3.783 ms</title></rect><text x="978.66" y="340"
+            text-anchor="middle" class="segment">65.4%</text>
+<rect x="1357.84" y="300" width="182.16"
+        height="66" fill="#84cc16"><title>Codegen:
+        15.7%, 0.909 ms</title></rect><text x="1448.92" y="340"
+            text-anchor="middle" class="segment">15.7%</text></g>
+      <clipPath id="without-plugin-2"><rect x="380" y="300"
+        width="1160" height="66" rx="8" /></clipPath>
+
+      <text x="360" y="438" text-anchor="end" class="label">
+        OXC + Yuku walk plugin
+      </text>
+      <text x="360" y="462" text-anchor="end" class="total">
+        1.99 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-3)">
+
+<rect x="380.00" y="408" width="766.40"
+        height="66" fill="#60a5fa"><title>Parse + AST transfer:
+        66.1%, 1.314 ms</title></rect><text x="763.20" y="448"
+            text-anchor="middle" class="segment">66.1%</text>
+
+
+
+<rect x="1146.40" y="408" width="393.60"
+        height="66" fill="#84cc16"><title>Codegen:
+        33.9%, 0.675 ms</title></rect><text x="1343.20" y="448"
+            text-anchor="middle" class="segment">33.9%</text></g>
+      <clipPath id="without-plugin-3"><rect x="380" y="408"
+        width="1160" height="66" rx="8" /></clipPath>
+
+      <text x="360" y="546" text-anchor="end" class="label">
+        OXC raw transfer + Yuku walk
+      </text>
+      <text x="360" y="570" text-anchor="end" class="total">
+        1.56 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-4)">
+
+
+<rect x="380.00" y="516" width="709.24"
+        height="66" fill="#2dd4bf"><title>Parse + raw AST transfer:
+        61.1%, 0.956 ms</title></rect><text x="734.62" y="556"
+            text-anchor="middle" class="segment">61.1%</text>
+
+
+<rect x="1089.24" y="516" width="450.76"
+        height="66" fill="#84cc16"><title>Codegen:
+        38.9%, 0.608 ms</title></rect><text x="1314.62" y="556"
+            text-anchor="middle" class="segment">38.9%</text></g>
+      <clipPath id="without-plugin-4"><rect x="380" y="516"
+        width="1160" height="66" rx="8" /></clipPath>
+
+      <text x="360" y="654" text-anchor="end" class="label">
+        OXC + OXC Visitor plugin
+      </text>
+      <text x="360" y="678" text-anchor="end" class="total">
+        2.16 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-5)">
+
+<rect x="380.00" y="624" width="700.95"
+        height="66" fill="#60a5fa"><title>Parse + AST transfer:
+        60.4%, 1.307 ms</title></rect><text x="730.47" y="664"
+            text-anchor="middle" class="segment">60.4%</text>
+
+
+
+<rect x="1080.95" y="624" width="459.05"
+        height="66" fill="#84cc16"><title>Codegen:
+        39.6%, 0.856 ms</title></rect><text x="1310.47" y="664"
+            text-anchor="middle" class="segment">39.6%</text></g>
+      <clipPath id="without-plugin-5"><rect x="380" y="624"
+        width="1160" height="66" rx="8" /></clipPath>
+    <rect x="70" y="778" width="20" height="20" rx="4"
+        fill="#facc15" />
+      <text x="100" y="794" class="legend">Source encode</text>
+
+      <rect x="450" y="778" width="20" height="20" rx="4"
+        fill="#38bdf8" />
+      <text x="480" y="794" class="legend">Parse</text>
+
+      <rect x="830" y="778" width="20" height="20" rx="4"
+        fill="#60a5fa" />
+      <text x="860" y="794" class="legend">Parse + AST transfer</text>
+
+      <rect x="1210" y="778" width="20" height="20" rx="4"
+        fill="#2dd4bf" />
+      <text x="1240" y="794" class="legend">Parse + raw AST transfer</text>
+
+      <rect x="70" y="820" width="20" height="20" rx="4"
+        fill="#34d399" />
+      <text x="100" y="836" class="legend">AST decode</text>
+
+      <rect x="450" y="820" width="20" height="20" rx="4"
+        fill="#fb923c" />
+      <text x="480" y="836" class="legend">AST encode</text>
+
+      <rect x="830" y="820" width="20" height="20" rx="4"
+        fill="#84cc16" />
+      <text x="860" y="836" class="legend">Codegen</text>
+  </svg>

@@ -2,7 +2,7 @@ import { transformSync as babelTransformSync } from "@babel/core";
 import { transformSync as swcTransformSync } from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { printSync as oxcPrintSync } from "oxc-codegen";
-import { parseSync as oxcParseSync } from "oxc-parser";
+import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
 import { walk } from "yuku-ast";
 import { generate as yukuGenerate } from "yuku-codegen";
 import { parse as yukuParse, type Program } from "yuku-parser";
@@ -30,7 +30,9 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Babel + JS plugin",
   "SWC + WASM plugin",
   "Yuku + JS plugin",
-  "OXC + Yuku JS plugin",
+  "OXC + Yuku walk plugin",
+  "OXC raw transfer + Yuku walk",
+  "OXC + OXC Visitor plugin",
 ] as const;
 
 export type StyledComponentsTransformerName =
@@ -109,11 +111,20 @@ export function transformStyledComponentsYukuPipeline(source: string): string {
   return result.code;
 }
 
-export function transformStyledComponentsOxcPipeline(source: string): string {
-  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, {
+function transformStyledComponentsOxcPipeline(
+  source: string,
+  walker: "yuku" | "oxc",
+  rawTransfer: boolean,
+): string {
+  if (rawTransfer && !rawTransferSupported()) {
+    throw new Error("OXC experimentalRawTransfer is not supported on this platform");
+  }
+  const options = {
+    experimentalRawTransfer: rawTransfer,
     lang: "jsx",
     sourceType: "module",
-  });
+  } as const;
+  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, options as never);
   if (parsed.errors.length > 0) {
     throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
   }
@@ -123,6 +134,7 @@ export function transformStyledComponentsOxcPipeline(source: string): string {
     source,
     STYLED_COMPONENTS_FILENAME,
     STYLED_COMPONENTS_OPTIONS,
+    walker,
   );
   return oxcPrintSync(parsed.program, { jsx: true });
 }
@@ -138,8 +150,12 @@ export function transformStyledComponentsFor(
       return transformStyledComponentsSwc(source);
     case "Yuku + JS plugin":
       return transformStyledComponentsYukuPipeline(source);
-    case "OXC + Yuku JS plugin":
-      return transformStyledComponentsOxcPipeline(source);
+    case "OXC + Yuku walk plugin":
+      return transformStyledComponentsOxcPipeline(source, "yuku", false);
+    case "OXC raw transfer + Yuku walk":
+      return transformStyledComponentsOxcPipeline(source, "yuku", true);
+    case "OXC + OXC Visitor plugin":
+      return transformStyledComponentsOxcPipeline(source, "oxc", false);
   }
 }
 
@@ -204,7 +220,7 @@ export function validateStyledComponentsOutput(
     throw new Error(`${name} generated duplicate component IDs`);
   }
   const pureAnnotationsMinimum = fixture.transformedComponentCount + 3;
-  if (name === "OXC + Yuku JS plugin") {
+  if (name.startsWith("OXC")) {
     if (validation.pureAnnotations !== 0) {
       throw new Error(`${name} unexpectedly emitted comments`);
     }

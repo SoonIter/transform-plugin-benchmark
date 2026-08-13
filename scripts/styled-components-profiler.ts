@@ -8,7 +8,7 @@ import {
 } from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { printSync as oxcPrintSync } from "oxc-codegen";
-import { parseSync as oxcParseSync } from "oxc-parser";
+import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
 import yukuCodegenBinding from "yuku-codegen/binding.js";
 import { encode as yukuEncode } from "yuku-codegen/encode.js";
 import yukuParserBinding from "yuku-parser/binding.js";
@@ -55,9 +55,19 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "AST encode", runtime: "JS" },
     { name: "codegen", runtime: "native" },
   ],
-  "OXC + Yuku JS plugin": [
+  "OXC + Yuku walk plugin": [
     { name: "parse + AST transfer", runtime: "native + JS" },
     { name: "plugin transform", runtime: "JS" },
+    { name: "codegen", runtime: "JS" },
+  ],
+  "OXC raw transfer + Yuku walk": [
+    { name: "parse + raw AST transfer", runtime: "native + JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "codegen", runtime: "JS" },
+  ],
+  "OXC + OXC Visitor plugin": [
+    { name: "parse + AST transfer", runtime: "native + JS" },
+    { name: "plugin transform", runtime: "JS, OXC Visitor" },
     { name: "codegen", runtime: "JS" },
   ],
 };
@@ -205,12 +215,21 @@ function profileYuku(source: string): ProfileIteration {
   };
 }
 
-function profileOxc(source: string): ProfileIteration {
+function profileOxc(
+  source: string,
+  walker: "yuku" | "oxc",
+  rawTransfer: boolean,
+): ProfileIteration {
+  if (rawTransfer && !rawTransferSupported()) {
+    throw new Error("OXC experimentalRawTransfer is not supported on this platform");
+  }
   const start = process.hrtime.bigint();
-  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, {
+  const options = {
+    experimentalRawTransfer: rawTransfer,
     lang: "jsx",
     sourceType: "module",
-  });
+  } as const;
+  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, options as never);
   const parsedAt = process.hrtime.bigint();
   if (parsed.errors.length > 0) {
     throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
@@ -220,6 +239,7 @@ function profileOxc(source: string): ProfileIteration {
     source,
     STYLED_COMPONENTS_FILENAME,
     STYLED_COMPONENTS_OPTIONS,
+    walker,
   );
   const transformedAt = process.hrtime.bigint();
   const output = oxcPrintSync(parsed.program, { jsx: true });
@@ -246,7 +266,11 @@ export function profileStyledComponentsOnce(
       return profileSwc(source);
     case "Yuku + JS plugin":
       return profileYuku(source);
-    case "OXC + Yuku JS plugin":
-      return profileOxc(source);
+    case "OXC + Yuku walk plugin":
+      return profileOxc(source, "yuku", false);
+    case "OXC raw transfer + Yuku walk":
+      return profileOxc(source, "yuku", true);
+    case "OXC + OXC Visitor plugin":
+      return profileOxc(source, "oxc", false);
   }
 }

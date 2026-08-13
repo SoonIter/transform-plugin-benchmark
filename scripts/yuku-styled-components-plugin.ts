@@ -8,7 +8,8 @@ import {
     sep,
 } from "node:path";
 import picomatch from "picomatch";
-import { b, bindingIdentifiers, is, walk, type Visitors } from "yuku-ast";
+import { Visitor as OxcVisitor, visitorKeys as oxcVisitorKeys } from "oxc-parser";
+import { b, bindingIdentifiers, is, walk as yukuWalk, type Visitors } from "yuku-ast";
 import type {
     ArrowFunctionExpression,
     CallExpression,
@@ -29,7 +30,6 @@ import type {
     TemplateLiteral,
     VariableDeclaration,
     VariableDeclarator,
-    WalkContext,
 } from "yuku-parser";
 
 const DEFAULT_IMPORT_PATHS = new Set([
@@ -99,6 +99,7 @@ interface PluginState {
     styledRequired: string | null;
     topLevelBindings: Set<string>;
     usedNames: Set<string>;
+    walk: PluginWalker;
 }
 
 interface PendingDeclaration {
@@ -108,6 +109,143 @@ interface PendingDeclaration {
 
 type ProgramBodyItem = Program["body"][number];
 type CSSValue = ArrowFunctionExpression | ObjectExpression | TemplateLiteral;
+
+interface PluginWalkContext<T extends Node, S> {
+    readonly node: T;
+    readonly parent: Node | null;
+    readonly state: S;
+    ancestors(): Node[];
+    remove(): void;
+    replace(node: Node): void;
+}
+
+type PluginWalkHandler<T extends Node, S> = (
+    node: T,
+    context: PluginWalkContext<T, S>,
+) => void;
+
+type PluginVisitors<S> = Record<
+    string,
+    PluginWalkHandler<Node, S> | undefined
+>;
+
+type PluginWalker = <T extends Node, S>(
+    root: T,
+    visitors: PluginVisitors<S>,
+    state: S,
+) => T;
+
+const FUNCTION_TYPES = new Set([
+    "ArrowFunctionExpression",
+    "FunctionDeclaration",
+    "FunctionExpression",
+    "TSDeclareFunction",
+    "TSEmptyBodyFunctionExpression",
+]);
+
+function walkWithYuku<T extends Node, S>(
+    root: T,
+    visitors: PluginVisitors<S>,
+    state: S,
+): T {
+    return yukuWalk(root, visitors as Visitors<S>, state);
+}
+
+function locateOxcNode(parent: Node, node: Node): [string, number | null] {
+    const keys = oxcVisitorKeys[parent.type] ?? [];
+    for (const key of keys) {
+        const value = (parent as unknown as Record<string, unknown>)[key];
+        if (value === node) return [key, null];
+        if (!Array.isArray(value)) continue;
+        const index = value.indexOf(node);
+        if (index >= 0) return [key, index];
+    }
+    throw new Error(`OXC Visitor could not locate ${node.type} in ${parent.type}`);
+}
+
+function applyOxcMutation(
+    node: Node,
+    ancestors: Node[],
+    replacements: WeakMap<Node, Node>,
+    removals: WeakSet<Node>,
+): void {
+    const replacement = replacements.get(node);
+    const removed = removals.has(node);
+    if (replacement === undefined && !removed) return;
+    const parent = ancestors.at(-1);
+    if (parent === undefined) throw new Error("OXC Visitor cannot mutate the walk root");
+    const [key, index] = locateOxcNode(parent, node);
+    const record = parent as unknown as Record<string, unknown>;
+    if (index === null) {
+        record[key] = removed ? null : replacement;
+        return;
+    }
+    const list = record[key];
+    if (!Array.isArray(list)) throw new Error("OXC Visitor child list changed during mutation");
+    if (removed) {
+        list.splice(index, 1);
+    } else {
+        list[index] = replacement;
+    }
+}
+
+function walkWithOxcVisitor<T extends Node, S>(
+    root: T,
+    visitors: PluginVisitors<S>,
+    state: S,
+): T {
+    const ancestors: Node[] = [];
+    const replacements = new WeakMap<Node, Node>();
+    const removals = new WeakSet<Node>();
+    const visitor: Record<string, (node: Node) => void> = {};
+    for (const type of Object.keys(oxcVisitorKeys)) {
+        const handler = visitors[type];
+        const functionHandler = FUNCTION_TYPES.has(type) ? visitors.Function : undefined;
+        const leaf = oxcVisitorKeys[type]!.length === 0;
+        if (leaf && handler === undefined && functionHandler === undefined) continue;
+        visitor[type] = (node) => {
+            if (handler !== undefined || functionHandler !== undefined) {
+                const context: PluginWalkContext<Node, S> = {
+                    ancestors: () => [...ancestors],
+                    node,
+                    parent: ancestors.at(-1) ?? null,
+                    remove: () => removals.add(node),
+                    replace: (replacement) => replacements.set(node, replacement),
+                    state,
+                };
+                handler?.(node, context);
+                functionHandler?.(node, context);
+            }
+            if (!leaf) ancestors.push(node);
+        };
+        if (!leaf) {
+            visitor[`${type}:exit`] = (node) => {
+                const current = ancestors.pop();
+                if (current !== node) {
+                    throw new Error("OXC Visitor ancestor stack is inconsistent");
+                }
+                applyOxcMutation(node, ancestors, replacements, removals);
+            };
+        } else if (handler !== undefined || functionHandler !== undefined) {
+            visitor[`${type}:exit`] = (node) => {
+                applyOxcMutation(node, ancestors, replacements, removals);
+            };
+        }
+    }
+    const program = root.type === "Program"
+        ? root
+        : {
+            body: [root],
+            end: root.end,
+            hashbang: null,
+            sourceType: "module",
+            start: root.start,
+            type: "Program",
+        };
+    new OxcVisitor(visitor).visit(program as never);
+    if (ancestors.length !== 0) throw new Error("OXC Visitor left ancestors on its stack");
+    return root;
+}
 
 function resolveOptions(options: YukuStyledComponentsOptions): ResolvedOptions {
     return {
@@ -283,15 +421,18 @@ function collectProgramFacts(state: PluginState): void {
         if (statement.type === "ImportDeclaration") collectImports(statement, state);
         collectBindingStatement(statement, state);
     }
-    walk(state.program, {
+    const visitors = {
         CatchClause(node) {
+            if (node.type !== "CatchClause") throw new Error("expected CatchClause");
             if (node.param !== null) addScopeBindings(node, bindingIdentifiers(node.param), state);
         },
         ClassDeclaration(node, context) {
+            if (node.type !== "ClassDeclaration") throw new Error("expected ClassDeclaration");
             if (node.id === null) return;
             addScopeBindings(nearestScope(context.ancestors(), false), [node.id], state);
         },
         Function(node, context) {
+            if (!is.Function(node)) throw new Error("expected Function");
             const parameters = node.params.flatMap((parameter) => {
                 if (parameter.type === "RestElement") {
                     return bindingIdentifiers(parameter.argument);
@@ -306,9 +447,13 @@ function collectProgramFacts(state: PluginState): void {
             addScopeBindings(nearestScope(context.ancestors(), false), [node.id], state);
         },
         Identifier(node) {
+            if (node.type !== "Identifier") throw new Error("expected Identifier");
             state.usedNames.add(node.name);
         },
         VariableDeclaration(node, context) {
+            if (node.type !== "VariableDeclaration") {
+                throw new Error("expected VariableDeclaration");
+            }
             const bindings = node.declarations.flatMap((declaration) =>
                 bindingIdentifiers(declaration.id),
             );
@@ -318,7 +463,8 @@ function collectProgramFacts(state: PluginState): void {
                 state,
             );
         },
-    });
+    } satisfies PluginVisitors<PluginState>;
+    state.walk(state.program, visitors, state);
 }
 
 function nearestScope(ancestors: Node[], functionScoped: boolean): Node {
@@ -631,7 +777,7 @@ function callNeedsConfig(node: CallExpression, state: PluginState): boolean {
 
 function addCallConfig(
     node: CallExpression,
-    context: WalkContext<CallExpression, PluginState>,
+    context: PluginWalkContext<CallExpression, PluginState>,
 ): CallExpression {
     const state = context.state;
     if (!callNeedsConfig(node, state)) return node;
@@ -768,7 +914,7 @@ function transpileTemplate(node: TaggedTemplateExpression): CallExpression {
 
 function processTaggedTemplate(
     node: TaggedTemplateExpression,
-    context: WalkContext<TaggedTemplateExpression, PluginState>,
+    context: PluginWalkContext<TaggedTemplateExpression, PluginState>,
 ): void {
     const state = context.state;
     const supported = isStyled(node.tag, state) || isHelper(node.tag, state);
@@ -792,7 +938,7 @@ function processTaggedTemplate(
 
 function processCallExpression(
     node: CallExpression,
-    context: WalkContext<CallExpression, PluginState>,
+    context: PluginWalkContext<CallExpression, PluginState>,
 ): void {
     const state = context.state;
     const processed = addCallConfig(node, context);
@@ -805,11 +951,11 @@ function processCallExpression(
 }
 
 function processStyledNodes(root: Node, state: PluginState): void {
-    const visitors: Visitors<PluginState> = {
-        CallExpression: processCallExpression,
-        TaggedTemplateExpression: processTaggedTemplate,
+    const visitors: PluginVisitors<PluginState> = {
+        CallExpression: processCallExpression as PluginWalkHandler<Node, PluginState>,
+        TaggedTemplateExpression: processTaggedTemplate as PluginWalkHandler<Node, PluginState>,
     };
-    walk(root, visitors, state);
+    state.walk(root, visitors, state);
 }
 
 function uniqueName(hint: string, state: PluginState): string {
@@ -1053,7 +1199,7 @@ function enclosingJSXElement(ancestors: Node[]): JSXElement | null {
 
 function transformCSSAttribute(
     attribute: JSXAttribute,
-    context: WalkContext<JSXAttribute, PluginState>,
+    context: PluginWalkContext<JSXAttribute, PluginState>,
     pending: PendingDeclaration[],
 ): void {
     if (attribute.name.type !== "JSXIdentifier" || attribute.name.name !== "css") return;
@@ -1126,11 +1272,16 @@ function insertPendingDeclarations(pending: PendingDeclaration[], state: PluginS
 function transformCSSProps(state: PluginState): void {
     if (!state.options.cssProp) return;
     const pending: PendingDeclaration[] = [];
-    walk(
+    state.walk(
         state.program,
         {
             JSXAttribute(node, context) {
-                transformCSSAttribute(node, context, pending);
+                if (node.type !== "JSXAttribute") throw new Error("expected JSXAttribute");
+                transformCSSAttribute(
+                    node,
+                    context as PluginWalkContext<JSXAttribute, PluginState>,
+                    pending,
+                );
             },
         },
         state,
@@ -1208,6 +1359,7 @@ export function transformStyledComponentsYuku(
     source: string,
     filename: string,
     options: YukuStyledComponentsOptions = {},
+    walker: "yuku" | "oxc" = "yuku",
 ): void {
     if (source.length > 100_000_000) {
         throw new RangeError("styled-components source must not exceed 100 MB");
@@ -1231,6 +1383,7 @@ export function transformStyledComponentsYuku(
         styledRequired: null,
         topLevelBindings: new Set(),
         usedNames: new Set(),
+        walk: walker === "oxc" ? walkWithOxcVisitor : walkWithYuku,
     };
     collectProgramFacts(state);
     state.cssPropDefaultReusable =

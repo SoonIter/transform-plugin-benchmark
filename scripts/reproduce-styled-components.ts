@@ -14,7 +14,7 @@ const SETTINGS = {
 const NODE_VERSION = "24.18.1";
 const REPRODUCTION_COMMAND = "npm run reproduce:styled-components";
 const RESULT_FILE = "styled-components.json";
-const SOURCE_TAG = "styled-components-oxc-v3";
+const SOURCE_TAG = "styled-components-oxc-raw-transfer-v5";
 
 interface ReproductionResult {
   benchmark: {
@@ -95,18 +95,36 @@ function assertResult(result: ReproductionResult): void {
   if (result.versions.oxcCodegen !== "0.144.0") {
     throw new Error("Reproduction result has an unexpected OXC codegen version");
   }
-  if (result.results.length !== 4) {
+  if (result.results.length !== 6) {
     throw new Error("Reproduction result has an unexpected transformer count");
   }
-  if (result.profile.results.length !== 4) {
+  if (result.profile.results.length !== 6) {
     throw new Error("Reproduction result has an unexpected profile transformer count");
   }
-  const oxcResult = result.results.find(({ name }) => name === "OXC + Yuku JS plugin");
+  const oxcResult = result.results.find(({ name }) => name === "OXC + Yuku walk plugin");
   if (oxcResult === undefined) {
     throw new Error("Reproduction result does not include the OXC pipeline");
   }
   if (oxcResult.pureAnnotations !== 0) {
     throw new Error("OXC codegen unexpectedly emitted comments");
+  }
+  const oxcVisitorResult = result.results.find(
+    ({ name }) => name === "OXC + OXC Visitor plugin",
+  );
+  if (oxcVisitorResult === undefined) {
+    throw new Error("Reproduction result does not include the OXC Visitor pipeline");
+  }
+  if (oxcVisitorResult.pureAnnotations !== 0) {
+    throw new Error("OXC Visitor pipeline unexpectedly emitted comments");
+  }
+  const rawTransferResult = result.results.find(
+    ({ name }) => name === "OXC raw transfer + Yuku walk",
+  );
+  if (rawTransferResult === undefined) {
+    throw new Error("Reproduction result does not include the OXC raw-transfer pipeline");
+  }
+  if (rawTransferResult.pureAnnotations !== 0) {
+    throw new Error("OXC raw-transfer pipeline unexpectedly emitted comments");
   }
   if (result.reproduction.command !== REPRODUCTION_COMMAND) {
     throw new Error("Reproduction result did not record the invoking command");

@@ -23,7 +23,7 @@ for (const name of STYLED_COMPONENTS_TRANSFORMERS) {
 
     assert.equal(validation.withConfigCalls, fixture.transformedComponentCount);
     assert.equal(validation.uniqueComponentIds, fixture.transformedComponentCount);
-    if (name === "OXC + Yuku JS plugin") {
+    if (name.startsWith("OXC")) {
       assert.equal(validation.pureAnnotations, 0);
     } else {
       assert.ok(validation.pureAnnotations >= fixture.transformedComponentCount + 3);
@@ -55,13 +55,23 @@ test("committed artifacts reproduce the benchmark fixture and outputs", () => {
   assert.equal(createHash("sha256").update(input).digest("hex"), manifest.input.sha256);
 
   assert.equal(manifest.outputs.length, STYLED_COMPONENTS_TRANSFORMERS.length);
+  const codeByTransformer = new Map<string, string>();
   for (const output of manifest.outputs) {
     const transformer = STYLED_COMPONENTS_TRANSFORMERS.find(
       (name) => name === output.transformer,
     );
     assert.notEqual(transformer, undefined);
     const code = readFileSync(join(artifactsPath, output.file), "utf8");
+    codeByTransformer.set(output.transformer, code);
     assert.equal(createHash("sha256").update(code).digest("hex"), output.sha256);
     assert.equal(code, transformStyledComponentsFor(transformer!, input));
   }
+  assert.equal(
+    codeByTransformer.get("OXC + Yuku walk plugin"),
+    codeByTransformer.get("OXC raw transfer + Yuku walk"),
+  );
+  assert.equal(
+    codeByTransformer.get("OXC + Yuku walk plugin"),
+    codeByTransformer.get("OXC + OXC Visitor plugin"),
+  );
 });
