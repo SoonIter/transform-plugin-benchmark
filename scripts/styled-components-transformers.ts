@@ -33,6 +33,7 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "OXC + Yuku walk plugin",
   "OXC raw transfer + Yuku walk",
   "OXC + OXC Visitor plugin",
+  "OXC raw transfer + OXC Visitor",
 ] as const;
 
 export type StyledComponentsTransformerName =
@@ -156,6 +157,8 @@ export function transformStyledComponentsFor(
       return transformStyledComponentsOxcPipeline(source, "yuku", true);
     case "OXC + OXC Visitor plugin":
       return transformStyledComponentsOxcPipeline(source, "oxc", false);
+    case "OXC raw transfer + OXC Visitor":
+      return transformStyledComponentsOxcPipeline(source, "oxc", true);
   }
 }
 

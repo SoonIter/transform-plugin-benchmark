@@ -74,4 +74,8 @@ test("committed artifacts reproduce the benchmark fixture and outputs", () => {
     codeByTransformer.get("OXC + Yuku walk plugin"),
     codeByTransformer.get("OXC + OXC Visitor plugin"),
   );
+  assert.equal(
+    codeByTransformer.get("OXC + Yuku walk plugin"),
+    codeByTransformer.get("OXC raw transfer + OXC Visitor"),
+  );
 });

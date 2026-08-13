@@ -70,6 +70,11 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "plugin transform", runtime: "JS, OXC Visitor" },
     { name: "codegen", runtime: "JS" },
   ],
+  "OXC raw transfer + OXC Visitor": [
+    { name: "parse + raw AST transfer", runtime: "native + JS" },
+    { name: "plugin transform", runtime: "JS, OXC Visitor" },
+    { name: "codegen", runtime: "JS" },
+  ],
 };
 
 const sourceEncoder = new TextEncoder();
@@ -272,5 +277,7 @@ export function profileStyledComponentsOnce(
       return profileOxc(source, "yuku", true);
     case "OXC + OXC Visitor plugin":
       return profileOxc(source, "oxc", false);
+    case "OXC raw transfer + OXC Visitor":
+      return profileOxc(source, "oxc", true);
   }
 }

@@ -18,6 +18,7 @@ const OUTPUT_FILES: ReadonlyArray<readonly [StyledComponentsTransformerName, str
   ["OXC + Yuku walk plugin", "oxc-output.jsx"],
   ["OXC raw transfer + Yuku walk", "oxc-raw-transfer-output.jsx"],
   ["OXC + OXC Visitor plugin", "oxc-visitor-output.jsx"],
+  ["OXC raw transfer + OXC Visitor", "oxc-raw-transfer-visitor-output.jsx"],
 ];
 
 interface ArtifactRecord {
