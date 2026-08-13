@@ -78,9 +78,11 @@ interface StyledComponentsBenchResult {
     warmupMs: number;
   };
   fixture: {
+    cssProps: number;
     sourceBytes: number;
     styledComponents: number;
     templates: number;
+    transformedComponents: number;
   };
   options: typeof STYLED_COMPONENTS_OPTIONS;
   profile: {
@@ -116,18 +118,11 @@ interface StyledComponentsBenchResult {
 let outputCodeUnitsLast = 0;
 
 function runtimeLabel(): string {
-  const bunVersion = (process.versions as Record<string, string | undefined>).bun;
-  return bunVersion === undefined
-    ? `Node ${process.versions.node}`
-    : `Bun ${bunVersion}`;
+  return `Node ${process.versions.node}`;
 }
 
 function taskArguments(...args: string[]): string[] {
-  const bunVersion = (process.versions as Record<string, string | undefined>).bun;
-  if (bunVersion === undefined) {
-    return ["--import", "tsx", "scripts/bench-styled-components.ts", ...args];
-  }
-  return ["scripts/bench-styled-components.ts", ...args];
+  return ["--import", "tsx", "scripts/bench-styled-components.ts", ...args];
 }
 
 function spawnTask(...args: string[]) {
@@ -387,7 +382,8 @@ function profileStyledComponents(): ProfileResult[] {
 async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
   const fixture = createStyledComponentsFixture(COMPONENT_COUNT);
   console.log(
-    `\nBenchmarking styled-components with ${fixture.styledComponentCount} components...`,
+    `\nBenchmarking styled-components with ${fixture.styledComponentCount} declarations ` +
+      `and ${fixture.cssPropCount} css props...`,
   );
 
   const runsByName = new Map<StyledComponentsTransformerName, RunResult[]>(
@@ -442,9 +438,11 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
       warmupMs: BENCH_WARMUP,
     },
     fixture: {
+      cssProps: fixture.cssPropCount,
       sourceBytes: Buffer.byteLength(fixture.source),
       styledComponents: fixture.styledComponentCount,
       templates: fixture.templateCount,
+      transformedComponents: fixture.transformedComponentCount,
     },
     options: STYLED_COMPONENTS_OPTIONS,
     profile: {

@@ -1,7 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import type { ChartConfiguration } from "chart.js";
-import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 
 interface TransformResult {
   median: number;
@@ -26,75 +24,35 @@ interface BenchmarkResult {
 }
 
 const COLORS = {
-  babel: "#7209B7",
-  swc: "#3A86FF",
-  yuku: "#FF6B35",
+  babel: "#8b5cf6",
+  swc: "#3b82f6",
+  yuku: "#f97316",
 } as const;
+
+const STAGE_COLORS = new Map([
+  ["Source encode", "#facc15"],
+  ["Parse", "#38bdf8"],
+  ["Parse + AST transfer", "#60a5fa"],
+  ["AST decode", "#34d399"],
+  ["Babel JS plugin", "#8b5cf6"],
+  ["Yuku JS plugin", "#ec4899"],
+  ["AST encode", "#fb923c"],
+  ["Codegen", "#84cc16"],
+  ["AST transfer + WASM plugin + codegen", "#2563eb"],
+]);
+
+function escapeXML(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
 
 function transformerColor(name: string): string {
   if (name.startsWith("Babel")) return COLORS.babel;
   if (name.startsWith("SWC")) return COLORS.swc;
   return COLORS.yuku;
-}
-
-async function generateLatencyChart(results: TransformResult[]): Promise<void> {
-  const dpr = 3;
-  const renderer = new ChartJSNodeCanvas({ width: 640 * dpr, height: 155 * dpr });
-  const maxTime = Math.max(...results.map((result) => result.median));
-  const configuration: ChartConfiguration = {
-    type: "bar",
-    data: {
-      labels: results.map((result) => result.name),
-      datasets: [
-        {
-          data: results.map((result) => result.median),
-          backgroundColor: results.map((result) => transformerColor(result.name)),
-          borderWidth: 0,
-          barPercentage: 0.72,
-          categoryPercentage: 0.9,
-        },
-      ],
-    },
-    options: {
-      indexAxis: "y",
-      responsive: false,
-      devicePixelRatio: 1,
-      layout: { padding: { right: 90 * dpr } },
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { display: false, beginAtZero: true, max: maxTime * 1.12 },
-        y: {
-          grid: { display: false },
-          border: { display: false },
-          ticks: { color: "#CAC1B0", font: { size: 10 * dpr } },
-        },
-      },
-    },
-    plugins: [
-      {
-        id: "latency-labels",
-        afterDatasetsDraw(chart) {
-          const context = chart.ctx;
-          const metadata = chart.getDatasetMeta(0);
-          for (let index = 0; index < metadata.data.length; index++) {
-            const bar = metadata.data[index]!;
-            const value = results[index]!.median;
-            context.save();
-            context.fillStyle = "#CAC1B0";
-            context.font = `${10 * dpr}px sans-serif`;
-            context.textAlign = "left";
-            context.textBaseline = "middle";
-            context.fillText(`${value.toFixed(2)} ms`, bar.x + 8 * dpr, bar.y);
-            context.restore();
-          }
-        },
-      },
-    ],
-  };
-  await writeFile(
-    join(process.cwd(), "charts", "styled-components-latency.png"),
-    await renderer.renderToBuffer(configuration),
-  );
 }
 
 function stageCategory(transformer: string, stage: ProfileStage): string {
@@ -111,86 +69,111 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
   return "Yuku JS plugin";
 }
 
-async function generateStageChart(profiles: ProfileResult[]): Promise<void> {
-  const categories = [
-    ["Source encode", "#FFD166"],
-    ["Parse", "#4CC9F0"],
-    ["Parse + AST transfer", "#4895EF"],
-    ["AST decode", "#43AA8B"],
-    ["Babel JS plugin", "#7209B7"],
-    ["Yuku JS plugin", "#F72585"],
-    ["AST encode", "#FF9F1C"],
-    ["Codegen", "#90BE6D"],
-    ["AST transfer + WASM plugin + codegen", "#3A86FF"],
-  ] as const;
-  const dpr = 3;
-  const renderer = new ChartJSNodeCanvas({ width: 760 * dpr, height: 245 * dpr });
-  const configuration: ChartConfiguration = {
-    type: "bar",
-    data: {
-      labels: profiles.map((profile) => profile.name),
-      datasets: categories.map(([category, color]) => ({
-        label: category,
-        data: profiles.map((profile) =>
-          profile.stages
-            .filter((stage) => stageCategory(profile.name, stage) === category)
-            .reduce((sum, stage) => sum + stage.share * 100, 0),
-        ),
-        backgroundColor: color,
-        borderWidth: 0,
-        barPercentage: 0.72,
-        categoryPercentage: 0.9,
-      })),
-    },
-    options: {
-      indexAxis: "y",
-      responsive: false,
-      devicePixelRatio: 1,
-      plugins: {
-        legend: {
-          labels: {
-            boxHeight: 8 * dpr,
-            boxWidth: 8 * dpr,
-            color: "#CAC1B0",
-            font: { size: 8 * dpr },
-          },
-          position: "bottom",
-        },
-      },
-      scales: {
-        x: {
-          beginAtZero: true,
-          max: 100,
-          stacked: true,
-          ticks: {
-            callback: (value) => `${value}%`,
-            color: "#CAC1B0",
-            font: { size: 8 * dpr },
-          },
-        },
-        y: {
-          stacked: true,
-          grid: { display: false },
-          border: { display: false },
-          ticks: { color: "#CAC1B0", font: { size: 9 * dpr } },
-        },
-      },
-    },
-  };
-  await writeFile(
-    join(process.cwd(), "charts", "styled-components-stages.png"),
-    await renderer.renderToBuffer(configuration),
-  );
+function latencyChart(results: TransformResult[]): string {
+  const width = 1_200;
+  const height = 390;
+  const labelWidth = 260;
+  const chartWidth = 810;
+  const maximum = Math.max(...results.map((result) => result.median));
+  const rows = results.map((result, index) => {
+    const y = 72 + index * 100;
+    const barWidth = (result.median / maximum) * chartWidth;
+    return `
+      <text x="${labelWidth - 20}" y="${y + 31}" text-anchor="end" class="label">
+        ${escapeXML(result.name)}
+      </text>
+      <rect x="${labelWidth}" y="${y}" width="${barWidth.toFixed(2)}" height="58"
+        rx="8" fill="${transformerColor(result.name)}" />
+      <text x="${(labelWidth + barWidth + 18).toFixed(2)}" y="${y + 36}" class="value">
+        ${result.median.toFixed(2)} ms
+      </text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
+    viewBox="0 0 ${width} ${height}" role="img"
+    aria-label="Styled-components transform latency, lower is better">
+    <style>
+      .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 20px system-ui, sans-serif; }
+      .value { fill: #f9fafb; font: 700 19px ui-monospace, monospace; }
+      .note { fill: #9ca3af; font: 15px system-ui, sans-serif; }
+    </style>
+    <rect width="100%" height="100%" rx="14" fill="#111827" />
+    <text x="36" y="42" class="title">End-to-end latency</text>
+    <text x="1160" y="42" text-anchor="end" class="note">lower is better</text>
+    ${rows.join("\n").trim()}
+  </svg>\n`;
+}
+
+function stageChart(profiles: ProfileResult[]): string {
+  const width = 1_400;
+  const height = 610;
+  const labelWidth = 260;
+  const chartWidth = 1_080;
+  const categories = Array.from(STAGE_COLORS.keys());
+  const rows = profiles.map((profile, index) => {
+    const y = 78 + index * 114;
+    let offset = 0;
+    const segments = categories.map((category) => {
+      const share = profile.stages
+        .filter((stage) => stageCategory(profile.name, stage) === category)
+        .reduce((sum, stage) => sum + stage.share, 0);
+      if (share === 0) return "";
+      const x = labelWidth + offset * chartWidth;
+      const segmentWidth = share * chartWidth;
+      offset += share;
+      return `<rect x="${x.toFixed(2)}" y="${y}" width="${segmentWidth.toFixed(2)}"
+        height="66" fill="${STAGE_COLORS.get(category)}"><title>${escapeXML(category)}:
+        ${(share * 100).toFixed(1)}%</title></rect>`;
+    });
+    return `
+      <text x="${labelWidth - 20}" y="${y + 40}" text-anchor="end" class="label">
+        ${escapeXML(profile.name)}
+      </text>
+      <g clip-path="url(#row-${index})">${segments.join("\n")}</g>
+      <clipPath id="row-${index}"><rect x="${labelWidth}" y="${y}"
+        width="${chartWidth}" height="66" rx="8" /></clipPath>`;
+  });
+  const legend = categories.map((category, index) => {
+    const column = index % 3;
+    const row = Math.floor(index / 3);
+    const x = 60 + column * 440;
+    const y = 445 + row * 42;
+    return `
+      <rect x="${x}" y="${y}" width="20" height="20" rx="4"
+        fill="${STAGE_COLORS.get(category)}" />
+      <text x="${x + 30}" y="${y + 16}" class="legend">${escapeXML(category)}</text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
+    viewBox="0 0 ${width} ${height}" role="img"
+    aria-label="Styled-components transform stage shares">
+    <style>
+      .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 20px system-ui, sans-serif; }
+      .legend { fill: #d1d5db; font: 16px system-ui, sans-serif; }
+      .axis { fill: #9ca3af; font: 14px ui-monospace, monospace; }
+    </style>
+    <rect width="100%" height="100%" rx="14" fill="#111827" />
+    <text x="36" y="42" class="title">Pipeline stage share</text>
+    ${rows.join("\n").trim()}
+    <text x="${labelWidth}" y="420" class="axis">0%</text>
+    <text x="${labelWidth + chartWidth / 2}" y="420" text-anchor="middle" class="axis">50%</text>
+    <text x="${labelWidth + chartWidth}" y="420" text-anchor="end" class="axis">100%</text>
+    ${legend.join("\n").trim()}
+  </svg>\n`;
 }
 
 async function main(): Promise<void> {
   const inputPath = join(process.cwd(), "result", "styled-components.json");
   const data = JSON.parse(await readFile(inputPath, "utf8")) as BenchmarkResult;
   const results = [...data.results].sort((left, right) => left.median - right.median);
-  await mkdir(join(process.cwd(), "charts"), { recursive: true });
-  await generateLatencyChart(results);
-  await generateStageChart(data.profile.results);
-  console.log("Generated charts from result/styled-components.json");
+  const chartsPath = join(process.cwd(), "charts");
+  await mkdir(chartsPath, { recursive: true });
+  await writeFile(join(chartsPath, "styled-components-latency.svg"), latencyChart(results));
+  await writeFile(
+    join(chartsPath, "styled-components-stages.svg"),
+    stageChart(data.profile.results),
+  );
+  console.log("Generated SVG charts from result/styled-components.json");
 }
 
 main().catch((error: unknown) => {

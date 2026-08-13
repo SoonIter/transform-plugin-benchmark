@@ -78,6 +78,7 @@ function profileBabel(source: string): ProfileIteration {
     filename: STYLED_COMPONENTS_FILENAME,
     parserOpts: {
       attachComment: false,
+      plugins: ["jsx"],
       sourceType: "module",
     },
   });
@@ -125,6 +126,7 @@ function profileSwc(source: string): ProfileIteration {
   const start = process.hrtime.bigint();
   const parsed = swcParseSync(source, {
     comments: false,
+    jsx: true,
     syntax: "ecmascript",
   });
   const parsedAt = process.hrtime.bigint();
@@ -157,7 +159,7 @@ function profileYuku(source: string): ProfileIteration {
   const sourceEncodedAt = process.hrtime.bigint();
   const buffer = yukuParserBinding.parse(sourceBytes, {
     attachComments: false,
-    lang: "js",
+    lang: "jsx",
     sourceType: "module",
   });
   const parsedAt = process.hrtime.bigint();
@@ -166,6 +168,7 @@ function profileYuku(source: string): ProfileIteration {
   const decodedAt = process.hrtime.bigint();
   transformStyledComponentsYuku(
     program,
+    source,
     STYLED_COMPONENTS_FILENAME,
     STYLED_COMPONENTS_OPTIONS,
   );

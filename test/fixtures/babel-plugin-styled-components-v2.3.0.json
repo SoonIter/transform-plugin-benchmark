@@ -1,0 +1,436 @@
+{
+    "upstream": "styled-components/babel-plugin-styled-components",
+    "upstreamCommit": "ab3aaf50921075b219718f9357abd4fae4bcb9b7",
+    "version": "2.3.0",
+    "cases": [
+        {
+            "name": "add-display-names",
+            "options": {
+                "ssr": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from 'styled-components'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = styled('div')``\nconst Test3 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\nclass ClassComponent {\n  static Child = styled.div``\n}\nvar GoodName = BadName = styled.div``;\n"
+        },
+        {
+            "name": "add-identifier",
+            "options": {
+                "displayName": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "import styled from 'styled-components'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\n"
+        },
+        {
+            "name": "add-identifier-and-display-name",
+            "options": {
+                "fileName": false,
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "import styled from 'styled-components'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\nconst WrappedComponent2 = styled.div({})\nconst WrappedComponent3 = styled(Inner)({})\nconst WrappedComponent4 = styled(Inner).attrs(() => ({ something: 'else' }))({})\nconst WrappedComponent5 = styled.div.attrs(() => ({ something: 'else' }))({})\nconst WrappedComponent6 = styled.div.attrs(() => ({ something: 'else' }))``\nconst WrappedComponent7 = styled.div.withConfig({\n  shouldForwardProp: () => {},\n})({})\n\nconst WrappedComponent8 = styled.div\n  .withConfig({\n    shouldForwardProp: () => {},\n  })\n  .attrs(() => ({ something: 'else' }))({})\n\nconst WrappedComponent9 = styled.div\n  .attrs(() => ({ something: 'else' }))\n  .withConfig({\n    shouldForwardProp: () => {},\n  })({})\n"
+        },
+        {
+            "name": "add-identifier-with-top-level-import-paths",
+            "options": {
+                "displayName": false,
+                "fileName": false,
+                "ssr": true,
+                "topLevelImportPaths": [
+                    "@xstyled/styled-components",
+                    "@xstyled/styled-components/*"
+                ],
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from '@xstyled/styled-components'\nimport unstyled from '@xstyled/styled-components-test'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\nconst NoTransformComponent = unstyled.div``;\n"
+        },
+        {
+            "name": "add-identifier-with-top-level-import-paths-and-named-import",
+            "options": {
+                "displayName": true,
+                "fileName": false,
+                "ssr": true,
+                "topLevelImportPaths": [
+                    "*(../)**/example"
+                ],
+                "transpileTemplateLiterals": false
+            },
+            "source": "import { styled } from '../../relative/example'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\n"
+        },
+        {
+            "name": "allow-chains-of-member-calls",
+            "options": {
+                "ssr": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from 'styled-components'\n\nconst WithAttrs = styled.div.attrs({ some: 'value' })``\nconst WithAttrsWrapped = styled(Inner).attrs({ some: 'value' })``\n"
+        },
+        {
+            "name": "annotate-create-global-style-with-pure-comments",
+            "options": {
+                "pure": true
+            },
+            "source": "import { createGlobalStyle } from 'styled-components'\n\nconst GlobalStyle = createGlobalStyle`\n  body {\n    color: red;\n  }\n`\n"
+        },
+        {
+            "name": "annotate-css-with-pure-comments",
+            "options": {
+                "pure": true
+            },
+            "source": "import styled, { css } from 'styled-components'\n\nconst partial = css`\n  color: red;\n`\n\nconst Component = styled.div`\n  ${partial};\n  background: blue;\n`\n"
+        },
+        {
+            "name": "annotate-keyframes-with-pure-comments",
+            "options": {
+                "pure": true
+            },
+            "source": "import { keyframes } from 'styled-components'\n\nconst Animation = keyframes`\n  0% {\n    opacity: 0;\n  }\n\n  100% {\n    opacity: 1;\n  }\n`\n"
+        },
+        {
+            "name": "annotate-styled-calls-with-pure-comments",
+            "options": {
+                "pure": true
+            },
+            "source": "import styled from 'styled-components'\n\nconst Test = styled.div`\n  width: 100%;\n`\nconst Test2 = styled('div')``\nconst Test3 = true ? styled.div`` : styled.div``\nconst styles = { One: styled.div`` }\nlet Component\nComponent = styled.div``\nconst WrappedComponent = styled(Inner)``\nconst StyledObjectForm = styled.div({ color: red })\nconst StyledFunctionForm = styled.div(p => ({ color: p.color || 'red' }))\nconst normalFunc = add(5, 3)\n"
+        },
+        {
+            "name": "annotate-withtheme-with-pure-comments",
+            "options": {
+                "pure": true
+            },
+            "source": "import { withTheme } from 'styled-components'\n\nconst ThemedComponent = withTheme(() => null)"
+        },
+        {
+            "name": "css-declared-after-component",
+            "options": {},
+            "source": "import React from \"react\"\nimport { css } from \"styled-components\"\n\nexport default function Example() {\n  return <div css={someCss}>oops</div>\n}\n\nconst someCss = css`\n  color: red;\n`\n"
+        },
+        {
+            "name": "css-prop-mixed-with-transpile-template-literals-disabled",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": false,
+                "cssProp": true
+            },
+            "source": "// Regression: with transpileTemplateLiterals: false, the css-prop pre-numbering\n// pass and the main TaggedTemplateExpression visitor both fire on the same\n// user-written styled component. displayNameAndId must be idempotent on a\n// TaggedTemplate whose tag already carries .withConfig — otherwise the tag is\n// wrapped with a fresh .withConfig on each pass and componentId counters\n// increment each time.\nimport styled from 'styled-components'\n\nconst Plain = styled.div`color: red;`\nconst Wrapped = styled(Plain)`color: green;`\n\nconst App = () => <div css=\"color: blue;\" />\n"
+        },
+        {
+            "name": "css-prop-object-computed-key-with-nonprimitive-value",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": true,
+                "minify": false,
+                "cssProp": true
+            },
+            "source": "// Regression: when a css-prop object literal has a computed key AND a\n// non-primitive value (e.g. an identifier binding), the reducer must\n// preserve the computed flag on the rewritten ObjectProperty. Otherwise the\n// output emits `{ p.$_css: getValue() }` instead of `{ [p.$_css]: getValue() }`,\n// which is invalid syntax.\nimport styled from 'styled-components'\n\nconst colorKey = 'background-color'\nconst colorValue = 'tomato'\n\nconst Comp = props => (\n  <div css={{ [colorKey]: colorValue }}>hi</div>\n)\n\nexport default Comp\n"
+        },
+        {
+            "name": "css-prop-object-key-shadowed-by-binding",
+            "options": {
+                "ssr": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: a non-computed object key (e.g. `position`) is a literal\n// property name, never a binding reference, even when the local scope\n// has a same-named binding. The css-prop object reducer must only rewrite\n// computed keys (`[expr]`) into prop interpolations; plain keys stay literal.\nimport React from 'react'\n\nconst Outer = ({ position }) => (\n  <div css={{ position: 'absolute', top: position }} />\n)\n"
+        },
+        {
+            "name": "css-prop-with-existing-styled-import",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": true,
+                "minify": false,
+                "cssProp": true
+            },
+            "source": "// Regression: when a styled default import already exists, repeated css-prop\n// transformations within a file must not poison the import-detection cache.\n// Every user-written styled component should keep its displayName/componentId,\n// and every css-prop-injected component should also receive them.\nimport styled from 'styled-components'\n\nconst Plain = styled.div`color: red;`\n\nconst Wrapped = styled(Plain)`color: blue;`\n\nconst A = () => <div css=\"color: green;\" />\nconst B = () => <span css={`color: purple;`} />\nconst C = () => <p css={{ color: 'orange' }} />\n"
+        },
+        {
+            "name": "css-prop-with-namespace-import",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": true,
+                "cssProp": true
+            },
+            "source": "// Regression: when the only styled-components binding in scope is a namespace\n// import, the css-prop transform must not emit `styled(\"div\")` (the namespace\n// object isn't callable). It should fall back to injecting a fresh default\n// import and route the css-prop component through that callable identifier.\nimport * as styled from 'styled-components'\n\nconst App = () => <div css=\"color: red;\" />\n"
+        },
+        {
+            "name": "css-prop-with-native-import-path",
+            "options": {
+                "ssr": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false,
+                "cssPropImportPath": "styled-components/native"
+            },
+            "source": "// React Native targets need the auto-injected default import to come from\n// `styled-components/native` rather than the DOM package. The\n// `cssPropImportPath` option lets the consumer name the package; the rest\n// of the css-prop transform is shape-compatible with RN already (the\n// PascalCase JSX name routes through the identifier branch and produces\n// `styled(View)` instead of `styled('View')`).\nimport { View } from 'react-native'\n\nconst Comp = () => <View css={{ backgroundColor: 'red' }} />\n\nexport default Comp\n"
+        },
+        {
+            "name": "does-not-desugar-styled-assignment",
+            "options": {},
+            "source": "const domElements = ['div']\n\nconst styled = () => {}\n\ndomElements.forEach(domElement => {\n  styled[domElement] = styled(domElement)\n})\n"
+        },
+        {
+            "name": "does-not-replace-native-with-no-tags",
+            "options": {},
+            "source": "const styled_default = require('styled-components/native')\n\nconst TestNormal = styled.div`\n  width: 100%;\n`\n\nconst Test = styled_default.default.div`\n  width: 100%;\n`\n\nconst TestCallExpression = styled_default.default(Test)`\n  height: 20px;\n`\n"
+        },
+        {
+            "name": "ignore-external-styled-import",
+            "options": {},
+            "source": "import { styled } from '@material/ui'\nimport s from 'styled-components'\n\nconst Paragraph = s.p`\n  color: green;\n`\n\nconst Foo = p => <Paragraph {...p} />\nconst TestNormal = styled(Foo)({ color: red })\n"
+        },
+        {
+            "name": "minify-css-in-helpers",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import { createGlobalStyle, css, keyframes } from 'styled-components'\n\nconst key = keyframes`\n  to {\n    transform: rotate(360deg);\n  }\n`\n\nconst color = css`\n  color: ${theColor};\n`\n\nconst GlobalStyles = createGlobalStyle`\n  html {\n    color: red;\n  }\n`\n"
+        },
+        {
+            "name": "minify-css-to-use-with-transpilation",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from 'styled-components';\n\nconst Simple = styled.div`\n  width: 100%;\n`;\n\nconst Interpolation = styled.div`\n  content: \"  ${props => props.text}  \";\n`;\n\nconst SpecialCharacters = styled.div`\n  content: \"  ${props => props.text}  \";\\n color: red;\n`;\n\nconst Comment = styled.div`\n  // comment\n  color: red;\n`\n\nconst Parens = styled.div`\n  &:hover {\n    color: blue;\n  }\n`;\n"
+        },
+        {
+            "name": "minify-css-to-use-without-transpilation",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from 'styled-components';\n\nconst Simple = styled.div`\n  width: 100%;\n`;\n\nconst Interpolation = styled.div`\n  content: \"https://test.com/${props => props.endpoint}\";\n`;\n\nconst SpecialCharacters = styled.div`\n  content: \"  ${props => props.text}  \";\\n color: red;\n`;\n\nconst Comment = styled.div`\n  width: 100%;\n  // comment\n  color: red;\n`;\n\nconst Parens = styled.div`\n  &:hover {\n    color: blue;\n  }\n  color: red;\n`;\n\nconst UrlComments = styled.div`\n  color: red;\n  /* // */\n  background: red;\n  /* comment 1 */\n  /* comment 2 */\n  // comment 3\n  border: 1px solid green;\n`;\n"
+        },
+        {
+            "name": "minify-single-line-comments-with-interpolations",
+            "options": {
+                "minify": true
+            },
+            "source": "import styled from 'styled-components'\n\nconst Test1 = styled.div`\n  width: 100%;\n  // color: ${'red'};\n`\n\nconst Test2 = styled.div`\n  width: 100%;\n  // color: pale${'red'};\n`\n\nconst Test3 = styled.div`\n  width: 100%;\n  // color\n  ${'red'};\n`\n\nconst Test4 = styled.div`\n  width: 100%;\n  // color: ${'red'}-blue;\n`\n\nconst Test5 = styled.div`\n  width: 100%;\n  // color: ${'red'}${'blue'};\n`\n\nconst Test6 = styled.div`\n  background: url(\"https://google.com\");\n  width: 100%;\n  ${'green'} // color: ${'red'}${'blue'};\n`\n\nconst Test7 = styled.div`\n  background: url(\"https://google.com\");\n  width: ${p => p.props.width};\n  ${'green'} // color: ${'red'}${'blue'};\n  height: ${p => p.props.height};\n`\n"
+        },
+        {
+            "name": "named-import-styled-from-sc-v6",
+            "options": {
+                "ssr": false,
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: styled-components v6 exposes a named `styled` export. The\n// detector resolves `import { styled } from 'styled-components'` to the same\n// local binding the default import would produce, so member and call forms\n// both pick up displayName and componentId.\nimport { styled } from 'styled-components'\n\nconst Foo = styled.div`\n  color: red;\n`\n\nconst Bar = styled('span')`\n  color: blue;\n`\n"
+        },
+        {
+            "name": "namespace-default-tag-form",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": true,
+                "minify": false
+            },
+            "source": "// Locks in handling of the ESM namespace-default form\n// (`styled.default.div`...``), which arises from\n// `import * as styled from 'styled-components'` or from\n// `@babel/plugin-transform-modules-commonjs` rewriting an `import styled` to\n// `var styled = _interopRequireDefault(require('styled-components'))`.\nimport * as styled from 'styled-components'\n\nconst Tagged = styled.default.div`color: red;`\n"
+        },
+        {
+            "name": "not-use-private-api-if-not-required",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "import styled from 'styled-components';\n\nconst Test = styled.div`width: 100%;`;\n"
+        },
+        {
+            "name": "pre-transpiled",
+            "options": {
+                "fileName": false,
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "var _styled = _interopRequireDefault(require(\"styled-components\"));\n\nconst Test = (0, _styled.default)('div')({\n  width: '100%',\n});\n"
+        },
+        {
+            "name": "pre-transpiled-tsc-importdefault",
+            "options": {
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: the TypeScript compiler emits `__importDefault` as its CommonJS\n// interop helper (Babel uses `_interopRequireDefault`). Both wrap a require()\n// to expose `.default`, and the plugin needs to recognize either form so that\n// downstream styled-component detection on `<local>.default.div` succeeds.\n\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n  return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nvar styled_components_1 = __importDefault(require(\"styled-components\"));\nvar Foo = styled_components_1.default.div`\n  color: red;\n`;\nvar Bar = (0, styled_components_1.default)('span')`\n  color: blue;\n`;\n"
+        },
+        {
+            "name": "styled-alias-via-local-binding",
+            "options": {
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: TypeScript theme-typing patterns re-bind the default import\n// through a local `const`, e.g. `const styled = baseStyled as ThemedSC<...>`.\n// After type-stripping, Babel sees a plain `const styled = baseStyled`.\n// The detector must follow such single-identifier aliases so `styled.div` is\n// still recognized as a styled-component declaration.\nimport baseStyled from 'styled-components'\n\nconst styled = baseStyled\n\nconst Foo = styled.div`\n  color: red;\n`\n\nconst Bar = styled('span')`\n  color: blue;\n`\n"
+        },
+        {
+            "name": "track-the-imported-variable",
+            "options": {
+                "fileName": false,
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "import s from \"styled-components\";\n\nconst Test = s.div`width: 100%;`;\nconst Test2 = true ? s.div`` : s.div``;\nconst styles = { One: s.div`` }\nlet Component;\nComponent = s.div``;\nconst WrappedComponent = s(Inner)``;\n"
+        },
+        {
+            "name": "transformed-imports-with-jsx-member-expressions",
+            "options": {},
+            "source": "import React from \"react\";\nimport { css } from \"styled-components\";\nimport Icons from \"./icons\";\n\nconst someCss = css` background: purple;`;\n\nconst App1 = () => { return <Icons css={someCss} />; };\n\nconst App2 = () => { return <Icons.Foo css={someCss} />; };\n\nconst App3 = () => { return <Icons.Foo.Bar css={someCss} />; };\n"
+        },
+        {
+            "name": "transpile-css-prop",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false,
+                "minify": false,
+                "cssProp": true
+            },
+            "source": "/*\n * Basic fixtures\n */\n\nconst StaticString = p => <p css=\"flex: 1;\">A</p>\n\nconst StaticTemplate = p => (\n  <p\n    css={`\n      flex: 1;\n    `}\n  >\n    A\n  </p>\n)\n\nconst ObjectProp = p => <p css={{ color: 'blue' }}>A</p>\n\nconst NoChildren = p => <p css=\"flex: 1;\" />\n\nconst CssHelperProp = p => (\n  <p\n    css={css`\n      color: blue;\n    `}\n  >\n    A\n  </p>\n)\n\n/*\n * Dynamic prop\n */\n\nconst CustomComp = p => <Paragraph css=\"flex: 1\">H</Paragraph>\n\nconst DynamicProp = p => <p css={props.cssText}>H</p>\n\nconst LocalInterpolation = p => (\n  <p\n    css={`\n      background: ${props.bg};\n    `}\n  >\n    H\n  </p>\n)\n\nconst FuncInterpolation = p => (\n  <p\n    css={`\n      color: ${props => props.theme.a};\n    `}\n  >\n    H\n  </p>\n)\n\nconst radius = 10\nconst GlobalInterpolation = p => (\n  <p\n    css={`\n      border-radius: ${radius}px;\n    `}\n  >\n    H\n  </p>\n)\n\nconst LocalCssHelperProp = p => (\n  <p\n    css={css`\n      color: ${p.color};\n    `}\n  >\n    A\n  </p>\n)\n\nconst DynamicCssHelperProp = p => (\n  <p\n    css={css`\n      color: ${props => props.theme.color};\n    `}\n  >\n    A\n  </p>\n)\n\nconst CustomCompWithDot = p => <Button.Ghost css=\"flex: 1\">H</Button.Ghost>\n\nconst NestedCompWithDot = p => (\n  <Button.Ghost.New css=\"flex: 1\">H</Button.Ghost.New>\n)\n\nconst CustomCompWithDotLowerCase = p => (\n  <button.ghost css=\"flex: 1\">H</button.ghost>\n)\n\nconst CustomElement = p => <button-ghost css=\"flex: 1\">H</button-ghost>\n\n/* styled component defined after function it's used in */\n\nconst EarlyUsageComponent = p => <Thing3 css=\"color: red;\" />\n\nconst Thing3 = styled.div`\n  color: blue;\n`\n\nconst ObjectInterpolation = p => {\n  const theme = useTheme()\n\n  return (\n    <p\n      css={{\n        color: theme.colors.red,\n      }}\n    >\n      H\n    </p>\n  )\n}\n\nconst ObjectInterpolationCustomComponent = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        color: theme.colors.red,\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectInterpolationInKey = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        [theme.breakpoints.md]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectFnInterpolationInKey = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        [theme.breakpoints.md()]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectFnSimpleInterpolationInKey = p => {\n  const foo = '@media screen and (max-width: 600px)'\n\n  return (\n    <Thing3\n      css={{\n        [foo]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectPropMixedInputs = p => {\n  const color = 'red'\n\n  return (\n    <p\n      css={{\n        background: p.background,\n        color,\n        textAlign: 'left',\n        '::before': { content: globalVar },\n        '::after': { content: getAfterValue() },\n      }}\n    >\n      A\n    </p>\n  )\n}\n\nconst ObjectPropWithSpread = () => {\n  const css = { color: 'red' }\n  const playing = true\n\n  return (\n    <div\n      css={{\n        ...css,\n        ...(playing ? { opacity: 0, bottom: '-100px' } : {}),\n      }}\n    />\n  )\n}\n\nconst ObjectInterpolationLogical = ({ bg, content, height, width, ...p }) => {\n  return (\n    <p\n      css={{\n        background: bg || 'red',\n        height: height ?? '100%',\n        width: width ? `${width}px` : '100%',\n        '::before': {\n          content,\n        },\n      }}\n      {...p}\n    >\n      H\n    </p>\n  )\n}\n\nconst ObjectInterpolationMember = p => {\n  const theme = useTheme()\n  const color = 'red'\n\n  return (\n    <p\n      css={{\n        color: theme.colors[color],\n      }}\n    >\n      H\n    </p>\n  )\n}\n\nconst RenderPropComponentCSSProp = () => {\n  return (\n    <RenderPropComponent>\n      {() => (\n        <div\n          css={`\n            color: black;\n          `}\n        />\n      )}\n    </RenderPropComponent>\n  )\n}\n\nconst RenderPropComponentSpread = props => {\n  return (\n    <RenderPropComponent>\n      {() => <div {...props.derivedProps} />}\n    </RenderPropComponent>\n  )\n}\n\nconst RenderPropComponentSpreadCSSProp = props => {\n  return (\n    <RenderPropComponent>\n      {() => (\n        <div\n          css={`\n            color: black;\n          `}\n          {...props.derivedProps}\n        />\n      )}\n    </RenderPropComponent>\n  )\n}\n"
+        },
+        {
+            "name": "transpile-css-prop-add-import",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false,
+                "minify": false,
+                "cssProp": true
+            },
+            "source": "// @flow\nimport React from 'react'\nimport Card from '../../shared/components/Card'\nimport config from '../../../config'\n\nexport default () => (\n  <div\n    css={`\n      width: 35em;\n    `}\n  >\n    <Card>\n      <h1>Login or Sign Up</h1>\n      <p>\n        <a href={config.API_URI + '/auth/google'}>\n          Sign up or login with Google\n        </a>\n      </p>\n    </Card>\n  </div>\n)\n"
+        },
+        {
+            "name": "transpile-css-prop-add-require",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": false,
+                "minify": false,
+                "cssProp": true
+            },
+            "source": "// @flow\nimport React from 'react'\n\nexport default () => (\n  <div\n    css={`\n      width: 35em;\n    `}\n  />\n)\n"
+        },
+        {
+            "name": "transpile-css-prop-all-options-on",
+            "options": {
+                "ssr": true,
+                "displayName": true,
+                "transpileTemplateLiterals": true,
+                "minify": true,
+                "cssProp": true
+            },
+            "source": "import styled from 'styled-components'\nimport SomeComponent from '../SomeComponentPath'\nconst { SomeOtherComponent } = require('../SomeOtherComponentPath')\n\n/**\n * control\n */\n\nconst Thing = styled.div`\n  color: red;\n`\n\nconst Thing2 = styled(Thing)`\n  background: blue;\n`\n\n/*\n * Basic fixtures\n */\n\nconst StaticString = p => <p css=\"flex: 1;\">A</p>\n\nconst StaticTemplate = p => (\n  <p\n    css={`\n      flex: 1;\n    `}\n  >\n    A\n  </p>\n)\n\nconst ObjectProp = p => <p css={{ color: 'blue' }}>A</p>\n\nconst NoChildren = p => <p css=\"flex: 1;\" />\n\nconst CssHelperProp = p => (\n  <p\n    css={css`\n      color: blue;\n    `}\n  >\n    A\n  </p>\n)\n\n/*\n * Dynamic prop\n */\n\nconst CustomComp = p => <Paragraph css=\"flex: 1\">H</Paragraph>\n\nconst DynamicProp = p => <p css={props.cssText}>H</p>\n\nconst LocalInterpolation = p => (\n  <p\n    css={`\n      background: ${props.bg};\n    `}\n  >\n    H\n  </p>\n)\n\nconst FuncInterpolation = p => (\n  <p\n    css={`\n      color: ${props => props.theme.a};\n    `}\n  >\n    H\n  </p>\n)\n\nconst radius = 10\nconst GlobalInterpolation = p => (\n  <p\n    css={`\n      border-radius: ${radius}px;\n    `}\n  >\n    H\n  </p>\n)\n\nconst LocalCssHelperProp = p => (\n  <p\n    css={css`\n      color: ${p.color};\n    `}\n  >\n    A\n  </p>\n)\n\nconst DynamicCssHelperProp = p => (\n  <p\n    css={css`\n      color: ${props => props.theme.color};\n    `}\n  >\n    A\n  </p>\n)\n\nconst CustomCompWithDot = p => <Button.Ghost css=\"flex: 1\">H</Button.Ghost>\n\nconst NestedCompWithDot = p => (\n  <Button.Ghost.New css=\"flex: 1\">H</Button.Ghost.New>\n)\n\nconst CustomCompWithDotLowerCase = p => (\n  <button.ghost css=\"flex: 1\">H</button.ghost>\n)\n\nconst CustomElement = p => <button-ghost css=\"flex: 1\">H</button-ghost>\n\nconst globalVar = '\"foo\"'\nconst getAfterValue = () => '\"bar\"'\n\nconst ObjectPropMixedInputs = p => {\n  const color = 'red'\n\n  return (\n    <p\n      css={{\n        background: p.background,\n        color,\n        textAlign: 'left',\n        '::before': { content: globalVar },\n        '::after': { content: getAfterValue() },\n      }}\n    >\n      A\n    </p>\n  )\n}\n\nconst SpreadObjectPropMixedInputs = p => {\n  const color = 'red'\n\n  return (\n    <p\n      css={{\n        ...{\n          '::before': { content: globalVar },\n          '::after': { content: getAfterValue() },\n          ...{\n            '::before': { content: globalVar },\n            '::after': { content: getAfterValue() },\n          },\n        },\n        background: p.background,\n        textAlign: 'left',\n        '::before': { content: globalVar },\n        '::after': { content: getAfterValue() },\n      }}\n    >\n      A\n    </p>\n  )\n}\n\n/* styled component defined after function it's used in */\n\nconst EarlyUsageComponent = p => <Thing3 css=\"color: red;\" />\n\nconst Thing3 = styled.div`\n  color: blue;\n`\n\nconst EarlyUsageComponent2 = p => <Thing4 css=\"color: red;\" />\n\nfunction Thing4(props) {\n  return <div {...props} />\n}\n\n/* insert before usage for non-local scope styled HOC targets */\n\nconst ImportedComponentUsage = p => <SomeComponent css=\"color: red;\" />\nconst RequiredComponentUsage = p => <SomeOtherComponent css=\"color: red;\" />\n\nconst ObjectInterpolation = p => {\n  const theme = useTheme()\n\n  return (\n    <p\n      css={{\n        color: theme.colors.red,\n      }}\n    >\n      H\n    </p>\n  )\n}\n\nconst ObjectInterpolationCustomComponent = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        color: theme.colors.red,\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectInterpolationInKey = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        [theme.breakpoints.md]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectFnInterpolationInKey = p => {\n  const theme = useTheme()\n\n  return (\n    <Thing3\n      css={{\n        [theme.breakpoints.md()]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectFnSimpleInterpolationInKey = p => {\n  const foo = '@media screen and (max-width: 600px)'\n\n  return (\n    <Thing3\n      css={{\n        [foo]: {\n          color: 'red',\n        },\n      }}\n    >\n      H\n    </Thing3>\n  )\n}\n\nconst ObjectPropWithSpread = () => {\n  const css = { color: 'red' }\n  const playing = true\n\n  return (\n    <div\n      css={{\n        ...css,\n        ...(playing ? { opacity: 0, bottom: '-100px' } : {}),\n      }}\n    />\n  )\n}\n"
+        },
+        {
+            "name": "transpile-require-default",
+            "options": {},
+            "source": "const styled_default = require(\"styled-components\");\n\nconst TestNormal = styled.div`\n  width: 100%;\n`\n\nconst Test = styled_default.default.div`\n  width: 100%;\n`\n\nconst TestCallExpression = styled_default.default(Test)`\n  height: 20px;\n`"
+        },
+        {
+            "name": "transpile-template-literals-with-config",
+            "options": {
+                "ssr": false,
+                "displayName": true,
+                "transpileTemplateLiterals": true,
+                "minify": false
+            },
+            "source": "import styled, { css, createGlobalStyle } from 'styled-components'\n\nconst Named = styled.div`\n  width: 100%;\n`\n\nconst NamedWithInterpolation = styled.div`\n  color: ${color => props.color};\n`\n\nconst Wrapped = styled(Inner)`\n  color: red;\n`\n\nconst Foo = styled.div({\n  color: 'green',\n})\n\nconst style = css`\n  background: green;\n`\n\nconst GlobalStyle = createGlobalStyle`\n  html {\n    background: silver;\n  }\n`\n"
+        },
+        {
+            "name": "transpile-template-literals-without-config",
+            "options": {
+                "ssr": false,
+                "displayName": false,
+                "transpileTemplateLiterals": true,
+                "minify": false
+            },
+            "source": "import styled from 'styled-components';\n\nconst Named = styled.div`\n  width: 100%;\n`;\n\nconst NamedWithInterpolation = styled.div`\n  color: ${color => props.color};\n`;\n\nconst Wrapped = styled(Inner)`color: red;`;\n"
+        },
+        {
+            "name": "use-directory-name",
+            "options": {
+                "meaninglessFileNames": [
+                    "code"
+                ],
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "import styled from \"styled-components\";\n\nconst Test = styled.div`color: red;`;\nconst before = styled.div`color: blue;`;\nstyled.div``;\nexport default styled.button``;\n"
+        },
+        {
+            "name": "use-file-name",
+            "options": {
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "import styled from \"styled-components\";\n\nconst Test = styled.div`color: red;`;\nconst before = styled.div`color: blue;`;\nstyled.div``;\nexport default styled.button``;\n"
+        },
+        {
+            "name": "use-namespace",
+            "options": {
+                "namespace": "test-namespace"
+            },
+            "source": "import * as styled from 'styled-components'\n\nconst css = styled.css`\n  background: black;\n`\n\nconst GlobalStyle = styled.createGlobalStyle`\n  html {\n    background: black;\n  }\n`\n\nconst Test = styled.default.div`\n  color: red;\n`\n\nconst before = styled.default.div`\n  color: blue;\n`\n\nstyled.default.div``\n\nexport default styled.default.button``\n"
+        },
+        {
+            "name": "withconfig-chained-on-existing-config",
+            "options": {
+                "ssr": true,
+                "fileName": false,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: when the user already chains a `.withConfig(...)` with a\n// non-literal argument (e.g. `withConfig(getConfig())`), the plugin appends\n// its own `.withConfig({ displayName, componentId })` rather than skipping\n// augmentation altogether.\nimport styled from 'styled-components'\n\nconst getConfig = () => ({ shouldForwardProp: () => true })\n\nconst Foo = styled.div.withConfig(getConfig())`\n  color: red;\n`\n"
+        },
+        {
+            "name": "withconfig-spread-and-css-prop",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": false,
+                "cssProp": true
+            },
+            "source": "// Regression: taggedTagAlreadyConfigured must tolerate non-ObjectProperty\n// entries in a withConfig argument's `.properties` array (e.g. SpreadElement)\n// and non-Identifier keys (e.g. StringLiteral). The pre-numbering pass runs\n// on user-written styled components whose tags may already carry such\n// withConfig shapes, and reading `.key.name` blindly would crash.\nimport styled from 'styled-components'\n\nconst baseConfig = { displayName: 'Base', shouldForwardProp: () => true }\n\nconst Spread = styled.div.withConfig({ ...baseConfig })`color: red;`\nconst StringKey = styled.div.withConfig({ 'shouldForwardProp': () => true })`color: blue;`\n\nconst App = () => <span css=\"color: green;\" />\n"
+        },
+        {
+            "name": "withconfig-spread-with-transpile",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": true
+            },
+            "source": "import styled from 'styled-components'\nconst baseConfig = { shouldForwardProp: () => true }\n// Pre-transpiled call form with a spread inside withConfig and no displayName yet\nconst X = styled.div.withConfig({ ...baseConfig })(['template'])\n"
+        },
+        {
+            "name": "withconfig-string-literal-displayname",
+            "options": {
+                "displayName": true,
+                "fileName": true,
+                "ssr": true,
+                "transpileTemplateLiterals": false
+            },
+            "source": "// Regression: hasDisplayNameOrComponentId must recognize displayName/componentId\n// set via StringLiteral keys (both quoted `'displayName'` and computed\n// `['displayName']`). Otherwise the visitor wraps with another withConfig and\n// the auto-generated displayName silently overrides the user's value at\n// runtime since later withConfig calls compose and the last value wins.\nimport styled from 'styled-components'\n\nconst QuotedDisplayName = styled.div.withConfig({ 'displayName': 'CustomA' })`color: red;`\nconst ComputedDisplayName = styled.div.withConfig({ ['displayName']: 'CustomB' })`color: blue;`\nconst QuotedComponentId = styled.div.withConfig({ 'componentId': 'sc-custom-c' })`color: green;`\nconst CallFormQuotedDisplayName = styled.div.withConfig({ 'displayName': 'CustomD' })({ color: 'yellow' })\n"
+        },
+        {
+            "name": "work-with-hoisted-default-as-import",
+            "options": {
+                "transpileTemplateLiterals": false,
+                "ssr": true
+            },
+            "source": "const Test = s.div`width: 100%;`;\nimport { default as s, css } from 'styled-components';\n"
+        }
+    ]
+}

@@ -5,160 +5,170 @@
     "warmupMs": 1000
   },
   "fixture": {
-    "sourceBytes": 128382,
+    "cssProps": 60,
+    "sourceBytes": 142274,
     "styledComponents": 240,
-    "templates": 483
+    "templates": 483,
+    "transformedComponents": 300
   },
   "options": {
+    "cssProp": true,
     "displayName": true,
+    "fileName": true,
+    "meaninglessFileNames": [
+      "index"
+    ],
     "minify": true,
+    "namespace": "",
     "pure": true,
-    "ssr": true
+    "ssr": true,
+    "topLevelImportPaths": [],
+    "transpileTemplateLiterals": true
   },
   "profile": {
     "results": [
       {
-        "iterations": 225,
-        "meanMs": 67.14914809333334,
+        "iterations": 116,
+        "meanMs": 130.4138839913793,
         "name": "Babel + JS plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 3.554095328888889,
+            "meanMs": 3.535767603448276,
             "name": "parse",
             "runMeansMs": [
-              3.713779352112676,
-              3.614972025316456,
-              3.3388043333333335
+              3.760239611111111,
+              3.8269529743589743,
+              3.061689024390244
             ],
             "runtime": "JS",
-            "share": 0.052928375561055625
+            "share": 0.02711189556843502
           },
           {
-            "meanMs": 55.12700519111111,
+            "meanMs": 108.4844853275862,
             "name": "plugin transform",
             "runMeansMs": [
-              57.87660681690141,
-              52.20826263291139,
-              55.59845781333333
+              115.58513316666667,
+              107.34706097435898,
+              103.3317103902439
             ],
             "runtime": "JS",
-            "share": 0.8209635826576361
+            "share": 0.8318476684181672
           },
           {
-            "meanMs": 8.468047573333335,
+            "meanMs": 18.393631060344827,
             "name": "codegen",
             "runMeansMs": [
-              8.920349676056338,
-              8.210253189873418,
-              8.311411666666666
+              19.650726833333334,
+              18.06541235897436,
+              17.60204768292683
             ],
             "runtime": "JS",
-            "share": 0.12610804178130822
+            "share": 0.14104043601339789
           }
         ]
       },
       {
-        "iterations": 323,
-        "meanMs": 46.56233784520124,
+        "iterations": 242,
+        "meanMs": 62.65388018181818,
         "name": "SWC + WASM plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 6.815103325077399,
+            "meanMs": 10.8513953553719,
             "name": "parse + AST transfer",
             "runMeansMs": [
-              6.6650943,
-              6.791002355140187,
-              6.995101405660378
+              11.266088088607594,
+              10.748910543209877,
+              10.553109304878049
             ],
             "runtime": "native + JS",
-            "share": 0.14636514488887012
+            "share": 0.173195903013217
           },
           {
-            "meanMs": 39.74723452012384,
+            "meanMs": 51.80248482644628,
             "name": "AST transfer + plugin + codegen",
             "runMeansMs": [
-              38.89530415454546,
-              40.15561176635514,
-              40.21908333962264
+              52.66012294936709,
+              51.65410580246913,
+              51.12279323170732
             ],
             "runtime": "JS + WASM + native",
-            "share": 0.8536348551111299
+            "share": 0.826804096986783
           }
         ]
       },
       {
-        "iterations": 1382,
-        "meanMs": 10.85705703545586,
+        "iterations": 833,
+        "meanMs": 18.066267907563027,
         "name": "Yuku + JS plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.010791962373371926,
+            "meanMs": 0.13139211164465786,
             "name": "source encode",
             "runMeansMs": [
-              0.01126262168141593,
-              0.010689060215053763,
-              0.010437363440860216
+              0.12489687234042553,
+              0.12422619503546099,
+              0.14571347211895913
             ],
             "runtime": "JS",
-            "share": 0.0009940043916255245
+            "share": 0.007272786627372751
           },
           {
-            "meanMs": 0.416605490593343,
+            "meanMs": 0.49956637334933973,
             "name": "parse",
             "runMeansMs": [
-              0.4421011238938053,
-              0.39402904946236555,
-              0.41439907956989247
+              0.5087783723404256,
+              0.4924454822695035,
+              0.49737420817843864
             ],
             "runtime": "native",
-            "share": 0.03837186165945666
+            "share": 0.02765188559725763
           },
           {
-            "meanMs": 0.5489792409551375,
+            "meanMs": 0.5092332845138056,
             "name": "AST decode",
             "runMeansMs": [
-              0.5548407057522124,
-              0.5385727698924732,
-              0.5536881161290322
+              0.4933616843971631,
+              0.5065852411347518,
+              0.5286479293680297
             ],
             "runtime": "JS",
-            "share": 0.050564277148249064
+            "share": 0.02818696629095303
           },
           {
-            "meanMs": 7.632591051374819,
+            "meanMs": 12.186117800720288,
             "name": "plugin transform",
             "runMeansMs": [
-              7.713110719026549,
-              7.599942664516129,
-              7.586970858064516
+              12.033567219858156,
+              11.995898957446808,
+              12.545452289962824
             ],
             "runtime": "JS",
-            "share": 0.7030073643759158
+            "share": 0.6745232531185288
           },
           {
-            "meanMs": 1.5191822872648335,
+            "meanMs": 3.7097606230492195,
             "name": "AST encode",
             "runMeansMs": [
-              1.588688243362832,
-              1.494421593548387,
-              1.4763802021505377
+              3.6363370709219858,
+              3.7232232340425533,
+              3.7726193048327135
             ],
             "runtime": "JS",
-            "share": 0.13992579041480985
+            "share": 0.20534183606876627
           },
           {
-            "meanMs": 0.7289070028943561,
+            "meanMs": 1.0301977142857144,
             "name": "codegen",
             "runMeansMs": [
-              0.7664466946902655,
-              0.7124145978494624,
-              0.7089092129032258
+              0.9222606134751773,
+              0.9312436489361703,
+              1.2470873382899628
             ],
             "runtime": "native",
-            "share": 0.06713670200994307
+            "share": 0.05702327229712152
           }
         ]
       }
@@ -168,88 +178,88 @@
     "warmupMs": 1000
   },
   "reproduction": {
-    "command": "bun run reproduce:styled-components",
+    "command": "npm run reproduce:styled-components",
     "resultFile": "styled-components.json",
-    "sourceTag": "styled-components-v1"
+    "sourceTag": "styled-components-full-port-v2"
   },
   "results": [
     {
       "name": "Yuku + JS plugin",
-      "mean": 10.8195227386609,
-      "min": 9.327708999999686,
-      "max": 23.910541000000194,
-      "median": 10.46335450000015,
-      "stddev": 1.2240800490627037,
-      "rme": 1.0332336275297875,
-      "samples": 1387,
-      "componentIds": 240,
-      "displayNames": 240,
+      "mean": 18.880854577358495,
+      "min": 15.494624999999814,
+      "max": 140.71762500000023,
+      "median": 17.84137499999997,
+      "stddev": 6.384389953870413,
+      "rme": 4.0899541685321745,
+      "samples": 803,
+      "componentIds": 300,
+      "displayNames": 300,
       "minifiedRules": 240,
-      "outputBytes": 147475,
-      "outputCodeUnits": 147475,
-      "pureAnnotations": 483,
+      "outputBytes": 170809,
+      "outputCodeUnits": 170809,
+      "pureAnnotations": 303,
       "taggedTemplates": 0,
-      "uniqueComponentIds": 240,
-      "withConfigCalls": 240,
+      "uniqueComponentIds": 300,
+      "withConfigCalls": 300,
       "runMedians": [
-        10.367208499999833,
-        10.472874999999476,
-        10.46335450000015
+        17.84137499999997,
+        18.14995799999997,
+        17.099833000000217
       ],
       "runs": 3
     },
     {
       "name": "SWC + WASM plugin",
-      "mean": 19.956628446215134,
-      "min": 18.16837499999997,
-      "max": 61.59354099999996,
-      "median": 19.437208000000282,
-      "stddev": 3.420412442052378,
-      "rme": 2.130639999674935,
-      "samples": 750,
-      "componentIds": 240,
-      "displayNames": 240,
+      "mean": 23.801331170616127,
+      "min": 22.020667000000003,
+      "max": 131.12695799999983,
+      "median": 22.948832999999922,
+      "stddev": 3.055521436885585,
+      "rme": 1.7422121744878254,
+      "samples": 630,
+      "componentIds": 300,
+      "displayNames": 300,
       "minifiedRules": 240,
-      "outputBytes": 158892,
-      "outputCodeUnits": 158892,
-      "pureAnnotations": 483,
+      "outputBytes": 193296,
+      "outputCodeUnits": 193296,
+      "pureAnnotations": 603,
       "taggedTemplates": 0,
-      "uniqueComponentIds": 240,
-      "withConfigCalls": 240,
+      "uniqueComponentIds": 300,
+      "withConfigCalls": 300,
       "runMedians": [
-        19.108582999999953,
-        19.437208000000282,
-        19.763520499999686
+        22.78354149999973,
+        23.047875000000204,
+        22.948832999999922
       ],
       "runs": 3
     },
     {
       "name": "Babel + JS plugin",
-      "mean": 60.30843684337348,
-      "min": 50.18491699999959,
-      "max": 134.20083300000078,
-      "median": 58.76629200000025,
-      "stddev": 6.771296906045035,
-      "rme": 2.451653402864465,
-      "samples": 249,
-      "componentIds": 240,
-      "displayNames": 240,
+      "mean": 117.0296529374999,
+      "min": 95.91358299999956,
+      "max": 263.6989999999996,
+      "median": 106.13479199999983,
+      "stddev": 31.643361875143793,
+      "rme": 6.754080197396525,
+      "samples": 192,
+      "componentIds": 300,
+      "displayNames": 300,
       "minifiedRules": 240,
-      "outputBytes": 143390,
-      "outputCodeUnits": 143390,
-      "pureAnnotations": 243,
+      "outputBytes": 170640,
+      "outputCodeUnits": 170640,
+      "pureAnnotations": 303,
       "taggedTemplates": 0,
-      "uniqueComponentIds": 240,
-      "withConfigCalls": 240,
+      "uniqueComponentIds": 300,
+      "withConfigCalls": 300,
       "runMedians": [
-        57.485707999999704,
-        58.76629200000025,
-        61.037166999999954
+        106.13479199999983,
+        109.62335400000006,
+        104.98933299999953
       ],
       "runs": 3
     }
   ],
-  "runtime": "Bun 1.3.5",
+  "runtime": "Node 24.18.1",
   "system": {
     "cores": 10,
     "cpu": "Apple M1 Max",
@@ -257,7 +267,7 @@
     "os": "darwin 24.6.0 (arm64)"
   },
   "versions": {
-    "babelCore": "8.0.1",
+    "babelCore": "7.29.7",
     "babelPlugin": "2.3.0",
     "swcCore": "1.15.46",
     "swcPlugin": "12.19.0",

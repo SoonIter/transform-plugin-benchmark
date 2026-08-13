@@ -1,121 +1,169 @@
 # Transform Plugin Benchmark
 
-Reproducible end-to-end and stage-level benchmarks for JavaScript transform plugin systems.
+Reproducible end-to-end and stage-level benchmark of three styled-components transform systems:
 
-The first case compares:
+- `babel-plugin-styled-components` running as a Babel JavaScript plugin
+- `@swc/plugin-styled-components` running as an SWC WASM plugin
+- the complete `babel-plugin-styled-components@2.3.0` behavior port running as a Yuku JS plugin
 
-- `babel-plugin-styled-components`, running as a Babel JavaScript plugin
-- `@swc/plugin-styled-components`, running as an SWC WASM plugin
-- a fixture-scoped styled-components JavaScript plugin running on Yuku's decoded ESTree
+## Result
 
-## Styled-components case
+Node.js 24.18.1 on the hardware documented below. Lower is better.
 
-The input contains 240 styled components and 483 tagged templates across 0.12 MB of generated
-source. It exercises `styled.tag`, `styled(Component)`, `.attrs()`, nested `css`, `keyframes`,
-`createGlobalStyle`, interpolations, CSS minification, display names, component IDs, PURE
-annotations, and template lowering.
+![End-to-end styled-components transform latency](charts/styled-components-latency.svg)
 
-Every timed iteration performs the complete public pipeline from source text to generated code.
-Every implementation's output is reparsed and validated before measurement.
+| Transformer | Median | Three independent run medians | Relative to Yuku |
+|-------------|-------:|-------------------------------|-----------------:|
+| **Yuku + JS plugin** | **17.84 ms** | 17.841, 18.150, 17.100 ms | **baseline** |
+| SWC + WASM plugin | 22.95 ms | 22.784, 23.048, 22.949 ms | 1.29× slower |
+| Babel + JS plugin | 106.13 ms | 106.135, 109.623, 104.989 ms | 5.95× slower |
 
-### Bun 1.3.5 results
+For this workload, Yuku measured 22.3% lower latency than SWC and 83.2% lower latency than Babel.
+These numbers describe this fixture and machine, not every styled-components project.
 
-Measured on macOS 24.6.0, Apple M1 Max, 10 cores, and 32 GB RAM. Each of 3 independent runs
-warms up for 1,000 ms and measures for 5,000 ms.
+## Workload
 
-![End-to-end styled-components transform latency](charts/styled-components-latency.png)
+The generated 142,274-byte JSX module contains:
 
-| Transformer | Median | Independent run medians | Relative |
-|-------------|-------:|-------------------------|---------:|
-| **Yuku + JS plugin** | **10.46 ms** | 10.367, 10.473, 10.463 ms | **baseline** |
-| SWC + WASM plugin | 19.44 ms | 19.109, 19.437, 19.764 ms | 1.86× slower |
-| Babel + JS plugin | 58.77 ms | 57.486, 58.766, 61.037 ms | 5.62× slower |
+- 240 user-authored styled component declarations
+- 60 `css` prop transforms
+- 483 tagged templates
+- 300 validated output component IDs and display names
+- `styled.tag`, `styled(Component)`, `.attrs()`, call-form styles, and nested `css`
+- `keyframes`, `createGlobalStyle`, dynamic interpolations, object styles, computed keys,
+  and spreads
 
-### Stage breakdown
+All three implementations receive the same options:
 
-Stage means are used because they are additive. The stages for one implementation sum to its
-profiled pipeline mean. The end-to-end median above remains the cross-tool comparison.
+```json
+{
+  "cssProp": true,
+  "displayName": true,
+  "fileName": true,
+  "meaninglessFileNames": ["index"],
+  "minify": true,
+  "namespace": "",
+  "pure": true,
+  "ssr": true,
+  "topLevelImportPaths": [],
+  "transpileTemplateLiterals": true
+}
+```
 
-![Styled-components stage time shares](charts/styled-components-stages.png)
+Every timed iteration starts with source text and ends with generated code. Before measurement,
+each output is reparsed and checked for 300 unique component IDs, 300 display names, PURE
+annotations, minified CSS, complete template lowering, and valid JSX.
+
+## Stage breakdown
+
+The stage benchmark is a separate instrumented run. Stage means are additive within each tool;
+they should not be compared directly with the end-to-end medians above.
+
+![Styled-components pipeline stage shares](charts/styled-components-stages.svg)
 
 | Transformer | Stage | Runtime | Mean | Share |
 |-------------|-------|---------|-----:|------:|
-| Babel + JS plugin | parse | JS | 3.55 ms | 5.3% |
-| Babel + JS plugin | plugin transform | JS | 55.13 ms | 82.1% |
-| Babel + JS plugin | codegen | JS | 8.47 ms | 12.6% |
-| SWC + WASM plugin | parse + AST transfer | native + JS | 6.82 ms | 14.6% |
-| SWC + WASM plugin | AST transfer + plugin + codegen | JS + WASM + native | 39.75 ms | 85.4% |
-| Yuku + JS plugin | source encode | JS | 0.01 ms | 0.1% |
-| Yuku + JS plugin | parse | native | 0.42 ms | 3.8% |
-| Yuku + JS plugin | AST decode | JS | 0.55 ms | 5.1% |
-| Yuku + JS plugin | plugin transform | JS | 7.63 ms | 70.3% |
-| Yuku + JS plugin | AST encode | JS | 1.52 ms | 14.0% |
-| Yuku + JS plugin | codegen | native | 0.73 ms | 6.7% |
+| Babel + JS plugin | parse | JS | 3.54 ms | 2.7% |
+| Babel + JS plugin | plugin transform | JS | 108.48 ms | 83.2% |
+| Babel + JS plugin | codegen | JS | 18.39 ms | 14.1% |
+| SWC + WASM plugin | parse + AST transfer | native + JS | 10.85 ms | 17.3% |
+| SWC + WASM plugin | AST transfer + plugin + codegen | JS + WASM + native | 51.80 ms | 82.7% |
+| Yuku + JS plugin | source encode | JS | 0.13 ms | 0.7% |
+| Yuku + JS plugin | parse | native | 0.50 ms | 2.8% |
+| Yuku + JS plugin | AST decode | JS | 0.51 ms | 2.8% |
+| Yuku + JS plugin | plugin transform | JS | 12.19 ms | 67.5% |
+| Yuku + JS plugin | AST encode | JS | 3.71 ms | 20.5% |
+| Yuku + JS plugin | codegen | native | 1.03 ms | 5.7% |
 
-SWC's WASM plugin API returns generated code instead of a transformed AST. Consequently, AST
-transfer, the WASM plugin, and native codegen remain one directly measured stage. Splitting them
-by subtraction would not be a direct measurement.
+SWC's public WASM plugin API returns generated code rather than an intermediate transformed AST.
+Therefore its WASM plugin, return transfer, and native codegen are one directly measured stage.
+Splitting them by subtraction would not be a direct measurement.
 
-### Yuku plugin scope
+## Yuku plugin completeness
 
-The Yuku plugin lives in
-[`scripts/yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts).
+The Yuku implementation is in
+[`scripts/yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts). It ports
+the complete public transform surface of `babel-plugin-styled-components@2.3.0`:
 
-It is a fixture-scoped implementation of the core operations exercised by this case, not a full
-port of `babel-plugin-styled-components`. It does not claim parity for the `css` prop, CommonJS
-detection, namespaces, top-level import path configuration, or Babel's exact filename and hashing
-behavior. The benchmark compares the three pipelines under the validated fixture contract, not
-full plugin feature parity.
+- default, named, namespace, custom top-level, CommonJS, and transpiler-wrapped imports
+- styled aliases, member/call chains, `.attrs()`, `.withConfig()`, and object-call forms
+- display names, filenames, meaningless filenames, namespaces, SSR IDs, and MurmurHash2 IDs
+- CSS minification, interpolation elimination, template lowering, and PURE annotations
+- string, template, helper, dynamic, and object `css` props
+- computed object keys, nested objects, spreads, JSX member names, and injected imports
+- every public plugin option plus the macro custom-import hook
+
+Correctness is checked by 68 tests:
+
+- all 48 fixtures from upstream version 2.3.0 at commit
+  `ab3aaf50921075b219718f9357abd4fae4bcb9b7`
+- 14 additional focused Babel-to-Yuku parity cases
+- 6 end-to-end and split-profile contracts across Babel, SWC, and Yuku
+
+The upstream fixture comparison canonicalizes only generated private identifier spellings such as
+`_styled2`; it separately checks PURE annotation counts and compares the remaining generated AST.
+The vendored corpus and its MIT license are in [`test/fixtures`](test/fixtures).
+
+## Measurement environment
+
+| Item | Exact value |
+|------|-------------|
+| Runtime | Node.js 24.18.1 |
+| Package manager | npm 11.16.0 |
+| CPU | Apple M1 Max |
+| Reported CPU cores | 10 |
+| Memory | 32 GB |
+| OS | Darwin 24.6.0, arm64 |
+| Babel | `@babel/core@7.29.7`, plugin `2.3.0` |
+| SWC | `@swc/core@1.15.46`, WASM plugin `12.19.0` |
+| Yuku | parser, AST, and codegen `0.8.5` |
+
+Node 24.18.1 is pinned because it was the latest Node 24 release when this result was recorded. See
+the [official Node 24 archive](https://nodejs.org/en/download/archive/v24).
+
+Each tool runs in a fresh child process for each of three independent runs. Every run warms for
+1,000 ms and measures for 5,000 ms. Tool order rotates between runs. The reported end-to-end value
+is the median of the three run medians. The profile repeats the same warmup, duration, run count,
+process isolation, and rotation, and retains raw per-run stage means.
 
 ## Exact reproduction
 
-The immutable `styled-components-v1` tag fixes the source revision. The lockfile fixes the full
-dependency graph. The reproduction script rejects a mismatched runtime and overrides all
-measurement settings with the recorded values.
-
-### Canonical Bun run
+The immutable `styled-components-full-port-v2` tag fixes the source. `package-lock.json` fixes the
+dependency graph. The script rejects any Node version other than 24.18.1, overrides measurement
+environment variables with the recorded settings, runs all 68 correctness tests, runs both
+benchmarks, validates the result metadata, and regenerates the SVG charts.
 
 ```bash
 git clone https://github.com/SoonIter/transform-plugin-benchmark.git
 cd transform-plugin-benchmark
-git checkout styled-components-v1
-bun --version # must print 1.3.5
-bun install --frozen-lockfile
-bun run reproduce:styled-components
+git checkout styled-components-full-port-v2
+
+node --version # must print v24.18.1
+npm --version  # must print 11.16.0
+npm ci
+npm run reproduce:styled-components
 ```
 
-This writes `result/styled-components.json` and regenerates both charts. Compare the new raw
-result with the checked-in measurement using:
+The command writes [`result/styled-components.json`](result/styled-components.json) and regenerates
+both files under [`charts`](charts). Inspect machine-specific differences with:
 
 ```bash
 git diff -- result/styled-components.json charts/
 ```
 
-Absolute latency depends on CPU, operating-system load, power mode, and thermal state.
-Reproduction fixes the source, dependencies, runtime, fixture, options, warmup, measurement
-duration, process isolation, run count, validation, and aggregation.
-
-### Node run
-
-The same harness also runs on Node. Node is a separate runtime measurement because JavaScript
-execution is part of these pipelines, so it writes a separate result file.
-
-```bash
-node --version # must print v26.7.0
-node --import tsx scripts/reproduce-styled-components.ts
-# writes result/styled-components-node.json
-```
-
-The checked-in Node result is [`result/styled-components-node.json`](result/styled-components-node.json).
+Absolute latency depends on CPU, operating-system load, power mode, and thermal state. The raw JSON
+records hardware, tool versions, fixture size, options, all run medians, sample counts, RME, stage
+means, stage shares, and individual stage-run means.
 
 ## Development
 
 ```bash
-bun install --frozen-lockfile
-bun run type-check
-bun test
+npm ci
+npm run type-check
+npm test
+npm run charts
 ```
 
-Custom, non-canonical measurements can be configured with `BENCH_TIME`, `BENCH_WARMUP`,
-`BENCH_RUNS`, `PROFILE_TIME`, `PROFILE_WARMUP`, and `STYLED_COMPONENTS_COUNT` when invoking
-`bun run bench:styled-components` or `bun run bench:styled-components:node`.
+For exploratory non-canonical runs, invoke `npm run bench:styled-components` with `BENCH_TIME`,
+`BENCH_WARMUP`, `BENCH_RUNS`, `PROFILE_TIME`, `PROFILE_WARMUP`, or
+`STYLED_COMPONENTS_COUNT`. The exact reproduction command intentionally overrides those variables.

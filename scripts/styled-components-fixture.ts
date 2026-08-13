@@ -1,10 +1,12 @@
 export const STYLED_COMPONENTS_COMPONENT_COUNT = 240;
-export const STYLED_COMPONENTS_FILENAME = "/benchmark/src/styled-components-fixture.js";
+export const STYLED_COMPONENTS_FILENAME = "/benchmark/src/styled-components-fixture.jsx";
 
 export interface StyledComponentsFixture {
+  cssPropCount: number;
   source: string;
   styledComponentCount: number;
   templateCount: number;
+  transformedComponentCount: number;
 }
 
 function componentFactory(index: number): string {
@@ -30,6 +32,7 @@ export function createStyledComponentsFixture(
     throw new RangeError("styledComponentCount must not exceed 10000");
   }
 
+  const cssPropCount = Math.ceil(styledComponentCount / 4);
   const lines = [
     'import styled, { css, createGlobalStyle, keyframes } from "styled-components";',
     "const BaseComponent = (props) => props.as ?? null;",
@@ -69,9 +72,26 @@ export function createStyledComponentsFixture(
     lines.push("`;\n");
   }
 
+  for (let index = 0; index < cssPropCount; index++) {
+    const componentIndex = index * 4;
+    const suffix = componentIndex.toString().padStart(3, "0");
+    lines.push(`export const CardUsage${suffix} = (props) => (`);
+    lines.push(`  <Card${suffix}`);
+    lines.push("    css={{");
+    lines.push('      color: props.active ? "#005fcc" : "#172033",');
+    lines.push("      [props.selector]: { opacity: props.opacity },");
+    lines.push("      ...props.surface,");
+    lines.push("    }}");
+    lines.push(`    data-card-index={${componentIndex}}`);
+    lines.push("  />");
+    lines.push(");\n");
+  }
+
   return {
+    cssPropCount,
     source: lines.join("\n"),
     styledComponentCount,
     templateCount: styledComponentCount * 2 + 3,
+    transformedComponentCount: styledComponentCount + cssPropCount,
   };
 }

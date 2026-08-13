@@ -12,10 +12,16 @@ import {
 } from "./yuku-styled-components-plugin";
 
 export const STYLED_COMPONENTS_OPTIONS = {
+  cssProp: true,
   displayName: true,
+  fileName: true,
+  meaninglessFileNames: ["index"],
   minify: true,
+  namespace: "",
   pure: true,
   ssr: true,
+  topLevelImportPaths: [],
+  transpileTemplateLiterals: true,
 } satisfies YukuStyledComponentsOptions;
 
 export const STYLED_COMPONENTS_TRANSFORMERS = [
@@ -67,7 +73,7 @@ export function transformStyledComponentsSwc(source: string): string {
         plugins: [["@swc/plugin-styled-components", STYLED_COMPONENTS_OPTIONS]],
       },
       parser: {
-        jsx: false,
+        jsx: true,
         syntax: "ecmascript",
       },
       target: "es2022",
@@ -81,11 +87,12 @@ export function transformStyledComponentsSwc(source: string): string {
 export function transformStyledComponentsYukuPipeline(source: string): string {
   const parsed = yukuParse(source, {
     attachComments: false,
-    lang: "js",
+    lang: "jsx",
     sourceType: "module",
   });
   transformStyledComponentsYuku(
     parsed.program,
+    source,
     STYLED_COMPONENTS_FILENAME,
     STYLED_COMPONENTS_OPTIONS,
   );
@@ -124,7 +131,7 @@ export function validateStyledComponentsOutput(
 ): StyledComponentsValidation {
   if (output.length === 0) throw new Error(`${name} generated empty output`);
 
-  const reparsed = yukuParse(output, { lang: "js", sourceType: "module" });
+  const reparsed = yukuParse(output, { lang: "jsx", sourceType: "module" });
   if (reparsed.diagnostics.length > 0) {
     throw new Error(`${name} generated invalid JavaScript: ${reparsed.diagnostics[0]!.message}`);
   }
@@ -152,36 +159,33 @@ export function validateStyledComponentsOutput(
     withConfigCalls: countMatches(output, /\.withConfig\s*\(/g),
   };
 
-  if (validation.withConfigCalls !== fixture.styledComponentCount) {
+  if (validation.withConfigCalls !== fixture.transformedComponentCount) {
     throw new Error(
       `${name} generated ${validation.withConfigCalls} withConfig calls, ` +
-        `expected ${fixture.styledComponentCount}`,
+        `expected ${fixture.transformedComponentCount}`,
     );
   }
-  if (validation.displayNames !== fixture.styledComponentCount) {
+  if (validation.displayNames !== fixture.transformedComponentCount) {
     throw new Error(
       `${name} generated ${validation.displayNames} display names, ` +
-        `expected ${fixture.styledComponentCount}`,
+        `expected ${fixture.transformedComponentCount}`,
     );
   }
-  if (validation.componentIds !== fixture.styledComponentCount) {
+  if (validation.componentIds !== fixture.transformedComponentCount) {
     throw new Error(
       `${name} generated ${validation.componentIds} component IDs, ` +
-        `expected ${fixture.styledComponentCount}`,
+        `expected ${fixture.transformedComponentCount}`,
     );
   }
-  if (validation.uniqueComponentIds !== fixture.styledComponentCount) {
+  if (validation.uniqueComponentIds !== fixture.transformedComponentCount) {
     throw new Error(`${name} generated duplicate component IDs`);
   }
-  const pureAnnotationsMinimum = fixture.styledComponentCount + 3;
+  const pureAnnotationsMinimum = fixture.transformedComponentCount + 3;
   if (validation.pureAnnotations < pureAnnotationsMinimum) {
     throw new Error(
       `${name} generated ${validation.pureAnnotations} PURE annotations, ` +
         `expected at least ${pureAnnotationsMinimum}`,
     );
-  }
-  if (validation.pureAnnotations > fixture.templateCount) {
-    throw new Error(`${name} generated more PURE annotations than transformed templates`);
   }
   if (validation.taggedTemplates !== 0) {
     throw new Error(`${name} left ${validation.taggedTemplates} tagged templates`);

@@ -11,13 +11,10 @@ const SETTINGS = {
   STYLED_COMPONENTS_COUNT: "240",
 } as const;
 
-const RUNTIME_VERSIONS = {
-  bun: "1.3.5",
-  node: "26.7.0",
-} as const;
-const SOURCE_TAG = "styled-components-v1";
-
-type RuntimeName = keyof typeof RUNTIME_VERSIONS;
+const NODE_VERSION = "24.18.1";
+const REPRODUCTION_COMMAND = "npm run reproduce:styled-components";
+const RESULT_FILE = "styled-components.json";
+const SOURCE_TAG = "styled-components-full-port-v2";
 
 interface ReproductionResult {
   benchmark: {
@@ -26,7 +23,9 @@ interface ReproductionResult {
     warmupMs: number;
   };
   fixture: {
+    cssProps: number;
     styledComponents: number;
+    transformedComponents: number;
   };
   profile: {
     runs: number;
@@ -41,52 +40,15 @@ interface ReproductionResult {
   runtime: string;
 }
 
-function runtime(): { name: RuntimeName; version: string } {
-  const bunVersion = (process.versions as Record<string, string | undefined>).bun;
-  if (bunVersion !== undefined) return { name: "bun", version: bunVersion };
-  return { name: "node", version: process.versions.node };
-}
-
-function assertRuntime(name: RuntimeName, version: string): void {
-  const expected = RUNTIME_VERSIONS[name];
-  if (version !== expected) {
+function assertRuntime(): void {
+  if (process.versions.node !== NODE_VERSION) {
     throw new Error(
-      `Exact reproduction requires ${name} ${expected}, received ${version}`,
+      `Exact reproduction requires Node ${NODE_VERSION}, received ${process.versions.node}`,
     );
   }
 }
 
-function commandFor(name: RuntimeName): string {
-  return name === "bun"
-    ? "bun run reproduce:styled-components"
-    : "node --import tsx scripts/reproduce-styled-components.ts";
-}
-
-function resultFileFor(name: RuntimeName): string {
-  return name === "bun" ? "styled-components.json" : "styled-components-node.json";
-}
-
-function childArguments(name: RuntimeName): string[] {
-  if (name === "node") {
-    return ["--import", "tsx", "scripts/bench-styled-components.ts"];
-  }
-  return ["scripts/bench-styled-components.ts"];
-}
-
-function chartArguments(name: RuntimeName): string[] {
-  if (name === "node") {
-    return ["--import", "tsx", "scripts/generate-charts.ts"];
-  }
-  return ["scripts/generate-charts.ts"];
-}
-
-function assertResult(
-  result: ReproductionResult,
-  name: RuntimeName,
-  version: string,
-  command: string,
-  resultFile: string,
-): void {
+function assertResult(result: ReproductionResult): void {
   if (result.benchmark.runs !== Number(SETTINGS.BENCH_RUNS)) {
     throw new Error("Reproduction result has an unexpected benchmark run count");
   }
@@ -108,14 +70,20 @@ function assertResult(
   if (result.fixture.styledComponents !== Number(SETTINGS.STYLED_COMPONENTS_COUNT)) {
     throw new Error("Reproduction result has an unexpected component count");
   }
-  const expectedRuntime = name === "bun" ? `Bun ${version}` : `Node ${version}`;
-  if (result.runtime !== expectedRuntime) {
-    throw new Error(`Expected runtime ${expectedRuntime}, received ${result.runtime}`);
+  const cssPropCount = Math.ceil(Number(SETTINGS.STYLED_COMPONENTS_COUNT) / 4);
+  if (result.fixture.cssProps !== cssPropCount) {
+    throw new Error("Reproduction result has an unexpected css prop count");
   }
-  if (result.reproduction.command !== command) {
+  if (result.fixture.transformedComponents !== result.fixture.styledComponents + cssPropCount) {
+    throw new Error("Reproduction result has an unexpected transformed component count");
+  }
+  if (result.runtime !== `Node ${NODE_VERSION}`) {
+    throw new Error(`Expected runtime Node ${NODE_VERSION}, received ${result.runtime}`);
+  }
+  if (result.reproduction.command !== REPRODUCTION_COMMAND) {
     throw new Error("Reproduction result did not record the invoking command");
   }
-  if (result.reproduction.resultFile !== resultFile) {
+  if (result.reproduction.resultFile !== RESULT_FILE) {
     throw new Error("Reproduction result did not record its output file");
   }
   if (result.reproduction.sourceTag !== SOURCE_TAG) {
@@ -123,51 +91,53 @@ function assertResult(
   }
 }
 
-async function main(): Promise<void> {
-  const selectedRuntime = runtime();
-  assertRuntime(selectedRuntime.name, selectedRuntime.version);
-  const command = commandFor(selectedRuntime.name);
-  const resultFile = resultFileFor(selectedRuntime.name);
-
-  console.log(
-    `\nExact styled-components reproduction with ${selectedRuntime.name} ` +
-      `${selectedRuntime.version}`,
-  );
-  console.table(SETTINGS);
-
-  const child = spawnSync(process.execPath, childArguments(selectedRuntime.name), {
+function runScript(path: string): void {
+  const child = spawnSync(process.execPath, ["--import", "tsx", path], {
     env: {
       ...process.env,
       ...SETTINGS,
-      BENCH_REPRODUCTION_COMMAND: command,
+      BENCH_REPRODUCTION_COMMAND: REPRODUCTION_COMMAND,
       BENCH_SOURCE_TAG: SOURCE_TAG,
-      STYLED_COMPONENTS_RESULT: resultFile,
+      STYLED_COMPONENTS_RESULT: RESULT_FILE,
     },
     stdio: "inherit",
   });
   if (child.error !== undefined) throw child.error;
   if (child.status !== 0) {
-    throw new Error(`Benchmark exited with status ${child.status ?? "unknown"}`);
+    throw new Error(`${path} exited with status ${child.status ?? "unknown"}`);
   }
+}
 
-  const resultPath = join(process.cwd(), "result", resultFile);
-  const result = JSON.parse(await readFile(resultPath, "utf8")) as ReproductionResult;
-  assertResult(
-    result,
-    selectedRuntime.name,
-    selectedRuntime.version,
-    command,
-    resultFile,
+function runTests(): void {
+  const child = spawnSync(
+    process.execPath,
+    [
+      "--import",
+      "tsx",
+      "--test",
+      "test/styled-components.test.ts",
+      "test/yuku-styled-components-parity.test.ts",
+    ],
+    { stdio: "inherit" },
   );
-  if (selectedRuntime.name === "bun") {
-    const charts = spawnSync(process.execPath, chartArguments(selectedRuntime.name), {
-      stdio: "inherit",
-    });
-    if (charts.error !== undefined) throw charts.error;
-    if (charts.status !== 0) {
-      throw new Error(`Chart generation exited with status ${charts.status ?? "unknown"}`);
-    }
+  if (child.error !== undefined) throw child.error;
+  if (child.status !== 0) {
+    throw new Error(`Compatibility tests exited with status ${child.status ?? "unknown"}`);
   }
+}
+
+async function main(): Promise<void> {
+  assertRuntime();
+  console.log(`\nExact styled-components reproduction with Node ${NODE_VERSION}`);
+  console.table(SETTINGS);
+
+  console.log("\nValidating the Yuku port and all benchmark outputs...");
+  runTests();
+  runScript("scripts/bench-styled-components.ts");
+  const resultPath = join(process.cwd(), "result", RESULT_FILE);
+  const result = JSON.parse(await readFile(resultPath, "utf8")) as ReproductionResult;
+  assertResult(result);
+  runScript("scripts/generate-charts.ts");
   console.log(`\nVerified reproduction result: ${resultPath}`);
 }
 

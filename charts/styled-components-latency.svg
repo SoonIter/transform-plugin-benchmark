@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390"
+    viewBox="0 0 1200 390" role="img"
+    aria-label="Styled-components transform latency, lower is better">
+    <style>
+      .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 20px system-ui, sans-serif; }
+      .value { fill: #f9fafb; font: 700 19px ui-monospace, monospace; }
+      .note { fill: #9ca3af; font: 15px system-ui, sans-serif; }
+    </style>
+    <rect width="100%" height="100%" rx="14" fill="#111827" />
+    <text x="36" y="42" class="title">End-to-end latency</text>
+    <text x="1160" y="42" text-anchor="end" class="note">lower is better</text>
+    <text x="240" y="103" text-anchor="end" class="label">
+        Yuku + JS plugin
+      </text>
+      <rect x="260" y="72" width="136.16" height="58"
+        rx="8" fill="#f97316" />
+      <text x="414.16" y="108" class="value">
+        17.84 ms
+      </text>
+
+      <text x="240" y="203" text-anchor="end" class="label">
+        SWC + WASM plugin
+      </text>
+      <rect x="260" y="172" width="175.14" height="58"
+        rx="8" fill="#3b82f6" />
+      <text x="453.14" y="208" class="value">
+        22.95 ms
+      </text>
+
+      <text x="240" y="303" text-anchor="end" class="label">
+        Babel + JS plugin
+      </text>
+      <rect x="260" y="272" width="810.00" height="58"
+        rx="8" fill="#8b5cf6" />
+      <text x="1088.00" y="308" class="value">
+        106.13 ms
+      </text>
+  </svg>

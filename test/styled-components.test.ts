@@ -1,4 +1,5 @@
-import { expect, test } from "bun:test";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 import { createStyledComponentsFixture } from "../scripts/styled-components-fixture";
 import {
   profileStageDefinitions,
@@ -17,21 +18,19 @@ for (const name of STYLED_COMPONENTS_TRANSFORMERS) {
     const output = transformStyledComponentsFor(name, fixture.source);
     const validation = validateStyledComponentsOutput(name, output, fixture);
 
-    expect(validation.withConfigCalls).toBe(fixture.styledComponentCount);
-    expect(validation.uniqueComponentIds).toBe(fixture.styledComponentCount);
-    expect(validation.pureAnnotations).toBeGreaterThanOrEqual(
-      fixture.styledComponentCount + 3,
-    );
-    expect(validation.taggedTemplates).toBe(0);
+    assert.equal(validation.withConfigCalls, fixture.transformedComponentCount);
+    assert.equal(validation.uniqueComponentIds, fixture.transformedComponentCount);
+    assert.ok(validation.pureAnnotations >= fixture.transformedComponentCount + 3);
+    assert.equal(validation.taggedTemplates, 0);
   });
 
   test(`${name} split profile preserves the transform contract`, () => {
     const profile = profileStyledComponentsOnce(name, fixture.source);
     const validation = validateStyledComponentsOutput(name, profile.output, fixture);
 
-    expect(profile.durationsNs).toHaveLength(profileStageDefinitions(name).length);
-    expect(profile.durationsNs.every((duration) => duration > 0)).toBe(true);
-    expect(validation.withConfigCalls).toBe(fixture.styledComponentCount);
-    expect(validation.taggedTemplates).toBe(0);
+    assert.equal(profile.durationsNs.length, profileStageDefinitions(name).length);
+    assert.ok(profile.durationsNs.every((duration) => duration > 0));
+    assert.equal(validation.withConfigCalls, fixture.transformedComponentCount);
+    assert.equal(validation.taggedTemplates, 0);
   });
 }
