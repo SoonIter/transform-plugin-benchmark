@@ -24,6 +24,35 @@ interface BenchmarkResult {
   results: TransformResult[];
 }
 
+interface ScalingPoint {
+  medianMs: number;
+  role: "training" | "validation";
+  runMediansMs: number[];
+  sizeKiB: number;
+}
+
+interface ScalingTransformResult {
+  fit: {
+    exponent?: number;
+    interceptMs?: number;
+    logIntercept?: number;
+    logLinear?: number;
+    logQuadratic?: number;
+    model: "offset-power" | "log-quadratic";
+    slopeMsPerKiBPower?: number;
+    validationMapePct: number;
+    validationMaxErrorPct: number;
+  };
+  name: string;
+  points: ScalingPoint[];
+}
+
+interface ScalingBenchmarkResult {
+  benchmark: { runs: number };
+  fixture: { maximumBytes: number; minimumBytes: number };
+  results: ScalingTransformResult[];
+}
+
 const COLORS = {
   babel: "#8b5cf6",
   oxc: "#22c55e",
@@ -42,6 +71,15 @@ const STAGE_COLORS = new Map([
   ["AST encode", "#fb923c"],
   ["Codegen", "#84cc16"],
   ["Parse + WASM plugin + codegen", "#2563eb"],
+]);
+
+const SCALING_STYLES = new Map([
+  ["Babel + JS plugin", { color: "#8b5cf6", dash: "" }],
+  ["SWC + WASM plugin", { color: "#2563eb", dash: "12 5" }],
+  ["Yuku + JS plugin", { color: "#f97316", dash: "3 4" }],
+  ["Yuku + OXC codegen", { color: "#d97706", dash: "14 4 3 4" }],
+  ["OXC + Yuku walk plugin", { color: "#65a30d", dash: "8 4" }],
+  ["OXC raw transfer + Yuku walk", { color: "#0891b2", dash: "2 3" }],
 ]);
 
 function escapeXML(value: string): string {
@@ -260,6 +298,158 @@ function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
   </svg>\n`;
 }
 
+function scalingChart(data: ScalingBenchmarkResult): string {
+  const width = 1_600;
+  const height = 1_080;
+  const left = 130;
+  const right = 80;
+  const top = 150;
+  const bottom = 310;
+  const plotWidth = width - left - right;
+  const plotHeight = height - top - bottom;
+  const allObserved = data.results.flatMap((result) =>
+    result.points.flatMap((point) => point.runMediansMs),
+  );
+  const yMinimum = 10 ** Math.floor(Math.log10(Math.min(...allObserved) * 0.8));
+  const yMaximum = 10 ** Math.ceil(Math.log10(Math.max(...allObserved) * 1.2));
+  const xMinimumKiB = data.fixture.minimumBytes / 1_024;
+  const xMaximumKiB = data.fixture.maximumBytes / 1_024;
+  const logXMinimum = Math.log2(xMinimumKiB);
+  const logXMaximum = Math.log2(xMaximumKiB);
+  const logYMinimum = Math.log10(yMinimum);
+  const logYMaximum = Math.log10(yMaximum);
+  const xPosition = (sizeKiB: number) =>
+    left + (Math.log2(sizeKiB) - logXMinimum) /
+      (logXMaximum - logXMinimum) * plotWidth;
+  const yPosition = (timeMs: number) =>
+    top + (logYMaximum - Math.log10(timeMs)) /
+      (logYMaximum - logYMinimum) * plotHeight;
+  const predict = (result: ScalingTransformResult, sizeKiB: number): number => {
+    if (result.fit.model === "offset-power") {
+      return result.fit.interceptMs! +
+        result.fit.slopeMsPerKiBPower! * sizeKiB ** result.fit.exponent!;
+    }
+    const logSize = Math.log(sizeKiB);
+    return Math.exp(
+      result.fit.logIntercept! + result.fit.logLinear! * logSize +
+        result.fit.logQuadratic! * logSize * logSize,
+    );
+  };
+
+  const xTicks = Array.from(
+    { length: Math.floor(logXMaximum - logXMinimum) + 1 },
+    (_, index) => 2 ** (logXMinimum + index),
+  );
+  const shownXTicks = new Set([1, 4, 16, 64, 256, xMaximumKiB]);
+  const xGrid = xTicks.map((value) => {
+    const x = xPosition(value);
+    const label = value === 1_024 ? "1 MiB" : `${value} KiB`;
+    const tickLabel = shownXTicks.has(value)
+      ? `\n      <text x="${x.toFixed(2)}" y="${top + plotHeight + 36}"
+        text-anchor="middle" class="axis">${label}</text>`
+      : "";
+    return `<line x1="${x.toFixed(2)}" y1="${top}" x2="${x.toFixed(2)}"
+        y2="${top + plotHeight}" class="grid ${shownXTicks.has(value) ? "major" : "minor"}" />${tickLabel}`;
+  });
+  const yCandidates = [
+    0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200,
+    500, 1_000, 2_000, 5_000,
+  ].filter((value) => value >= yMinimum && value <= yMaximum);
+  const shownYTicks = new Set([0.01, 0.1, 1, 10, 100, 1_000]);
+  const yGrid = yCandidates.map((value) => {
+    const y = yPosition(value);
+    const label = value < 1 ? value.toFixed(value < 0.1 ? 2 : 1) : value.toLocaleString("en-US");
+    const tickLabel = shownYTicks.has(value)
+      ? `\n      <text x="${left - 20}" y="${(y + 6).toFixed(2)}"
+        text-anchor="end" class="axis">${label}</text>`
+      : "";
+    return `<line x1="${left}" y1="${y.toFixed(2)}" x2="${left + plotWidth}"
+        y2="${y.toFixed(2)}" class="grid ${shownYTicks.has(value) ? "major" : "minor"}" />${tickLabel}`;
+  });
+
+  const series = data.results.map((result) => {
+    const style = SCALING_STYLES.get(result.name);
+    if (style === undefined) throw new Error(`Missing scaling style for ${result.name}`);
+    const curvePoints = Array.from({ length: 181 }, (_, index) => {
+      const logSize = logXMinimum + index / 180 * (logXMaximum - logXMinimum);
+      const sizeKiB = 2 ** logSize;
+      const timeMs = predict(result, sizeKiB);
+      return `${xPosition(sizeKiB).toFixed(2)},${yPosition(timeMs).toFixed(2)}`;
+    });
+    const observations = result.points.map((point) => {
+      const x = xPosition(point.sizeKiB);
+      const y = yPosition(point.medianMs);
+      const low = yPosition(Math.min(...point.runMediansMs));
+      const high = yPosition(Math.max(...point.runMediansMs));
+      const marker = point.role === "training"
+        ? `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="5.5"
+            fill="${style.color}" stroke="#ffffff" stroke-width="1.5" />`
+        : `<rect x="${(x - 5).toFixed(2)}" y="${(y - 5).toFixed(2)}" width="10"
+            height="10" transform="rotate(45 ${x.toFixed(2)} ${y.toFixed(2)})"
+            fill="#ffffff" stroke="${style.color}" stroke-width="2.5" />`;
+      return `<line x1="${x.toFixed(2)}" y1="${high.toFixed(2)}" x2="${x.toFixed(2)}"
+          y2="${low.toFixed(2)}" stroke="${style.color}" stroke-width="2" opacity="0.42" />
+        ${marker}`;
+    });
+    return `<polyline points="${curvePoints.join(" ")}" fill="none" stroke="${style.color}"
+        stroke-width="4" stroke-linejoin="round" stroke-linecap="round"
+        ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />
+      ${observations.join("\n")}`;
+  });
+
+  const legend = data.results.map((result, index) => {
+    const style = SCALING_STYLES.get(result.name)!;
+    const column = index % 3;
+    const row = Math.floor(index / 3);
+    const x = left + column * 460;
+    const y = top + plotHeight + 100 + row * 78;
+    return `<line x1="${x}" y1="${y}" x2="${x + 52}" y2="${y}"
+        stroke="${style.color}" stroke-width="4" stroke-linecap="round"
+        ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />
+      <text x="${x + 66}" y="${y + 5}" class="legend-name">${escapeXML(result.name)}</text>
+      <text x="${x + 66}" y="${y + 29}" class="legend-detail">${result.fit.model === "offset-power" ? `p=${result.fit.exponent!.toFixed(3)}` : "log-quadratic"} · holdout MAPE ${result.fit.validationMapePct.toFixed(1)}% · max ${result.fit.validationMaxErrorPct.toFixed(1)}%</text>`;
+  });
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
+    viewBox="0 0 ${width} ${height}" role="img"
+    aria-label="Single-file styled-components transform latency by file size">
+    <style>
+      .title { fill: #111827; font: 700 28px system-ui, sans-serif; }
+      .subtitle { fill: #4b5563; font: 16px system-ui, sans-serif; }
+      .axis { fill: #4b5563; font: 14px ui-monospace, monospace; }
+      .axis-title { fill: #374151; font: 600 16px system-ui, sans-serif; }
+      .grid { stroke: #e5e7eb; stroke-width: 1; }
+      .grid.minor { stroke: #f3f4f6; }
+      .grid.major { stroke: #d1d5db; }
+      .legend-name { fill: #1f2937; font: 600 15px system-ui, sans-serif; }
+      .legend-detail { fill: #6b7280; font: 13px ui-monospace, monospace; }
+      .note { fill: #6b7280; font: 14px system-ui, sans-serif; }
+    </style>
+    <rect width="100%" height="100%" fill="#ffffff" />
+    <text x="${left}" y="48" class="title">Single-file transform latency by file size</text>
+    <text x="${left}" y="78" class="subtitle">1 KiB–512 KiB synthetic JSX · one styled-components hit · log scales · ${data.benchmark.runs} independent process runs</text>
+    <text x="${left}" y="105" class="subtitle">Curves: training-LOO-selected smooth fits · points: measured run medians · lower is better</text>
+    ${xGrid.join("\n")}
+    ${yGrid.join("\n")}
+    <line x1="${left}" y1="${top + plotHeight}" x2="${left + plotWidth}"
+      y2="${top + plotHeight}" stroke="#6b7280" stroke-width="1.5" />
+    <line x1="${left}" y1="${top}" x2="${left}" y2="${top + plotHeight}"
+      stroke="#6b7280" stroke-width="1.5" />
+    ${series.join("\n")}
+    <text x="${left + plotWidth / 2}" y="${top + plotHeight + 70}"
+      text-anchor="middle" class="axis-title">Source file size</text>
+    <text x="32" y="${top + plotHeight / 2}" text-anchor="middle" class="axis-title"
+      transform="rotate(-90 32 ${top + plotHeight / 2})">Median latency per transform (ms)</text>
+    ${legend.join("\n")}
+    <circle cx="${left}" cy="${height - 58}" r="5.5" fill="#4b5563" />
+    <text x="${left + 16}" y="${height - 53}" class="note">filled circles = fit anchors</text>
+    <rect x="${left + 210}" y="${height - 63}" width="10" height="10"
+      transform="rotate(45 ${left + 215} ${height - 58})" fill="#ffffff" stroke="#4b5563" stroke-width="2" />
+    <text x="${left + 234}" y="${height - 53}" class="note">open diamonds = held-out validation</text>
+    <text x="${left + 540}" y="${height - 53}" class="note">whiskers = min–max run medians</text>
+  </svg>\n`;
+}
+
 async function main(): Promise<void> {
   const inputPath = join(process.cwd(), "result", "styled-components.json");
   const data = JSON.parse(await readFile(inputPath, "utf8")) as BenchmarkResult;
@@ -275,7 +465,15 @@ async function main(): Promise<void> {
     join(chartsPath, "styled-components-stages-without-plugin.svg"),
     stagesWithoutPluginChart(data.profile.results),
   );
-  console.log("Generated SVG charts from result/styled-components.json");
+  const scalingInputPath = join(process.cwd(), "result", "styled-components-scaling.json");
+  const scalingData = JSON.parse(
+    await readFile(scalingInputPath, "utf8"),
+  ) as ScalingBenchmarkResult;
+  await writeFile(
+    join(chartsPath, "styled-components-scaling.svg"),
+    scalingChart(scalingData),
+  );
+  console.log("Generated SVG charts from committed benchmark results");
 }
 
 main().catch((error: unknown) => {

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "artifacts": "node --import tsx scripts/generate-artifacts.ts",
+    "bench:scaling": "node --import tsx scripts/bench-styled-components-scaling.ts",
     "bench:styled-components": "node --import tsx scripts/bench-styled-components.ts",
     "charts": "node --import tsx scripts/generate-charts.ts",
     "reproduce:styled-components": "node --import tsx scripts/reproduce-styled-components.ts",

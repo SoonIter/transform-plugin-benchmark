@@ -32,6 +32,35 @@ pipeline median by 25.1%, from 8.82 ms to 6.61 ms. OXC raw transfer reduced the 
 pipeline median by 29.5%, from 9.21 ms to 6.49 ms. These are full `parse → plugin → codegen`
 results across 87 modules, not standalone walker or codegen microbenchmarks.
 
+## Single-file scaling
+
+The scaling benchmark measures one complete transform call as an exact-size synthetic JSX module
+grows from 1 KiB to 512 KiB. Every file contains exactly one styled-components transform target;
+the growing portion has stable ordinary JavaScript AST density. This isolates file-size scaling
+from the separate effect of increasing the number of plugin matches.
+
+![Single-file transform latency by file size](charts/styled-components-scaling.svg)
+
+For each curve, training-set leave-one-out error selects between an offset-power model and a
+log-quadratic model; all six results selected `T = a + b × KiB^p`. Seven intermediate sizes are
+held out of fitting and measured independently. A fit is accepted only when held-out MAPE is at
+most 6% and the worst held-out point error is at most 15%; all six fits pass.
+
+| Transformer | 1 KiB | 512 KiB | Exponent `p` | Held-out MAPE | Worst held-out error |
+|-------------|------:|------:|-------------:|--------------:|---------------------:|
+| Babel + JS plugin | 1.081 ms | 318.71 ms | 1.040 | 2.24% | 4.14% |
+| SWC + WASM plugin | 2.145 ms | 61.58 ms | 0.989 | 1.15% | 3.56% |
+| Yuku + JS plugin | 0.149 ms | 49.67 ms | 1.059 | 4.14% | 5.79% |
+| Yuku + OXC codegen | 0.089 ms | 21.55 ms | 1.002 | 1.12% | 2.30% |
+| OXC + Yuku walk plugin | 0.157 ms | 52.71 ms | 1.026 | 1.79% | 5.62% |
+| OXC raw transfer + Yuku walk | 0.085 ms | 20.64 ms | 0.987 | 0.99% | 2.00% |
+
+The reported value at each size is the median of three independent process-run medians. Each
+process warms the transformer on a 16 KiB module, then measures each size for at least 200 ms;
+every size also runs at least three complete transforms per process. The chart uses log scales,
+shows the actual measurements, and draws min–max whiskers for the three run medians. The fitted
+functions describe this controlled workload only and are not extrapolated past 512 KiB.
+
 ## Real-world workload
 
 The corpus is the production JavaScript under `app/` from
@@ -208,6 +237,7 @@ For development:
 npm run type-check
 npm test
 npm run artifacts
+npm run bench:scaling
 npm run charts
 ```
 
