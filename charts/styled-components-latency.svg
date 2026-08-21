@@ -13,37 +13,37 @@
     <text x="360" y="103" text-anchor="end" class="label">
         OXC raw transfer + Yuku walk
       </text>
-      <rect x="380" y="72" width="75.23" height="58"
+      <rect x="380" y="72" width="73.02" height="58"
         rx="8" fill="#22c55e" />
-      <text x="473.23" y="108" class="value">
-        6.63 ms
+      <text x="471.02" y="108" class="value">
+        6.43 ms
       </text>
 
       <text x="360" y="203" text-anchor="end" class="label">
         Yuku + JS plugin
       </text>
-      <rect x="380" y="172" width="100.20" height="58"
+      <rect x="380" y="172" width="99.34" height="58"
         rx="8" fill="#f97316" />
-      <text x="498.20" y="208" class="value">
-        8.83 ms
+      <text x="497.34" y="208" class="value">
+        8.75 ms
       </text>
 
       <text x="360" y="303" text-anchor="end" class="label">
         OXC + Yuku walk plugin
       </text>
-      <rect x="380" y="272" width="107.00" height="58"
+      <rect x="380" y="272" width="104.80" height="58"
         rx="8" fill="#22c55e" />
-      <text x="505.00" y="308" class="value">
-        9.42 ms
+      <text x="502.80" y="308" class="value">
+        9.23 ms
       </text>
 
       <text x="360" y="403" text-anchor="end" class="label">
         Babel + JS plugin
       </text>
-      <rect x="380" y="372" width="375.18" height="58"
+      <rect x="380" y="372" width="368.50" height="58"
         rx="8" fill="#8b5cf6" />
-      <text x="773.18" y="408" class="value">
-        33.05 ms
+      <text x="766.50" y="408" class="value">
+        32.47 ms
       </text>
 
       <text x="360" y="503" text-anchor="end" class="label">
@@ -52,6 +52,6 @@
       <rect x="380" y="472" width="970.00" height="58"
         rx="8" fill="#3b82f6" />
       <text x="1368.00" y="508" class="value">
-        85.44 ms
+        85.48 ms
       </text>
   </svg>

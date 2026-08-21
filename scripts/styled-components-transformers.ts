@@ -89,6 +89,11 @@ function transformSwc(file: StyledComponentsCorpusFile): string {
         syntax: "ecmascript",
       },
       target: "es2022",
+      transform: {
+        react: {
+          runtime: "preserve",
+        },
+      },
     },
     minify: false,
     module: { type: "es6" },
@@ -264,6 +269,7 @@ export function assertComparableStyledComponentsFeatures(
     if (
       validation.componentIds !== first.componentIds ||
       validation.displayNames !== first.displayNames ||
+      validation.jsxElements !== first.jsxElements ||
       validation.taggedTemplates !== first.taggedTemplates ||
       validation.uniqueComponentIds !== first.uniqueComponentIds ||
       validation.withConfigCalls !== first.withConfigCalls

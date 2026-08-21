@@ -41,6 +41,7 @@ test("all transformers provide comparable styled-components feature coverage", (
     assert.equal(validation.files, 87);
     assert.equal(validation.withConfigCalls, 32);
     assert.equal(validation.uniqueComponentIds, 32);
+    assert.equal(validation.jsxElements, 137);
     assert.equal(validation.taggedTemplates, 0);
     if (name.startsWith("OXC")) {
       assert.equal(validation.pureAnnotations, 0);

@@ -19,21 +19,21 @@
         Babel + JS plugin
       </text>
       <text x="360" y="138" text-anchor="end" class="total">
-        12.25 ms remaining
+        11.69 ms remaining
       </text>
       <g clip-path="url(#without-plugin-0)">
-<rect x="380.00" y="84" width="429.40"
+<rect x="380.00" y="84" width="427.08"
         height="66" fill="#38bdf8"><title>Parse:
-        37.0%, 4.535 ms</title></rect><text x="594.70" y="124"
-            text-anchor="middle" class="segment">37.0%</text>
+        36.8%, 4.303 ms</title></rect><text x="593.54" y="124"
+            text-anchor="middle" class="segment">36.8%</text>
 
 
 
 
-<rect x="809.40" y="84" width="730.60"
+<rect x="807.08" y="84" width="732.92"
         height="66" fill="#84cc16"><title>Codegen:
-        63.0%, 7.716 ms</title></rect><text x="1174.70" y="124"
-            text-anchor="middle" class="segment">63.0%</text></g>
+        63.2%, 7.385 ms</title></rect><text x="1173.54" y="124"
+            text-anchor="middle" class="segment">63.2%</text></g>
       <clipPath id="without-plugin-0"><rect x="380" y="84"
         width="1160" height="66" rx="8" /></clipPath>
 
@@ -49,29 +49,29 @@
         Yuku + JS plugin
       </text>
       <text x="360" y="354" text-anchor="end" class="total">
-        3.79 ms remaining
+        3.58 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-2)"><rect x="380.00" y="300" width="34.47"
+      <g clip-path="url(#without-plugin-2)"><rect x="380.00" y="300" width="35.68"
         height="66" fill="#facc15"><title>Source encode:
-        3.0%, 0.112 ms</title></rect>
-<rect x="414.47" y="300" width="255.01"
+        3.1%, 0.110 ms</title></rect>
+<rect x="415.68" y="300" width="241.75"
         height="66" fill="#38bdf8"><title>Parse:
-        22.0%, 0.832 ms</title></rect><text x="541.97" y="340"
-            text-anchor="middle" class="segment">22.0%</text>
+        20.8%, 0.746 ms</title></rect><text x="536.55" y="340"
+            text-anchor="middle" class="segment">20.8%</text>
 
 
-<rect x="669.48" y="300" width="121.30"
+<rect x="657.43" y="300" width="119.56"
         height="66" fill="#34d399"><title>AST decode:
-        10.5%, 0.396 ms</title></rect><text x="730.13" y="340"
-            text-anchor="middle" class="segment">10.5%</text>
-<rect x="790.78" y="300" width="578.91"
+        10.3%, 0.369 ms</title></rect><text x="717.21" y="340"
+            text-anchor="middle" class="segment">10.3%</text>
+<rect x="776.99" y="300" width="595.44"
         height="66" fill="#fb923c"><title>AST encode:
-        49.9%, 1.889 ms</title></rect><text x="1080.23" y="340"
-            text-anchor="middle" class="segment">49.9%</text>
-<rect x="1369.68" y="300" width="170.32"
+        51.3%, 1.838 ms</title></rect><text x="1074.71" y="340"
+            text-anchor="middle" class="segment">51.3%</text>
+<rect x="1372.43" y="300" width="167.57"
         height="66" fill="#84cc16"><title>Codegen:
-        14.7%, 0.556 ms</title></rect><text x="1454.84" y="340"
-            text-anchor="middle" class="segment">14.7%</text></g>
+        14.4%, 0.517 ms</title></rect><text x="1456.21" y="340"
+            text-anchor="middle" class="segment">14.4%</text></g>
       <clipPath id="without-plugin-2"><rect x="380" y="300"
         width="1160" height="66" rx="8" /></clipPath>
 
@@ -83,17 +83,17 @@
       </text>
       <g clip-path="url(#without-plugin-3)">
 
-<rect x="380.00" y="408" width="947.06"
+<rect x="380.00" y="408" width="941.09"
         height="66" fill="#60a5fa"><title>Parse + AST transfer:
-        81.6%, 1.249 ms</title></rect><text x="853.53" y="448"
-            text-anchor="middle" class="segment">81.6%</text>
+        81.1%, 1.242 ms</title></rect><text x="850.54" y="448"
+            text-anchor="middle" class="segment">81.1%</text>
 
 
 
-<rect x="1327.06" y="408" width="212.94"
+<rect x="1321.09" y="408" width="218.91"
         height="66" fill="#84cc16"><title>Codegen:
-        18.4%, 0.281 ms</title></rect><text x="1433.53" y="448"
-            text-anchor="middle" class="segment">18.4%</text></g>
+        18.9%, 0.289 ms</title></rect><text x="1430.54" y="448"
+            text-anchor="middle" class="segment">18.9%</text></g>
       <clipPath id="without-plugin-3"><rect x="380" y="408"
         width="1160" height="66" rx="8" /></clipPath>
 
@@ -106,16 +106,16 @@
       <g clip-path="url(#without-plugin-4)">
 
 
-<rect x="380.00" y="516" width="953.94"
+<rect x="380.00" y="516" width="950.87"
         height="66" fill="#2dd4bf"><title>Parse + raw AST transfer:
-        82.2%, 1.056 ms</title></rect><text x="856.97" y="556"
-            text-anchor="middle" class="segment">82.2%</text>
+        82.0%, 1.048 ms</title></rect><text x="855.44" y="556"
+            text-anchor="middle" class="segment">82.0%</text>
 
 
-<rect x="1333.94" y="516" width="206.06"
+<rect x="1330.87" y="516" width="209.13"
         height="66" fill="#84cc16"><title>Codegen:
-        17.8%, 0.228 ms</title></rect><text x="1436.97" y="556"
-            text-anchor="middle" class="segment">17.8%</text></g>
+        18.0%, 0.230 ms</title></rect><text x="1435.44" y="556"
+            text-anchor="middle" class="segment">18.0%</text></g>
       <clipPath id="without-plugin-4"><rect x="380" y="516"
         width="1160" height="66" rx="8" /></clipPath>
     <rect x="70" y="670" width="20" height="20" rx="4"

@@ -17,7 +17,7 @@ import {
 const REPRESENTATIVE_PATH = "app/components/Button/StyledButton.js";
 const OUTPUT_FILES: ReadonlyArray<readonly [StyledComponentsTransformerName, string]> = [
   ["Babel + JS plugin", "babel-output.jsx"],
-  ["SWC + WASM plugin", "swc-output.js"],
+  ["SWC + WASM plugin", "swc-output.jsx"],
   ["Yuku + JS plugin", "yuku-output.jsx"],
   ["OXC + Yuku walk plugin", "oxc-output.jsx"],
   ["OXC raw transfer + Yuku walk", "oxc-raw-transfer-output.jsx"],

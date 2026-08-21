@@ -28,8 +28,8 @@
       }
     },
     {
-      "aggregateSha256": "e2c57fcb1b9b046b9ad1b2d6d67c0e644a3fdceaa4bbc665f3373a48df1447ad",
-      "file": "swc-output.js",
+      "aggregateSha256": "2063dff4bbb190e9a23e728bc2eb187c60f54cf0578f784110bbd26305e7abbc",
+      "file": "swc-output.jsx",
       "representativeBytes": 279,
       "representativeSha256": "74930c9eb3e9a72e9face809ecc5af19e32df80a22d3c760a168ad0a5887f76d",
       "transformer": "SWC + WASM plugin",
@@ -37,10 +37,10 @@
         "componentIds": 32,
         "displayNames": 32,
         "files": 87,
-        "jsxElements": 0,
-        "outputBytes": 64385,
-        "outputCodeUnits": 64381,
-        "pureAnnotations": 173,
+        "jsxElements": 137,
+        "outputBytes": 60100,
+        "outputCodeUnits": 60096,
+        "pureAnnotations": 35,
         "taggedTemplates": 0,
         "uniqueComponentIds": 32,
         "withConfigCalls": 32
