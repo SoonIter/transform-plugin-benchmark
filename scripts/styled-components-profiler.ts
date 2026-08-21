@@ -2,10 +2,6 @@ import {
   parseSync as babelParseSync,
   transformFromAstSync as babelTransformFromAstSync,
 } from "@babel/core";
-import {
-  parseSync as swcParseSync,
-  transformSync as swcTransformSync,
-} from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { printSync as oxcPrintSync } from "oxc-codegen";
 import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
@@ -14,9 +10,10 @@ import { encode as yukuEncode } from "yuku-codegen/encode.js";
 import yukuParserBinding from "yuku-parser/binding.js";
 import { decode as yukuDecode } from "yuku-parser/decode.js";
 import type { Program } from "yuku-parser";
-import { STYLED_COMPONENTS_FILENAME } from "./styled-components-fixture";
+import type { StyledComponentsCorpusFile } from "./styled-components-corpus";
 import {
   STYLED_COMPONENTS_OPTIONS,
+  transformStyledComponentsFor,
   type StyledComponentsTransformerName,
 } from "./styled-components-transformers";
 import { transformStyledComponentsYuku } from "./yuku-styled-components-plugin";
@@ -41,11 +38,7 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "codegen", runtime: "JS" },
   ],
   "SWC + WASM plugin": [
-    { name: "parse + AST transfer", runtime: "native + JS" },
-    {
-      name: "AST transfer + plugin + codegen",
-      runtime: "JS + WASM + native",
-    },
+    { name: "parse + plugin + codegen", runtime: "native + WASM" },
   ],
   "Yuku + JS plugin": [
     { name: "source encode", runtime: "JS" },
@@ -63,16 +56,6 @@ const PROFILE_STAGE_DEFINITIONS: Record<
   "OXC raw transfer + Yuku walk": [
     { name: "parse + raw AST transfer", runtime: "native + JS" },
     { name: "plugin transform", runtime: "JS" },
-    { name: "codegen", runtime: "JS" },
-  ],
-  "OXC + OXC Visitor plugin": [
-    { name: "parse + AST transfer", runtime: "native + JS" },
-    { name: "plugin transform", runtime: "JS, OXC Visitor" },
-    { name: "codegen", runtime: "JS" },
-  ],
-  "OXC raw transfer + OXC Visitor": [
-    { name: "parse + raw AST transfer", runtime: "native + JS" },
-    { name: "plugin transform", runtime: "JS, OXC Visitor" },
     { name: "codegen", runtime: "JS" },
   ],
 };
@@ -93,12 +76,12 @@ function durationNs(start: bigint, end: bigint): number {
   return duration;
 }
 
-function profileBabel(source: string): ProfileIteration {
+function profileBabel(file: StyledComponentsCorpusFile): ProfileIteration {
   const start = process.hrtime.bigint();
-  const parsed = babelParseSync(source, {
+  const parsed = babelParseSync(file.source, {
     babelrc: false,
     configFile: false,
-    filename: STYLED_COMPONENTS_FILENAME,
+    filename: file.filename,
     parserOpts: {
       attachComment: false,
       plugins: ["jsx"],
@@ -108,20 +91,20 @@ function profileBabel(source: string): ProfileIteration {
   const parsedAt = process.hrtime.bigint();
   if (parsed === null) throw new Error("Babel did not return a parsed AST");
 
-  const transformed = babelTransformFromAstSync(parsed, source, {
+  const transformed = babelTransformFromAstSync(parsed, file.source, {
     ast: true,
     babelrc: false,
     cloneInputAst: false,
     code: false,
     configFile: false,
-    filename: STYLED_COMPONENTS_FILENAME,
+    filename: file.filename,
     plugins: [[babelStyledComponentsPlugin, STYLED_COMPONENTS_OPTIONS]],
     sourceMaps: false,
   });
   const transformedAt = process.hrtime.bigint();
   if (transformed?.ast == null) throw new Error("Babel plugin did not return an AST");
 
-  const generated = babelTransformFromAstSync(transformed.ast, source, {
+  const generated = babelTransformFromAstSync(transformed.ast, file.source, {
     ast: false,
     babelrc: false,
     cloneInputAst: false,
@@ -129,7 +112,7 @@ function profileBabel(source: string): ProfileIteration {
     comments: true,
     compact: false,
     configFile: false,
-    filename: STYLED_COMPONENTS_FILENAME,
+    filename: file.filename,
     sourceMaps: false,
   });
   const generatedAt = process.hrtime.bigint();
@@ -145,40 +128,19 @@ function profileBabel(source: string): ProfileIteration {
   };
 }
 
-function profileSwc(source: string): ProfileIteration {
+function profileSwc(file: StyledComponentsCorpusFile): ProfileIteration {
   const start = process.hrtime.bigint();
-  const parsed = swcParseSync(source, {
-    comments: false,
-    jsx: true,
-    syntax: "ecmascript",
-  });
-  const parsedAt = process.hrtime.bigint();
-  const generated = swcTransformSync(parsed, {
-    filename: STYLED_COMPONENTS_FILENAME,
-    jsc: {
-      experimental: {
-        plugins: [["@swc/plugin-styled-components", STYLED_COMPONENTS_OPTIONS]],
-      },
-      target: "es2022",
-    },
-    minify: false,
-    module: { type: "es6" },
-    sourceMaps: false,
-  });
+  const output = transformStyledComponentsFor("SWC + WASM plugin", file);
   const generatedAt = process.hrtime.bigint();
-
   return {
-    durationsNs: [
-      durationNs(start, parsedAt),
-      durationNs(parsedAt, generatedAt),
-    ],
-    output: generated.code,
+    durationsNs: [durationNs(start, generatedAt)],
+    output,
   };
 }
 
-function profileYuku(source: string): ProfileIteration {
+function profileYuku(file: StyledComponentsCorpusFile): ProfileIteration {
   const start = process.hrtime.bigint();
-  const sourceBytes = sourceEncoder.encode(source);
+  const sourceBytes = sourceEncoder.encode(file.source);
   const sourceEncodedAt = process.hrtime.bigint();
   const buffer = yukuParserBinding.parse(sourceBytes, {
     attachComments: false,
@@ -186,13 +148,13 @@ function profileYuku(source: string): ProfileIteration {
     sourceType: "module",
   });
   const parsedAt = process.hrtime.bigint();
-  const parsed = yukuDecode(buffer, source);
+  const parsed = yukuDecode(buffer, file.source);
   const program = parsed.program;
   const decodedAt = process.hrtime.bigint();
   transformStyledComponentsYuku(
     program,
-    source,
-    STYLED_COMPONENTS_FILENAME,
+    file.source,
+    file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
   const transformedAt = process.hrtime.bigint();
@@ -221,8 +183,7 @@ function profileYuku(source: string): ProfileIteration {
 }
 
 function profileOxc(
-  source: string,
-  walker: "yuku" | "oxc",
+  file: StyledComponentsCorpusFile,
   rawTransfer: boolean,
 ): ProfileIteration {
   if (rawTransfer && !rawTransferSupported()) {
@@ -234,17 +195,16 @@ function profileOxc(
     lang: "jsx",
     sourceType: "module",
   } as const;
-  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, options as never);
+  const parsed = oxcParseSync(file.filename, file.source, options as never);
   const parsedAt = process.hrtime.bigint();
   if (parsed.errors.length > 0) {
     throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
   }
   transformStyledComponentsYuku(
     parsed.program as unknown as Program,
-    source,
-    STYLED_COMPONENTS_FILENAME,
+    file.source,
+    file.filename,
     STYLED_COMPONENTS_OPTIONS,
-    walker,
   );
   const transformedAt = process.hrtime.bigint();
   const output = oxcPrintSync(parsed.program, { jsx: true });
@@ -262,22 +222,18 @@ function profileOxc(
 
 export function profileStyledComponentsOnce(
   name: StyledComponentsTransformerName,
-  source: string,
+  file: StyledComponentsCorpusFile,
 ): ProfileIteration {
   switch (name) {
     case "Babel + JS plugin":
-      return profileBabel(source);
+      return profileBabel(file);
     case "SWC + WASM plugin":
-      return profileSwc(source);
+      return profileSwc(file);
     case "Yuku + JS plugin":
-      return profileYuku(source);
+      return profileYuku(file);
     case "OXC + Yuku walk plugin":
-      return profileOxc(source, "yuku", false);
+      return profileOxc(file, false);
     case "OXC raw transfer + Yuku walk":
-      return profileOxc(source, "yuku", true);
-    case "OXC + OXC Visitor plugin":
-      return profileOxc(source, "oxc", false);
-    case "OXC raw transfer + OXC Visitor":
-      return profileOxc(source, "oxc", true);
+      return profileOxc(file, true);
   }
 }

@@ -4,18 +4,24 @@ import { arch, cpus, platform, release, totalmem } from "node:os";
 import { join } from "node:path";
 import { Bench } from "tinybench";
 import {
-  createStyledComponentsFixture,
-  STYLED_COMPONENTS_COMPONENT_COUNT,
-} from "./styled-components-fixture";
+  loadStyledComponentsCorpus,
+  STYLED_COMPONENTS_CORPUS_COMMIT,
+  STYLED_COMPONENTS_CORPUS_NAME,
+  STYLED_COMPONENTS_CORPUS_REPOSITORY,
+  type StyledComponentsCorpus,
+} from "./styled-components-corpus";
 import {
   profileStageDefinitions,
   profileStyledComponentsOnce,
 } from "./styled-components-profiler";
 import {
+  assertComparableStyledComponentsFeatures,
   STYLED_COMPONENTS_OPTIONS,
   STYLED_COMPONENTS_TRANSFORMERS,
+  transformStyledComponentsCorpusFor,
   transformStyledComponentsFor,
-  validateStyledComponentsOutput,
+  validateStyledComponentsOutputs,
+  type StyledComponentsOutput,
   type StyledComponentsTransformerName,
   type StyledComponentsValidation,
 } from "./styled-components-transformers";
@@ -26,26 +32,24 @@ const BENCH_RUNS = Number(process.env.BENCH_RUNS ?? 3);
 const PROFILE_TIME = Number(process.env.PROFILE_TIME ?? BENCH_TIME);
 const PROFILE_WARMUP = Number(process.env.PROFILE_WARMUP ?? BENCH_WARMUP);
 const PROFILE_ITERATIONS_MAX = 100_000;
-const COMPONENT_COUNT = Number(
-  process.env.STYLED_COMPONENTS_COUNT ?? STYLED_COMPONENTS_COMPONENT_COUNT,
-);
 const RESULT_FILE = process.env.STYLED_COMPONENTS_RESULT ?? "styled-components.json";
 const RESULT_FILE_PATTERN = /^[a-z0-9][a-z0-9-]*\.json$/;
 
 interface RunResult extends StyledComponentsValidation {
-  name: StyledComponentsTransformerName;
-  mean: number;
-  min: number;
-  max: number;
   median: number;
-  stddev: number;
+  name: StyledComponentsTransformerName;
   rme: number;
   samples: number;
 }
 
-interface BenchResult extends RunResult {
+interface BenchResult extends StyledComponentsValidation {
+  median: number;
+  medianRunRme: number;
+  name: StyledComponentsTransformerName;
   runMedians: number[];
+  runSpreadPct: number;
   runs: number;
+  samples: number;
 }
 
 interface ProfileRunResult {
@@ -77,12 +81,13 @@ interface StyledComponentsBenchResult {
     timeMs: number;
     warmupMs: number;
   };
-  fixture: {
-    cssProps: number;
+  corpus: {
+    commit: string;
+    files: number;
+    name: string;
+    repository: string;
     sourceBytes: number;
-    styledComponents: number;
-    templates: number;
-    transformedComponents: number;
+    styledComponentsFiles: number;
   };
   options: typeof STYLED_COMPONENTS_OPTIONS;
   profile: {
@@ -94,7 +99,6 @@ interface StyledComponentsBenchResult {
   reproduction: {
     command: string;
     resultFile: string;
-    sourceTag: string;
   };
   results: BenchResult[];
   runtime: string;
@@ -119,10 +123,6 @@ interface StyledComponentsBenchResult {
 
 let outputCodeUnitsLast = 0;
 
-function runtimeLabel(): string {
-  return `Node ${process.versions.node}`;
-}
-
 function taskArguments(...args: string[]): string[] {
   return ["--import", "tsx", "scripts/bench-styled-components.ts", ...args];
 }
@@ -141,18 +141,25 @@ function isTransformerName(value: string): value is StyledComponentsTransformerN
   return STYLED_COMPONENTS_TRANSFORMERS.some((name) => name === value);
 }
 
-function createTask(name: StyledComponentsTransformerName, source: string): () => void {
+function createTask(
+  name: StyledComponentsTransformerName,
+  corpus: StyledComponentsCorpus,
+): () => void {
   return () => {
-    outputCodeUnitsLast = transformStyledComponentsFor(name, source).length;
+    let outputCodeUnits = 0;
+    for (const file of corpus.files) {
+      outputCodeUnits += transformStyledComponentsFor(name, file).length;
+    }
+    outputCodeUnitsLast = outputCodeUnits;
   };
 }
 
 async function runTask(name: StyledComponentsTransformerName): Promise<void> {
-  const fixture = createStyledComponentsFixture(COMPONENT_COUNT);
-  const output = transformStyledComponentsFor(name, fixture.source);
-  const validation = validateStyledComponentsOutput(name, output, fixture);
+  const corpus = loadStyledComponentsCorpus();
+  const outputs = transformStyledComponentsCorpusFor(name, corpus);
+  const validation = validateStyledComponentsOutputs(name, outputs);
   const bench = new Bench({ time: BENCH_TIME, warmupTime: BENCH_WARMUP });
-  bench.add(name, createTask(name, fixture.source));
+  bench.add(name, createTask(name, corpus));
   await bench.run();
 
   const task = bench.tasks[0];
@@ -167,11 +174,7 @@ async function runTask(name: StyledComponentsTransformerName): Promise<void> {
   const latency = task.result.latency;
   const result: RunResult = {
     name,
-    mean: latency.mean,
-    min: latency.min,
-    max: latency.max,
     median: latency.p50,
-    stddev: latency.sd,
     rme: latency.rme,
     samples: latency.samplesCount,
     ...validation,
@@ -179,23 +182,37 @@ async function runTask(name: StyledComponentsTransformerName): Promise<void> {
   process.stdout.write(JSON.stringify({ ok: true, result }));
 }
 
+function profileCorpusOnce(
+  name: StyledComponentsTransformerName,
+  corpus: StyledComponentsCorpus,
+): { durationsNs: number[]; outputs: StyledComponentsOutput[] } {
+  const durationsNs = profileStageDefinitions(name).map(() => 0);
+  const outputs = corpus.files.map((file) => {
+    const profile = profileStyledComponentsOnce(name, file);
+    if (profile.durationsNs.length !== durationsNs.length) {
+      throw new Error(`${name} profile returned an unexpected number of stages`);
+    }
+    for (let index = 0; index < durationsNs.length; index++) {
+      durationsNs[index] += profile.durationsNs[index]!;
+    }
+    return { code: profile.output, relativePath: file.relativePath };
+  });
+  return { durationsNs, outputs };
+}
+
 function runProfileTask(name: StyledComponentsTransformerName): void {
-  const fixture = createStyledComponentsFixture(COMPONENT_COUNT);
-  const validationIteration = profileStyledComponentsOnce(name, fixture.source);
-  const validation = validateStyledComponentsOutput(
+  const corpus = loadStyledComponentsCorpus();
+  const validationIteration = profileCorpusOnce(name, corpus);
+  const validation = validateStyledComponentsOutputs(
     name,
-    validationIteration.output,
-    fixture,
+    validationIteration.outputs,
   );
   const stageCount = profileStageDefinitions(name).length;
-  if (validationIteration.durationsNs.length !== stageCount) {
-    throw new Error(`${name} profile returned an unexpected number of stages`);
-  }
 
   const warmupDeadline = performance.now() + PROFILE_WARMUP;
   for (let iteration = 0; iteration < PROFILE_ITERATIONS_MAX; iteration++) {
     if (performance.now() >= warmupDeadline) break;
-    profileStyledComponentsOnce(name, fixture.source);
+    profileCorpusOnce(name, corpus);
     if (iteration === PROFILE_ITERATIONS_MAX - 1) {
       throw new Error(`${name} exhausted the profile warmup iteration bound`);
     }
@@ -207,14 +224,14 @@ function runProfileTask(name: StyledComponentsTransformerName): void {
   let outputCodeUnits = 0;
   while (iterations < PROFILE_ITERATIONS_MAX) {
     if (performance.now() >= measurementDeadline) break;
-    const profile = profileStyledComponentsOnce(name, fixture.source);
-    if (profile.durationsNs.length !== stageCount) {
-      throw new Error(`${name} profile stage count changed during measurement`);
-    }
+    const profile = profileCorpusOnce(name, corpus);
     for (let index = 0; index < stageCount; index++) {
       stageTotalsNs[index] += profile.durationsNs[index]!;
     }
-    outputCodeUnits = profile.output.length;
+    outputCodeUnits = profile.outputs.reduce(
+      (total, output) => total + output.code.length,
+      0,
+    );
     iterations++;
   }
   if (iterations === 0) throw new Error(`${name} profile collected no iterations`);
@@ -241,10 +258,14 @@ function median(values: number[]): number {
   return (sorted[middle - 1]! + sorted[middle]!) / 2;
 }
 
-function sameValidation(left: RunResult, right: RunResult): boolean {
+function sameValidation(
+  left: StyledComponentsValidation,
+  right: StyledComponentsValidation,
+): boolean {
   return left.componentIds === right.componentIds &&
     left.displayNames === right.displayNames &&
-    left.minifiedRules === right.minifiedRules &&
+    left.files === right.files &&
+    left.jsxElements === right.jsxElements &&
     left.outputBytes === right.outputBytes &&
     left.outputCodeUnits === right.outputCodeUnits &&
     left.pureAnnotations === right.pureAnnotations &&
@@ -263,17 +284,27 @@ function aggregateRuns(
       throw new Error(`${name} validation changed between independent runs`);
     }
   }
+  const runMedians = runs.map((run) => run.median);
+  const reportedMedian = median(runMedians);
   return {
-    ...first,
-    mean: median(runs.map((run) => run.mean)),
-    min: Math.min(...runs.map((run) => run.min)),
-    max: Math.max(...runs.map((run) => run.max)),
-    median: median(runs.map((run) => run.median)),
-    stddev: median(runs.map((run) => run.stddev)),
-    rme: median(runs.map((run) => run.rme)),
-    samples: runs.reduce((sum, run) => sum + run.samples, 0),
-    runMedians: runs.map((run) => run.median),
+    componentIds: first.componentIds,
+    displayNames: first.displayNames,
+    files: first.files,
+    jsxElements: first.jsxElements,
+    median: reportedMedian,
+    medianRunRme: median(runs.map((run) => run.rme)),
+    name,
+    outputBytes: first.outputBytes,
+    outputCodeUnits: first.outputCodeUnits,
+    pureAnnotations: first.pureAnnotations,
+    runMedians,
+    runSpreadPct:
+      ((Math.max(...runMedians) - Math.min(...runMedians)) / reportedMedian) * 100,
     runs: runs.length,
+    samples: runs.reduce((sum, run) => sum + run.samples, 0),
+    taggedTemplates: first.taggedTemplates,
+    uniqueComponentIds: first.uniqueComponentIds,
+    withConfigCalls: first.withConfigCalls,
   };
 }
 
@@ -282,35 +313,24 @@ function aggregateProfileRuns(
   runs: ProfileRunResult[],
 ): ProfileResult {
   const definitions = profileStageDefinitions(name);
-  const stageTotalsNs = Array.from({ length: definitions.length }, () => 0);
-  let iterations = 0;
-  for (const run of runs) {
-    if (run.stageTotalsNs.length !== definitions.length) {
-      throw new Error(`${name} profile stage count changed between runs`);
-    }
-    iterations += run.iterations;
-    for (let index = 0; index < definitions.length; index++) {
-      stageTotalsNs[index] += run.stageTotalsNs[index]!;
-    }
-  }
-  const totalNs = stageTotalsNs.reduce((sum, duration) => sum + duration, 0);
-  if (iterations === 0 || totalNs === 0) {
-    throw new Error(`${name} profile did not measure any work`);
-  }
+  const runMeansByStage = definitions.map((_, index) =>
+    runs.map((run) => run.stageTotalsNs[index]! / run.iterations / 1_000_000),
+  );
+  const stageMeans = runMeansByStage.map((runMeans) => median(runMeans));
+  const totalMeanMs = stageMeans.reduce((sum, mean) => sum + mean, 0);
+  if (totalMeanMs === 0) throw new Error(`${name} profile did not measure any work`);
 
   return {
-    iterations,
-    meanMs: totalNs / iterations / 1_000_000,
+    iterations: runs.reduce((sum, run) => sum + run.iterations, 0),
+    meanMs: totalMeanMs,
     name,
     runs: runs.length,
     stages: definitions.map((definition, index) => ({
-      meanMs: stageTotalsNs[index]! / iterations / 1_000_000,
+      meanMs: stageMeans[index]!,
       name: definition.name,
-      runMeansMs: runs.map(
-        (run) => run.stageTotalsNs[index]! / run.iterations / 1_000_000,
-      ),
+      runMeansMs: runMeansByStage[index]!,
       runtime: definition.runtime,
-      share: stageTotalsNs[index]! / totalNs,
+      share: stageMeans[index]! / totalMeanMs,
     })),
   };
 }
@@ -373,7 +393,7 @@ function profileStyledComponents(): ProfileResult[] {
         Transformer: result.name,
         Stage: stage.name,
         Runtime: stage.runtime,
-        "Mean (ms)": stage.meanMs.toFixed(3),
+        "Median run mean (ms)": stage.meanMs.toFixed(3),
         Share: `${(stage.share * 100).toFixed(1)}%`,
       })),
     ),
@@ -382,10 +402,10 @@ function profileStyledComponents(): ProfileResult[] {
 }
 
 async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
-  const fixture = createStyledComponentsFixture(COMPONENT_COUNT);
+  const corpus = loadStyledComponentsCorpus();
   console.log(
-    `\nBenchmarking styled-components with ${fixture.styledComponentCount} declarations ` +
-      `and ${fixture.cssPropCount} css props...`,
+    `\nBenchmarking ${corpus.files.length} real-world styled-components modules ` +
+      `(${corpus.sourceBytes} bytes)...`,
   );
 
   const runsByName = new Map<StyledComponentsTransformerName, RunResult[]>(
@@ -419,12 +439,13 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
     }
     return aggregateRuns(name, runs);
   }).sort((left, right) => left.median - right.median);
+  assertComparableStyledComponentsFeatures(results);
 
   console.table(
     results.map((result) => ({
       Transformer: result.name,
       "Median (ms)": result.median.toFixed(3),
-      "±RME": `${result.rme.toFixed(2)}%`,
+      "Run spread": `${result.runSpreadPct.toFixed(2)}%`,
       Samples: result.samples,
       Components: result.withConfigCalls,
       "Output (bytes)": result.outputBytes,
@@ -439,12 +460,16 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
       timeMs: BENCH_TIME,
       warmupMs: BENCH_WARMUP,
     },
-    fixture: {
-      cssProps: fixture.cssPropCount,
-      sourceBytes: Buffer.byteLength(fixture.source),
-      styledComponents: fixture.styledComponentCount,
-      templates: fixture.templateCount,
-      transformedComponents: fixture.transformedComponentCount,
+    corpus: {
+      commit: STYLED_COMPONENTS_CORPUS_COMMIT,
+      files: corpus.files.length,
+      name: STYLED_COMPONENTS_CORPUS_NAME,
+      repository: STYLED_COMPONENTS_CORPUS_REPOSITORY,
+      sourceBytes: corpus.sourceBytes,
+      styledComponentsFiles: corpus.files.filter((file) =>
+        file.source.includes('"styled-components"') ||
+        file.source.includes("'styled-components'"),
+      ).length,
     },
     options: STYLED_COMPONENTS_OPTIONS,
     profile: {
@@ -456,10 +481,9 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
     reproduction: {
       command: process.env.BENCH_REPRODUCTION_COMMAND ?? "custom benchmark invocation",
       resultFile: RESULT_FILE,
-      sourceTag: process.env.BENCH_SOURCE_TAG ?? "working tree",
     },
     results,
-    runtime: runtimeLabel(),
+    runtime: `Node ${process.versions.node}`,
     system: {
       cores: cpus().length,
       cpu: cpus()[0]?.model ?? "Unknown CPU",

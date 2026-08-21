@@ -1,134 +1,113 @@
 {
-  "fixture": {
-    "cssProps": 60,
-    "styledComponents": 240,
-    "templates": 483,
-    "transformedComponents": 300
-  },
-  "input": {
-    "bytes": 142274,
-    "file": "input.jsx",
-    "sha256": "cde6d195675ae1580857cf5f1b983c73fccb86d9c7090c1a93e4b786adb46466"
+  "corpus": {
+    "aggregateSha256": "75c978bd4da348fdf6ecba536497c8cb5b860a6bfc28623547ff0490d8d602cb",
+    "commit": "d19099afeff64ecfb09133c06c1cb18c0d40887e",
+    "files": 87,
+    "name": "react-boilerplate v4.0.0",
+    "repository": "https://github.com/react-boilerplate/react-boilerplate",
+    "sourceBytes": 57051
   },
   "outputs": [
     {
-      "bytes": 170640,
+      "aggregateSha256": "bc16bd5fc3b70caceb0cf42ffd3697422592abc49ea070442b577296cc3f5e3f",
       "file": "babel-output.jsx",
-      "sha256": "3b0c795c1f104b8449d10c375c2dc7eabf99af7f88fa5b5b3e0c13a8549d5763",
+      "representativeBytes": 261,
+      "representativeSha256": "c921274167dcfa50c5138a07910c530f0f30dd8b3e361e073f77647d72f64a77",
       "transformer": "Babel + JS plugin",
       "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 170640,
-        "outputCodeUnits": 170640,
-        "pureAnnotations": 303,
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 46741,
+        "outputCodeUnits": 46741,
+        "pureAnnotations": 33,
         "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
       }
     },
     {
-      "bytes": 193296,
-      "file": "swc-output.jsx",
-      "sha256": "bd4b79794cdda88d5ba19ef5ca90c7ba40bc0ffa6a796184a057b6f825eb8a75",
+      "aggregateSha256": "e2c57fcb1b9b046b9ad1b2d6d67c0e644a3fdceaa4bbc665f3373a48df1447ad",
+      "file": "swc-output.js",
+      "representativeBytes": 279,
+      "representativeSha256": "74930c9eb3e9a72e9face809ecc5af19e32df80a22d3c760a168ad0a5887f76d",
       "transformer": "SWC + WASM plugin",
       "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 193296,
-        "outputCodeUnits": 193296,
-        "pureAnnotations": 603,
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 0,
+        "outputBytes": 64385,
+        "outputCodeUnits": 64381,
+        "pureAnnotations": 173,
         "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
       }
     },
     {
-      "bytes": 170809,
+      "aggregateSha256": "2efd4fb3ed39b47fbcd808a3c3cc86b0772b31d47de07f1f5f9869839f3a6c40",
       "file": "yuku-output.jsx",
-      "sha256": "50140bd158aca057db250900664ad332af1d2eaf1f46069d432e77d910a60db4",
+      "representativeBytes": 258,
+      "representativeSha256": "d69e44c250333332fab86dbca0ed533bbced3daa349004a12a21062bd09300e9",
       "transformer": "Yuku + JS plugin",
       "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 170809,
-        "outputCodeUnits": 170809,
-        "pureAnnotations": 303,
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 45865,
+        "outputCodeUnits": 45865,
+        "pureAnnotations": 33,
         "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
       }
     },
     {
-      "bytes": 169268,
+      "aggregateSha256": "6d1e3689ab9d9d0b5dd1587838bc02542f6ba6075a27618af2cc50f0fd489458",
       "file": "oxc-output.jsx",
-      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
+      "representativeBytes": 247,
+      "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
       "transformer": "OXC + Yuku walk plugin",
       "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 169268,
-        "outputCodeUnits": 169268,
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 45528,
+        "outputCodeUnits": 45528,
         "pureAnnotations": 0,
         "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
       }
     },
     {
-      "bytes": 169268,
+      "aggregateSha256": "6d1e3689ab9d9d0b5dd1587838bc02542f6ba6075a27618af2cc50f0fd489458",
       "file": "oxc-raw-transfer-output.jsx",
-      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
+      "representativeBytes": 247,
+      "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
       "transformer": "OXC raw transfer + Yuku walk",
       "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 169268,
-        "outputCodeUnits": 169268,
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 45528,
+        "outputCodeUnits": 45528,
         "pureAnnotations": 0,
         "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
-      }
-    },
-    {
-      "bytes": 169268,
-      "file": "oxc-visitor-output.jsx",
-      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
-      "transformer": "OXC + OXC Visitor plugin",
-      "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 169268,
-        "outputCodeUnits": 169268,
-        "pureAnnotations": 0,
-        "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
-      }
-    },
-    {
-      "bytes": 169268,
-      "file": "oxc-raw-transfer-visitor-output.jsx",
-      "sha256": "f4579aab584e52961849d0b3d2faace621d5797f16e95ef9235c4e97ffa98998",
-      "transformer": "OXC raw transfer + OXC Visitor",
-      "validation": {
-        "componentIds": 300,
-        "displayNames": 300,
-        "minifiedRules": 240,
-        "outputBytes": 169268,
-        "outputCodeUnits": 169268,
-        "pureAnnotations": 0,
-        "taggedTemplates": 0,
-        "uniqueComponentIds": 300,
-        "withConfigCalls": 300
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
       }
     }
-  ]
+  ],
+  "representativeInput": {
+    "bytes": 173,
+    "file": "input.jsx",
+    "path": "app/components/Button/StyledButton.js",
+    "sha256": "919d8372b4418c41b679c916380093336d14be728c1de8f8bb8e8756ad3c60f7"
+  }
 }

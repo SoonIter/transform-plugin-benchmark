@@ -1,49 +1,55 @@
 # Transform Plugin Benchmark
 
-Reproducible end-to-end and stage-level benchmark of seven styled-components transform pipelines:
+Reproducible benchmark of five styled-components transform pipelines:
 
-- `babel-plugin-styled-components` running as a Babel JavaScript plugin
-- `@swc/plugin-styled-components` running as an SWC WASM plugin
-- the complete `babel-plugin-styled-components@2.3.0` behavior port running as a Yuku JS plugin
-- `oxc-parser`, the Yuku walk plugin, and the JavaScript `oxc-codegen` printer
-- `oxc-parser` with `experimentalRawTransfer`, the Yuku walk plugin, and `oxc-codegen`
-- `oxc-parser`, the same transform using OXC's `Visitor`, and `oxc-codegen`
-- `oxc-parser` with `experimentalRawTransfer`, OXC `Visitor`, and `oxc-codegen`
+- `babel-plugin-styled-components` as a Babel JavaScript plugin
+- `@swc/plugin-styled-components` as an SWC WASM plugin
+- the Babel plugin behavior ported to a Yuku JavaScript plugin
+- `oxc-parser` + the Yuku walk plugin + `oxc-codegen`
+- the same OXC pipeline with `experimentalRawTransfer`
+
+The workload is a pinned real-world multi-file corpus. Every timed iteration starts with the same
+87 source files and ends with generated code for all 87 files.
 
 ## Result
 
-Node.js 24.18.1 on the hardware documented below. Lower is better.
+Node.js 24.18.1 on the machine documented below. Lower is better.
 
 ![End-to-end styled-components transform latency](charts/styled-components-latency.svg)
 
-| Transformer | Median | Three independent run medians | Relative to Yuku |
-|-------------|-------:|-------------------------------|-----------------:|
-| **OXC raw transfer + Yuku walk** | **12.89 ms** | 12.889, 13.058, 12.814 ms | 0.75× latency |
-| Yuku + JS plugin | 17.15 ms | 17.151, 16.951, 17.240 ms | baseline |
-| OXC + Yuku walk plugin | 18.55 ms | 18.314, 18.587, 18.553 ms | 1.08× slower |
-| SWC + WASM plugin | 22.80 ms | 22.892, 22.803, 22.801 ms | 1.33× slower |
-| OXC raw transfer + OXC Visitor | 23.21 ms | 23.074, 23.207, 23.253 ms | 1.35× slower |
-| OXC + OXC Visitor plugin | 29.25 ms | 29.519, 29.215, 29.252 ms | 1.71× slower |
-| Babel + JS plugin | 105.88 ms | 105.881, 108.435, 104.925 ms | 6.17× slower |
+| Transformer | Median | Independent run medians | Run spread | Relative to Yuku |
+|-------------|-------:|-------------------------|-----------:|-----------------:|
+| **OXC raw transfer + Yuku walk** | **6.63 ms** | 6.680, 6.626, 6.550 ms | 1.96% | 0.75× |
+| Yuku + JS plugin | 8.83 ms | 8.825, 8.973, 8.812 ms | 1.82% | 1.00× |
+| OXC + Yuku walk plugin | 9.42 ms | 9.425, 9.450, 9.319 ms | 1.39% | 1.07× |
+| Babel + JS plugin | 33.05 ms | 33.437, 32.818, 33.046 ms | 1.88% | 3.74× |
+| SWC + WASM plugin | 85.44 ms | 84.898, 86.220, 85.436 ms | 1.55% | 9.68× |
 
-For this workload, raw transfer reduced the OXC `Visitor` pipeline's end-to-end latency by 20.7%,
-from 29.25 ms to 23.21 ms. On the raw-transferred AST, OXC `Visitor` plus the mutation adapter
-measured 80.1% higher latency than Yuku walk. These numbers describe this fixture, implementation,
-and machine, not every styled-components project.
+On this corpus, OXC raw transfer reduced the complete OXC pipeline median by 29.7%, from 9.42 ms
+to 6.63 ms. This is a full `parse → plugin → codegen` result across 87 modules, not a standalone
+walker microbenchmark.
 
-## Workload
+## Real-world workload
 
-The generated 142,274-byte JSX module contains:
+The corpus is the production JavaScript under `app/` from
+[`react-boilerplate` v4.0.0](https://github.com/react-boilerplate/react-boilerplate/tree/d19099afeff64ecfb09133c06c1cb18c0d40887e),
+pinned at commit `d19099afeff64ecfb09133c06c1cb18c0d40887e`. Tests are excluded. The source is
+vendored under [`benchmark/fixtures/react-boilerplate`](benchmark/fixtures/react-boilerplate) with
+its MIT license.
 
-- 240 user-authored styled component declarations
-- 60 `css` prop transforms
-- 483 tagged templates
-- 300 validated output component IDs and display names
-- `styled.tag`, `styled(Component)`, `.attrs()`, call-form styles, and nested `css`
-- `keyframes`, `createGlobalStyle`, dynamic interpolations, object styles, computed keys,
-  and spreads
+| Corpus property | Value |
+|-----------------|------:|
+| Production modules | 87 |
+| Source size | 57,051 bytes |
+| Source lines | 2,313 |
+| Modules importing styled-components | 34 |
+| Modules containing JSX | 27 |
+| Transformed styled components | 32 |
 
-All seven plugin invocations receive the same options:
+Files are transformed separately in stable path order. They are not concatenated: per-module API,
+parse, codegen, filename, displayName, and component ID costs remain part of the workload.
+
+All pipelines receive the same source and options:
 
 ```json
 {
@@ -60,134 +66,96 @@ All seven plugin invocations receive the same options:
 }
 ```
 
-Every timed iteration starts with source text and ends with generated code. Before measurement,
-each output is reparsed and checked for 300 unique component IDs, 300 display names, minified CSS,
-complete template lowering, and valid JSX. Babel, SWC, and Yuku must also preserve PURE annotations.
+The outputs need not be byte-identical. They must provide the same styled-components feature
+coverage: all five pipelines emit 32 `.withConfig` calls, 32 display names, 32 unique component
+IDs, and no remaining styled tagged templates. Every output is reparsed before measurement.
 
-`oxc-codegen@0.144.0` does not print comments, so all four OXC outputs drop the 303 PURE annotations
-produced by the plugin. Those rows are real end-to-end styled-components transforms, but they are
-not drop-in-equivalent results when the tree-shaking hints matter. This is work performed but output
-not retained, rather than work excluded from the timed path. See
-[OXC PR #25488](https://github.com/oxc-project/oxc/pull/25488).
+SWC's normal `transformSync` path also lowers JSX, so its output contains no JSX; the other four
+source-to-source plugin paths preserve it. That extra work is part of the measured SWC public API
+pipeline. The benchmark compares concrete integration paths, not an artificially equalized AST
+operation count.
 
-## Inspect the source and generated code
+**OXC limitation:** `oxc-codegen` does not print comments, so both OXC rows drop PURE annotations.
 
-The exact 142 KB source passed to every timed pipeline and all seven generated outputs are committed
-under [`artifacts/styled-components`](artifacts/styled-components):
+## Inspectable artifacts
 
-- [`input.jsx`](artifacts/styled-components/input.jsx) is the exact benchmark source.
-- [`babel-output.jsx`](artifacts/styled-components/babel-output.jsx) is the Babel result.
-- [`swc-output.jsx`](artifacts/styled-components/swc-output.jsx) is the SWC result.
-- [`yuku-output.jsx`](artifacts/styled-components/yuku-output.jsx) is the Yuku result.
-- [`oxc-output.jsx`](artifacts/styled-components/oxc-output.jsx) uses regular OXC transfer and Yuku walk.
-- [`oxc-raw-transfer-output.jsx`](artifacts/styled-components/oxc-raw-transfer-output.jsx) uses
-  OXC raw transfer and Yuku walk.
-- [`oxc-visitor-output.jsx`](artifacts/styled-components/oxc-visitor-output.jsx) uses regular OXC
-  transfer and OXC `Visitor`.
-- [`oxc-raw-transfer-visitor-output.jsx`](artifacts/styled-components/oxc-raw-transfer-visitor-output.jsx)
-  uses OXC raw transfer and OXC `Visitor`.
-- [`manifest.json`](artifacts/styled-components/manifest.json) records SHA-256 hashes, byte sizes,
-  and validation statistics.
+The full inputs are the vendored corpus. A representative styled component and all five generated
+forms are committed under [`artifacts/styled-components`](artifacts/styled-components):
 
-The four OXC files are asserted byte-for-byte equal. The input begins with shared `css`,
-`keyframes`, and `createGlobalStyle` declarations, followed by four repeating styled-component
-shapes. It ends with object-valued `css` props containing dynamic computed keys, nested objects,
-and spreads.
+- [`input.jsx`](artifacts/styled-components/input.jsx)
+- [`babel-output.jsx`](artifacts/styled-components/babel-output.jsx)
+- [`swc-output.js`](artifacts/styled-components/swc-output.js)
+- [`yuku-output.jsx`](artifacts/styled-components/yuku-output.jsx)
+- [`oxc-output.jsx`](artifacts/styled-components/oxc-output.jsx)
+- [`oxc-raw-transfer-output.jsx`](artifacts/styled-components/oxc-raw-transfer-output.jsx)
+- [`manifest.json`](artifacts/styled-components/manifest.json), containing aggregate corpus/output
+  hashes, byte sizes, and validation counts
+
+The regular and raw-transfer OXC outputs are asserted byte-for-byte equal across the complete
+corpus.
 
 ## Stage breakdown
 
-The stage benchmark is a separate instrumented run. Stage means are additive within each tool;
-they should not be compared directly with the end-to-end medians above.
+Stage profiling is a separate instrumented run over the same corpus. Each value is the median of
+three independent run means; stage values add up within a pipeline.
 
 ![Styled-components pipeline stage shares](charts/styled-components-stages.svg)
 
-| Transformer | Stage | Runtime | Mean | Share |
-|-------------|-------|---------|-----:|------:|
-| Babel + JS plugin | parse | JS | 3.714 ms | 3.0% |
-| Babel + JS plugin | plugin transform | JS | 101.397 ms | 82.3% |
-| Babel + JS plugin | codegen | JS | 18.037 ms | 14.6% |
-| SWC + WASM plugin | parse + AST transfer | native + JS | 10.627 ms | 17.4% |
-| SWC + WASM plugin | AST transfer + plugin + codegen | JS + WASM + native | 50.402 ms | 82.6% |
-| Yuku + JS plugin | source encode | JS | 0.123 ms | 0.7% |
-| Yuku + JS plugin | parse | native | 0.489 ms | 2.8% |
-| Yuku + JS plugin | AST decode | JS | 0.511 ms | 2.9% |
-| Yuku + JS plugin | plugin transform | JS | 11.901 ms | 67.6% |
-| Yuku + JS plugin | AST encode | JS | 3.662 ms | 20.8% |
-| Yuku + JS plugin | codegen | native | 0.913 ms | 5.2% |
-| OXC + Yuku walk plugin | parse + AST transfer | native + JS | 1.330 ms | 6.8% |
-| OXC + Yuku walk plugin | plugin transform | JS | 17.395 ms | 89.6% |
-| OXC + Yuku walk plugin | codegen | JS | 0.695 ms | 3.6% |
-| OXC raw transfer + Yuku walk | parse + raw AST transfer | native + JS | 0.979 ms | 7.1% |
-| OXC raw transfer + Yuku walk | plugin transform | JS | 12.188 ms | 88.3% |
-| OXC raw transfer + Yuku walk | codegen | JS | 0.628 ms | 4.6% |
-| OXC + OXC Visitor plugin | parse + AST transfer | native + JS | 1.316 ms | 4.5% |
-| OXC + OXC Visitor plugin | plugin transform | JS, OXC Visitor | 27.363 ms | 92.6% |
-| OXC + OXC Visitor plugin | codegen | JS | 0.881 ms | 3.0% |
-| OXC raw transfer + OXC Visitor | parse + raw AST transfer | native + JS | 1.438 ms | 6.1% |
-| OXC raw transfer + OXC Visitor | plugin transform | JS, OXC Visitor | 21.491 ms | 90.5% |
-| OXC raw transfer + OXC Visitor | codegen | JS | 0.821 ms | 3.5% |
+| Transformer | Stage | Runtime | Median run mean | Share |
+|-------------|-------|---------|----------------:|------:|
+| Babel + JS plugin | parse | JS | 4.535 ms | 10.8% |
+| Babel + JS plugin | plugin transform | JS | 29.801 ms | 70.9% |
+| Babel + JS plugin | codegen | JS | 7.716 ms | 18.3% |
+| SWC + WASM plugin | parse + plugin + codegen | native + WASM | 89.347 ms | 100.0% |
+| Yuku + JS plugin | source encode | JS | 0.112 ms | 1.2% |
+| Yuku + JS plugin | parse | native | 0.832 ms | 8.6% |
+| Yuku + JS plugin | AST decode | JS | 0.396 ms | 4.1% |
+| Yuku + JS plugin | plugin transform | JS | 5.905 ms | 60.9% |
+| Yuku + JS plugin | AST encode | JS | 1.889 ms | 19.5% |
+| Yuku + JS plugin | codegen | native | 0.556 ms | 5.7% |
+| OXC + Yuku walk plugin | parse + AST transfer | native + JS | 1.249 ms | 12.8% |
+| OXC + Yuku walk plugin | plugin transform | JS | 8.209 ms | 84.3% |
+| OXC + Yuku walk plugin | codegen | JS | 0.281 ms | 2.9% |
+| OXC raw transfer + Yuku walk | parse + raw AST transfer | native + JS | 1.056 ms | 15.3% |
+| OXC raw transfer + Yuku walk | plugin transform | JS | 5.629 ms | 81.4% |
+| OXC raw transfer + Yuku walk | codegen | JS | 0.228 ms | 3.3% |
 
-SWC's public WASM plugin API returns generated code rather than an intermediate transformed AST.
-Its WASM plugin, return transfer, and native codegen are therefore one directly measured stage.
-Splitting them by subtraction would not be a direct measurement.
+SWC exposes the WASM plugin through a complete transform call, not as an independently measurable
+AST stage. Its row therefore stays combined. The benchmark does not estimate plugin time by
+subtraction.
 
-OXC's regular `parseSync` stage includes native parse and conversion into JavaScript ESTree objects.
-The raw rows pass `{ experimentalRawTransfer: true }`. In this run, the Yuku walk plugin measured
-12.188 ms on raw-transferred objects versus 17.395 ms on regular objects. OXC `Visitor` measured
-21.491 ms on raw-transferred objects versus 27.363 ms on regular objects. The benchmark reports that
-repeatable whole-pipeline observation without attributing the plugin difference to transfer alone.
+The OXC parse stages include native parsing and transfer into JavaScript ESTree objects. The raw
+pipeline uses `{ experimentalRawTransfer: true }`; its lower plugin-stage time is an observed
+property of that complete AST representation and walk, not proof that raw transfer alone speeds up
+arbitrary JavaScript code.
 
-The OXC `Visitor` row uses `new Visitor(...).visit(program)` for traversal. Since its public visitor
-does not expose Yuku's mutation context, the adapter maintains ancestors and applies `replace` and
-`remove` operations to the ESTree object at node exit. It runs the identical transform logic and
-generates identical code, so the row measures this concrete adapter rather than a read-only walk.
-
-### Stage share after removing plugin execution
+### Stages excluding separable plugin execution
 
 ![Stage shares after removing plugin execution](charts/styled-components-stages-without-plugin.svg)
 
 | Transformer | Directly measured remainder | Remainder normalized to 100% |
 |-------------|----------------------------:|------------------------------|
-| Babel + JS plugin | 21.751 ms | parse 17.1%, codegen 82.9% |
-| SWC + WASM plugin | not separable | plugin shares a public API stage with transfer and codegen |
-| Yuku + JS plugin | 5.698 ms | source encode 2.2%, parse 8.6%, AST decode 9.0%, AST encode 64.3%, codegen 16.0% |
-| OXC + Yuku walk plugin | 2.025 ms | parse + AST transfer 65.7%, codegen 34.3% |
-| OXC raw transfer + Yuku walk | 1.607 ms | parse + raw AST transfer 60.9%, codegen 39.1% |
-| OXC + OXC Visitor plugin | 2.197 ms | parse + AST transfer 59.9%, codegen 40.1% |
-| OXC raw transfer + OXC Visitor | 2.259 ms | parse + raw AST transfer 63.6%, codegen 36.4% |
+| Babel + JS plugin | 12.250 ms | parse 37.0%, codegen 63.0% |
+| SWC + WASM plugin | not separable | plugin shares the public transform call |
+| Yuku + JS plugin | 3.785 ms | encode 3.0%, parse 22.0%, decode 10.5%, AST encode 49.9%, codegen 14.7% |
+| OXC + Yuku walk plugin | 1.530 ms | parse + AST transfer 81.6%, codegen 18.4% |
+| OXC raw transfer + Yuku walk | 1.285 ms | parse + raw AST transfer 82.2%, codegen 17.8% |
 
-This view removes the directly measured `plugin transform` stage, then renormalizes the remaining
-stage means to 100%. It is not a separate no-op end-to-end benchmark. SWC is intentionally shown as
-unavailable because its public API does not expose a separable plugin duration.
+This view removes only the directly measured `plugin transform` stage and renormalizes the
+remainder. It is not a separate no-op benchmark.
 
-## Yuku plugin completeness
+## Correctness coverage
 
-The implementation is in
-[`scripts/yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts). The
-`walkWithYuku` and `walkWithOxcVisitor` functions select the traversal backend while sharing all
-transform logic. It ports the complete public transform surface of
-`babel-plugin-styled-components@2.3.0`:
+The Yuku implementation is in
+[`scripts/yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts). The test
+suite has 70 cases:
 
-- default, named, namespace, custom top-level, CommonJS, and transpiler-wrapped imports
-- styled aliases, member/call chains, `.attrs()`, `.withConfig()`, and object-call forms
-- display names, filenames, meaningless filenames, namespaces, SSR IDs, and MurmurHash2 IDs
-- CSS minification, interpolation elimination, template lowering, and PURE annotations
-- string, template, helper, dynamic, and object `css` props
-- computed object keys, nested objects, spreads, JSX member names, and injected imports
-- every public plugin option plus the macro custom-import hook
+- 48 upstream fixtures from `babel-plugin-styled-components@2.3.0`
+- 14 additional Babel-to-Yuku parity cases
+- 8 corpus, profile, output, and committed-artifact contracts
 
-Correctness is checked by 77 tests:
-
-- all 48 fixtures from upstream version 2.3.0 at commit
-  `ab3aaf50921075b219718f9357abd4fae4bcb9b7`
-- 14 additional focused Babel-to-Yuku parity cases
-- 14 end-to-end and split-profile contracts across the seven pipelines
-- 1 committed-artifact integrity contract covering the input and seven outputs, including equality
-  across the four OXC outputs
-
-The upstream fixture comparison canonicalizes only generated private identifier spellings such as
-`_styled2`; it separately checks PURE annotation counts and compares the remaining generated AST.
-The vendored corpus and its MIT license are in [`test/fixtures`](test/fixtures).
+The benchmark contract validates feature coverage rather than printer formatting. OXC regular and
+raw transfer must also generate identical corpus outputs.
 
 ## Measurement environment
 
@@ -202,65 +170,40 @@ The vendored corpus and its MIT license are in [`test/fixtures`](test/fixtures).
 | Babel | `@babel/core@7.29.7`, plugin `2.3.0` |
 | SWC | `@swc/core@1.15.46`, WASM plugin `12.19.0` |
 | Yuku | parser, AST, and codegen `0.8.5` |
-| OXC | `oxc-parser@0.144.0`, `oxc-codegen@0.144.0` |
+| OXC | parser and codegen `0.144.0` |
 
-Node is intentional rather than Bun. OXC 0.144.0 raw transfer explicitly supports Node 22 or
-newer on 64-bit little-endian systems and rejects Bun. It reserves a reusable 6 GiB virtual-address
-buffer per active raw parsing operation; most pages are untouched, so this is not 6 GiB of resident
-memory. The first call also lazy-loads the raw-transfer implementation. Both benchmark instruments
-warm each child process for 1,000 ms before sampling, so one-time initialization is excluded.
+Each transformer runs in a fresh child process for each of three independent runs. A run warms for
+1,000 ms and measures for 5,000 ms. Transformer order rotates between runs. The headline value is
+the median of the three run medians; “run spread” is `(maximum − minimum) / reported median`.
+The median within-run RME remains in the raw JSON but is not presented as a cross-process
+confidence interval.
 
-Node 24.18.1 is pinned because it was the latest Node 24 release when this result was recorded. See
-the [official Node 24 archive](https://nodejs.org/en/download/archive/v24).
+The profile uses the same process isolation, rotation, warmup, duration, and three-run aggregation.
+The raw data is committed in [`result/styled-components.json`](result/styled-components.json).
 
-Each tool runs in a fresh child process for each of three independent runs. Every run warms for
-1,000 ms and measures for 5,000 ms. Tool order rotates between runs. The reported end-to-end value
-is the median of the three run medians. The profile repeats the same warmup, duration, run count,
-process isolation, and rotation, and retains raw per-run stage means.
-
-## Exact reproduction
-
-The immutable `styled-components-oxc-raw-visitor-v6` tag fixes the source. `package-lock.json`
-fixes the dependency graph. The script rejects any Node version other than 24.18.1, overrides
-measurement environment variables with the recorded settings, runs all 77 correctness tests, runs
-both benchmark instruments, validates the result metadata, and regenerates artifacts and charts.
+## Reproduce
 
 ```bash
-git clone https://github.com/SoonIter/transform-plugin-benchmark.git
-cd transform-plugin-benchmark
-git checkout styled-components-oxc-raw-visitor-v6
-
 fnm install 24.18.1
 fnm use 24.18.1
-node --version # must print v24.18.1
-npm --version  # must print 11.16.0
+node --version # v24.18.1
+npm --version  # 11.16.0
+
 npm ci
 npm run reproduce:styled-components
 ```
 
-If `fnm` is not installed, use any Node version manager and verify the two printed versions. The
-command writes [`result/styled-components.json`](result/styled-components.json), regenerates every
-file under [`artifacts/styled-components`](artifacts/styled-components), and rebuilds all three SVG
-files under [`charts`](charts). Inspect machine-specific differences with:
+The reproduction command rejects another Node version, runs all tests, records three end-to-end
+and stage-profile runs, validates the result metadata, and regenerates the artifacts and SVGs.
+
+For development:
 
 ```bash
-git diff -- result/styled-components.json artifacts/ charts/
-```
-
-Absolute latency depends on CPU, operating-system load, power mode, and thermal state. The raw JSON
-records hardware, tool versions, fixture size, options, all run medians, sample counts, RME, stage
-means, stage shares, and individual stage-run means.
-
-## Development
-
-```bash
-npm ci
 npm run type-check
 npm test
 npm run artifacts
 npm run charts
 ```
 
-For exploratory non-canonical runs, invoke `npm run bench:styled-components` with `BENCH_TIME`,
-`BENCH_WARMUP`, `BENCH_RUNS`, `PROFILE_TIME`, `PROFILE_WARMUP`, or
-`STYLED_COMPONENTS_COUNT`. The exact reproduction command intentionally overrides those variables.
+Exploratory runs can override `BENCH_TIME`, `BENCH_WARMUP`, `BENCH_RUNS`, `PROFILE_TIME`, or
+`PROFILE_WARMUP`. The exact reproduction command always restores the recorded settings.

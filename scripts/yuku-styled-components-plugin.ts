@@ -8,7 +8,6 @@ import {
     sep,
 } from "node:path";
 import picomatch from "picomatch";
-import { Visitor as OxcVisitor, visitorKeys as oxcVisitorKeys } from "oxc-parser";
 import { b, bindingIdentifiers, is, walk as yukuWalk, type Visitors } from "yuku-ast";
 import type {
     ArrowFunctionExpression,
@@ -135,116 +134,12 @@ type PluginWalker = <T extends Node, S>(
     state: S,
 ) => T;
 
-const FUNCTION_TYPES = new Set([
-    "ArrowFunctionExpression",
-    "FunctionDeclaration",
-    "FunctionExpression",
-    "TSDeclareFunction",
-    "TSEmptyBodyFunctionExpression",
-]);
-
 function walkWithYuku<T extends Node, S>(
     root: T,
     visitors: PluginVisitors<S>,
     state: S,
 ): T {
     return yukuWalk(root, visitors as Visitors<S>, state);
-}
-
-function locateOxcNode(parent: Node, node: Node): [string, number | null] {
-    const keys = oxcVisitorKeys[parent.type] ?? [];
-    for (const key of keys) {
-        const value = (parent as unknown as Record<string, unknown>)[key];
-        if (value === node) return [key, null];
-        if (!Array.isArray(value)) continue;
-        const index = value.indexOf(node);
-        if (index >= 0) return [key, index];
-    }
-    throw new Error(`OXC Visitor could not locate ${node.type} in ${parent.type}`);
-}
-
-function applyOxcMutation(
-    node: Node,
-    ancestors: Node[],
-    replacements: WeakMap<Node, Node>,
-    removals: WeakSet<Node>,
-): void {
-    const replacement = replacements.get(node);
-    const removed = removals.has(node);
-    if (replacement === undefined && !removed) return;
-    const parent = ancestors.at(-1);
-    if (parent === undefined) throw new Error("OXC Visitor cannot mutate the walk root");
-    const [key, index] = locateOxcNode(parent, node);
-    const record = parent as unknown as Record<string, unknown>;
-    if (index === null) {
-        record[key] = removed ? null : replacement;
-        return;
-    }
-    const list = record[key];
-    if (!Array.isArray(list)) throw new Error("OXC Visitor child list changed during mutation");
-    if (removed) {
-        list.splice(index, 1);
-    } else {
-        list[index] = replacement;
-    }
-}
-
-function walkWithOxcVisitor<T extends Node, S>(
-    root: T,
-    visitors: PluginVisitors<S>,
-    state: S,
-): T {
-    const ancestors: Node[] = [];
-    const replacements = new WeakMap<Node, Node>();
-    const removals = new WeakSet<Node>();
-    const visitor: Record<string, (node: Node) => void> = {};
-    for (const type of Object.keys(oxcVisitorKeys)) {
-        const handler = visitors[type];
-        const functionHandler = FUNCTION_TYPES.has(type) ? visitors.Function : undefined;
-        const leaf = oxcVisitorKeys[type]!.length === 0;
-        if (leaf && handler === undefined && functionHandler === undefined) continue;
-        visitor[type] = (node) => {
-            if (handler !== undefined || functionHandler !== undefined) {
-                const context: PluginWalkContext<Node, S> = {
-                    ancestors: () => [...ancestors],
-                    node,
-                    parent: ancestors.at(-1) ?? null,
-                    remove: () => removals.add(node),
-                    replace: (replacement) => replacements.set(node, replacement),
-                    state,
-                };
-                handler?.(node, context);
-                functionHandler?.(node, context);
-            }
-            if (!leaf) ancestors.push(node);
-        };
-        if (!leaf) {
-            visitor[`${type}:exit`] = (node) => {
-                const current = ancestors.pop();
-                if (current !== node) {
-                    throw new Error("OXC Visitor ancestor stack is inconsistent");
-                }
-                applyOxcMutation(node, ancestors, replacements, removals);
-            };
-        } else if (handler !== undefined || functionHandler !== undefined) {
-            visitor[`${type}:exit`] = (node) => {
-                applyOxcMutation(node, ancestors, replacements, removals);
-            };
-        }
-    }
-    const program = root.type === "Program"
-        ? root
-        : {
-            body: [root],
-            end: root.end,
-            hashbang: null,
-            sourceType: "module",
-            start: root.start,
-            type: "Program",
-        };
-    new OxcVisitor(visitor).visit(program as never);
-    if (ancestors.length !== 0) throw new Error("OXC Visitor left ancestors on its stack");
-    return root;
 }
 
 function resolveOptions(options: YukuStyledComponentsOptions): ResolvedOptions {
@@ -1359,7 +1254,6 @@ export function transformStyledComponentsYuku(
     source: string,
     filename: string,
     options: YukuStyledComponentsOptions = {},
-    walker: "yuku" | "oxc" = "yuku",
 ): void {
     if (source.length > 100_000_000) {
         throw new RangeError("styled-components source must not exceed 100 MB");
@@ -1383,7 +1277,7 @@ export function transformStyledComponentsYuku(
         styledRequired: null,
         topLevelBindings: new Set(),
         usedNames: new Set(),
-        walk: walker === "oxc" ? walkWithOxcVisitor : walkWithYuku,
+        walk: walkWithYuku,
     };
     collectProgramFacts(state);
     state.cssPropDefaultReusable =

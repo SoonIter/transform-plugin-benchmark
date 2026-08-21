@@ -41,7 +41,7 @@ const STAGE_COLORS = new Map([
   ["Yuku JS plugin", "#ec4899"],
   ["AST encode", "#fb923c"],
   ["Codegen", "#84cc16"],
-  ["AST transfer + WASM plugin + codegen", "#2563eb"],
+  ["Parse + WASM plugin + codegen", "#2563eb"],
 ]);
 
 function escapeXML(value: string): string {
@@ -65,8 +65,8 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
   if (stage.name === "AST encode") return "AST encode";
   if (stage.name === "parse + AST transfer") return "Parse + AST transfer";
   if (stage.name === "parse + raw AST transfer") return "Parse + raw AST transfer";
-  if (stage.name === "AST transfer + plugin + codegen") {
-    return "AST transfer + WASM plugin + codegen";
+  if (stage.name === "parse + plugin + codegen") {
+    return "Parse + WASM plugin + codegen";
   }
   if (stage.name === "parse") return "Parse";
   if (stage.name === "codegen") return "Codegen";

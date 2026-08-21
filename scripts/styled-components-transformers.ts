@@ -6,8 +6,10 @@ import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
 import { walk } from "yuku-ast";
 import { generate as yukuGenerate } from "yuku-codegen";
 import { parse as yukuParse, type Program } from "yuku-parser";
-import type { StyledComponentsFixture } from "./styled-components-fixture";
-import { STYLED_COMPONENTS_FILENAME } from "./styled-components-fixture";
+import type {
+  StyledComponentsCorpus,
+  StyledComponentsCorpusFile,
+} from "./styled-components-corpus";
 import {
   transformStyledComponentsYuku,
   type YukuStyledComponentsOptions,
@@ -32,17 +34,21 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Yuku + JS plugin",
   "OXC + Yuku walk plugin",
   "OXC raw transfer + Yuku walk",
-  "OXC + OXC Visitor plugin",
-  "OXC raw transfer + OXC Visitor",
 ] as const;
 
 export type StyledComponentsTransformerName =
   (typeof STYLED_COMPONENTS_TRANSFORMERS)[number];
 
+export interface StyledComponentsOutput {
+  code: string;
+  relativePath: string;
+}
+
 export interface StyledComponentsValidation {
   componentIds: number;
   displayNames: number;
-  minifiedRules: number;
+  files: number;
+  jsxElements: number;
   outputBytes: number;
   outputCodeUnits: number;
   pureAnnotations: number;
@@ -51,15 +57,15 @@ export interface StyledComponentsValidation {
   withConfigCalls: number;
 }
 
-export function transformStyledComponentsBabel(source: string): string {
-  const result = babelTransformSync(source, {
+function transformBabel(file: StyledComponentsCorpusFile): string {
+  const result = babelTransformSync(file.source, {
     ast: false,
     babelrc: false,
     code: true,
     comments: true,
     compact: false,
     configFile: false,
-    filename: STYLED_COMPONENTS_FILENAME,
+    filename: file.filename,
     parserOpts: {
       attachComment: false,
       sourceType: "module",
@@ -71,9 +77,9 @@ export function transformStyledComponentsBabel(source: string): string {
   return result.code;
 }
 
-export function transformStyledComponentsSwc(source: string): string {
-  return swcTransformSync(source, {
-    filename: STYLED_COMPONENTS_FILENAME,
+function transformSwc(file: StyledComponentsCorpusFile): string {
+  return swcTransformSync(file.source, {
+    filename: file.filename,
     jsc: {
       experimental: {
         plugins: [["@swc/plugin-styled-components", STYLED_COMPONENTS_OPTIONS]],
@@ -90,16 +96,16 @@ export function transformStyledComponentsSwc(source: string): string {
   }).code;
 }
 
-export function transformStyledComponentsYukuPipeline(source: string): string {
-  const parsed = yukuParse(source, {
+function transformYuku(file: StyledComponentsCorpusFile): string {
+  const parsed = yukuParse(file.source, {
     attachComments: false,
     lang: "jsx",
     sourceType: "module",
   });
   transformStyledComponentsYuku(
     parsed.program,
-    source,
-    STYLED_COMPONENTS_FILENAME,
+    file.source,
+    file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
   const result = yukuGenerate(parsed.program, {
@@ -112,9 +118,8 @@ export function transformStyledComponentsYukuPipeline(source: string): string {
   return result.code;
 }
 
-function transformStyledComponentsOxcPipeline(
-  source: string,
-  walker: "yuku" | "oxc",
+function transformOxc(
+  file: StyledComponentsCorpusFile,
   rawTransfer: boolean,
 ): string {
   if (rawTransfer && !rawTransferSupported()) {
@@ -125,119 +130,145 @@ function transformStyledComponentsOxcPipeline(
     lang: "jsx",
     sourceType: "module",
   } as const;
-  const parsed = oxcParseSync(STYLED_COMPONENTS_FILENAME, source, options as never);
+  const parsed = oxcParseSync(file.filename, file.source, options as never);
   if (parsed.errors.length > 0) {
     throw new Error(`OXC parser failed: ${parsed.errors[0]!.message}`);
   }
-  const program = parsed.program as unknown as Program;
   transformStyledComponentsYuku(
-    program,
-    source,
-    STYLED_COMPONENTS_FILENAME,
+    parsed.program as unknown as Program,
+    file.source,
+    file.filename,
     STYLED_COMPONENTS_OPTIONS,
-    walker,
   );
   return oxcPrintSync(parsed.program, { jsx: true });
 }
 
 export function transformStyledComponentsFor(
   name: StyledComponentsTransformerName,
-  source: string,
+  file: StyledComponentsCorpusFile,
 ): string {
   switch (name) {
     case "Babel + JS plugin":
-      return transformStyledComponentsBabel(source);
+      return transformBabel(file);
     case "SWC + WASM plugin":
-      return transformStyledComponentsSwc(source);
+      return transformSwc(file);
     case "Yuku + JS plugin":
-      return transformStyledComponentsYukuPipeline(source);
+      return transformYuku(file);
     case "OXC + Yuku walk plugin":
-      return transformStyledComponentsOxcPipeline(source, "yuku", false);
+      return transformOxc(file, false);
     case "OXC raw transfer + Yuku walk":
-      return transformStyledComponentsOxcPipeline(source, "yuku", true);
-    case "OXC + OXC Visitor plugin":
-      return transformStyledComponentsOxcPipeline(source, "oxc", false);
-    case "OXC raw transfer + OXC Visitor":
-      return transformStyledComponentsOxcPipeline(source, "oxc", true);
+      return transformOxc(file, true);
   }
+}
+
+export function transformStyledComponentsCorpusFor(
+  name: StyledComponentsTransformerName,
+  corpus: StyledComponentsCorpus,
+): StyledComponentsOutput[] {
+  return corpus.files.map((file) => ({
+    code: transformStyledComponentsFor(name, file),
+    relativePath: file.relativePath,
+  }));
 }
 
 function countMatches(source: string, pattern: RegExp): number {
   return source.match(pattern)?.length ?? 0;
 }
 
-export function validateStyledComponentsOutput(
+export function validateStyledComponentsOutputs(
   name: StyledComponentsTransformerName,
-  output: string,
-  fixture: StyledComponentsFixture,
+  outputs: StyledComponentsOutput[],
 ): StyledComponentsValidation {
-  if (output.length === 0) throw new Error(`${name} generated empty output`);
-
-  const reparsed = yukuParse(output, { lang: "jsx", sourceType: "module" });
-  if (reparsed.diagnostics.length > 0) {
-    throw new Error(`${name} generated invalid JavaScript: ${reparsed.diagnostics[0]!.message}`);
-  }
-
-  let taggedTemplates = 0;
-  walk(reparsed.program, {
-    TaggedTemplateExpression() {
-      taggedTemplates++;
-    },
-  });
-
-  const componentIdValues = Array.from(
-    output.matchAll(/\bcomponentId\s*:\s*["'`]([^"'`]+)["'`]/g),
-    (match) => match[1]!,
-  );
+  const componentIdValues: string[] = [];
   const validation: StyledComponentsValidation = {
-    componentIds: componentIdValues.length,
-    displayNames: countMatches(output, /\bdisplayName\s*:/g),
-    minifiedRules: countMatches(output, /display:grid/g),
-    outputBytes: Buffer.byteLength(output),
-    outputCodeUnits: output.length,
-    pureAnnotations: countMatches(output, /#__PURE__/g),
-    taggedTemplates,
-    uniqueComponentIds: new Set(componentIdValues).size,
-    withConfigCalls: countMatches(output, /\.withConfig\s*\(/g),
+    componentIds: 0,
+    displayNames: 0,
+    files: outputs.length,
+    jsxElements: 0,
+    outputBytes: 0,
+    outputCodeUnits: 0,
+    pureAnnotations: 0,
+    taggedTemplates: 0,
+    uniqueComponentIds: 0,
+    withConfigCalls: 0,
   };
 
-  if (validation.withConfigCalls !== fixture.transformedComponentCount) {
-    throw new Error(
-      `${name} generated ${validation.withConfigCalls} withConfig calls, ` +
-        `expected ${fixture.transformedComponentCount}`,
+  for (const output of outputs) {
+    if (output.code.length === 0) {
+      throw new Error(`${name} generated an empty output for ${output.relativePath}`);
+    }
+    const reparsed = yukuParse(output.code, {
+      lang: "jsx",
+      sourceType: "module",
+    });
+    if (reparsed.diagnostics.length > 0) {
+      throw new Error(
+        `${name} generated invalid code for ${output.relativePath}: ` +
+          reparsed.diagnostics[0]!.message,
+      );
+    }
+    walk(reparsed.program, {
+      JSXElement() {
+        validation.jsxElements++;
+      },
+      TaggedTemplateExpression() {
+        validation.taggedTemplates++;
+      },
+    });
+    componentIdValues.push(
+      ...Array.from(
+        output.code.matchAll(/\bcomponentId\s*:\s*["'`]([^"'`]+)["'`]/g),
+        (match) => match[1]!,
+      ),
     );
+    validation.displayNames += countMatches(output.code, /\bdisplayName\s*:/g);
+    validation.outputBytes += Buffer.byteLength(output.code);
+    validation.outputCodeUnits += output.code.length;
+    validation.pureAnnotations += countMatches(output.code, /#__PURE__/g);
+    validation.withConfigCalls += countMatches(output.code, /\.withConfig\s*\(/g);
   }
-  if (validation.displayNames !== fixture.transformedComponentCount) {
-    throw new Error(
-      `${name} generated ${validation.displayNames} display names, ` +
-        `expected ${fixture.transformedComponentCount}`,
-    );
+
+  validation.componentIds = componentIdValues.length;
+  validation.uniqueComponentIds = new Set(componentIdValues).size;
+  if (validation.withConfigCalls === 0) {
+    throw new Error(`${name} did not transform any styled components`);
   }
-  if (validation.componentIds !== fixture.transformedComponentCount) {
-    throw new Error(
-      `${name} generated ${validation.componentIds} component IDs, ` +
-        `expected ${fixture.transformedComponentCount}`,
-    );
+  if (validation.displayNames !== validation.withConfigCalls) {
+    throw new Error(`${name} did not add a display name to every transformed component`);
   }
-  if (validation.uniqueComponentIds !== fixture.transformedComponentCount) {
+  if (validation.componentIds !== validation.withConfigCalls) {
+    throw new Error(`${name} did not add an ID to every transformed component`);
+  }
+  if (validation.uniqueComponentIds !== validation.componentIds) {
     throw new Error(`${name} generated duplicate component IDs`);
   }
-  const pureAnnotationsMinimum = fixture.transformedComponentCount + 3;
+  if (validation.taggedTemplates !== 0) {
+    throw new Error(`${name} left styled tagged templates in the corpus output`);
+  }
   if (name.startsWith("OXC")) {
     if (validation.pureAnnotations !== 0) {
       throw new Error(`${name} unexpectedly emitted comments`);
     }
-  } else if (validation.pureAnnotations < pureAnnotationsMinimum) {
-    throw new Error(
-      `${name} generated ${validation.pureAnnotations} PURE annotations, ` +
-        `expected at least ${pureAnnotationsMinimum}`,
-    );
-  }
-  if (validation.taggedTemplates !== 0) {
-    throw new Error(`${name} left ${validation.taggedTemplates} tagged templates`);
-  }
-  if (validation.minifiedRules < fixture.styledComponentCount) {
-    throw new Error(`${name} did not minify every display rule`);
+  } else if (validation.pureAnnotations < validation.withConfigCalls) {
+    throw new Error(`${name} did not annotate every transformed component as pure`);
   }
   return validation;
+}
+
+export function assertComparableStyledComponentsFeatures(
+  validations: StyledComponentsValidation[],
+): void {
+  const first = validations[0];
+  if (first === undefined) throw new Error("No styled-components output was validated");
+  for (const validation of validations.slice(1)) {
+    if (
+      validation.componentIds !== first.componentIds ||
+      validation.displayNames !== first.displayNames ||
+      validation.taggedTemplates !== first.taggedTemplates ||
+      validation.uniqueComponentIds !== first.uniqueComponentIds ||
+      validation.withConfigCalls !== first.withConfigCalls
+    ) {
+      throw new Error("Styled-components feature coverage differs between transformers");
+    }
+  }
 }

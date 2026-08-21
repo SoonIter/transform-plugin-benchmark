@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { STYLED_COMPONENTS_CORPUS_COMMIT } from "./styled-components-corpus";
 
 const SETTINGS = {
   BENCH_RUNS: "3",
@@ -8,13 +9,11 @@ const SETTINGS = {
   BENCH_WARMUP: "1000",
   PROFILE_TIME: "5000",
   PROFILE_WARMUP: "1000",
-  STYLED_COMPONENTS_COUNT: "240",
 } as const;
 
 const NODE_VERSION = "24.18.1";
 const REPRODUCTION_COMMAND = "npm run reproduce:styled-components";
 const RESULT_FILE = "styled-components.json";
-const SOURCE_TAG = "styled-components-oxc-raw-visitor-v6";
 
 interface ReproductionResult {
   benchmark: {
@@ -22,10 +21,10 @@ interface ReproductionResult {
     timeMs: number;
     warmupMs: number;
   };
-  fixture: {
-    cssProps: number;
-    styledComponents: number;
-    transformedComponents: number;
+  corpus: {
+    commit: string;
+    files: number;
+    sourceBytes: number;
   };
   profile: {
     results: Array<{ name: string }>;
@@ -36,11 +35,12 @@ interface ReproductionResult {
   reproduction: {
     command: string;
     resultFile: string;
-    sourceTag: string;
   };
   results: Array<{
+    componentIds: number;
     name: string;
     pureAnnotations: number;
+    withConfigCalls: number;
   }>;
   runtime: string;
   versions: {
@@ -76,15 +76,11 @@ function assertResult(result: ReproductionResult): void {
   if (result.profile.warmupMs !== Number(SETTINGS.PROFILE_WARMUP)) {
     throw new Error("Reproduction result has an unexpected profile warmup");
   }
-  if (result.fixture.styledComponents !== Number(SETTINGS.STYLED_COMPONENTS_COUNT)) {
-    throw new Error("Reproduction result has an unexpected component count");
+  if (result.corpus.commit !== STYLED_COMPONENTS_CORPUS_COMMIT) {
+    throw new Error("Reproduction result has an unexpected corpus revision");
   }
-  const cssPropCount = Math.ceil(Number(SETTINGS.STYLED_COMPONENTS_COUNT) / 4);
-  if (result.fixture.cssProps !== cssPropCount) {
-    throw new Error("Reproduction result has an unexpected css prop count");
-  }
-  if (result.fixture.transformedComponents !== result.fixture.styledComponents + cssPropCount) {
-    throw new Error("Reproduction result has an unexpected transformed component count");
+  if (result.corpus.files !== 87 || result.corpus.sourceBytes !== 57_051) {
+    throw new Error("Reproduction result has an unexpected corpus shape");
   }
   if (result.runtime !== `Node ${NODE_VERSION}`) {
     throw new Error(`Expected runtime Node ${NODE_VERSION}, received ${result.runtime}`);
@@ -95,54 +91,26 @@ function assertResult(result: ReproductionResult): void {
   if (result.versions.oxcCodegen !== "0.144.0") {
     throw new Error("Reproduction result has an unexpected OXC codegen version");
   }
-  if (result.results.length !== 7) {
+  if (result.results.length !== 5 || result.profile.results.length !== 5) {
     throw new Error("Reproduction result has an unexpected transformer count");
   }
-  if (result.profile.results.length !== 7) {
-    throw new Error("Reproduction result has an unexpected profile transformer count");
-  }
-  const oxcResult = result.results.find(({ name }) => name === "OXC + Yuku walk plugin");
-  if (oxcResult === undefined) {
-    throw new Error("Reproduction result does not include the OXC pipeline");
-  }
-  if (oxcResult.pureAnnotations !== 0) {
-    throw new Error("OXC codegen unexpectedly emitted comments");
-  }
-  const oxcVisitorResult = result.results.find(
-    ({ name }) => name === "OXC + OXC Visitor plugin",
-  );
-  if (oxcVisitorResult === undefined) {
-    throw new Error("Reproduction result does not include the OXC Visitor pipeline");
-  }
-  if (oxcVisitorResult.pureAnnotations !== 0) {
-    throw new Error("OXC Visitor pipeline unexpectedly emitted comments");
-  }
-  const rawTransferResult = result.results.find(
-    ({ name }) => name === "OXC raw transfer + Yuku walk",
-  );
-  if (rawTransferResult === undefined) {
-    throw new Error("Reproduction result does not include the OXC raw-transfer pipeline");
-  }
-  if (rawTransferResult.pureAnnotations !== 0) {
-    throw new Error("OXC raw-transfer pipeline unexpectedly emitted comments");
-  }
-  const rawTransferVisitorResult = result.results.find(
-    ({ name }) => name === "OXC raw transfer + OXC Visitor",
-  );
-  if (rawTransferVisitorResult === undefined) {
-    throw new Error("Reproduction result does not include the OXC raw-transfer Visitor pipeline");
-  }
-  if (rawTransferVisitorResult.pureAnnotations !== 0) {
-    throw new Error("OXC raw-transfer Visitor pipeline unexpectedly emitted comments");
+  for (const resultEntry of result.results) {
+    if (resultEntry.componentIds !== 32 || resultEntry.withConfigCalls !== 32) {
+      throw new Error(`${resultEntry.name} has incomplete styled-components coverage`);
+    }
+    if (resultEntry.name.startsWith("OXC")) {
+      if (resultEntry.pureAnnotations !== 0) {
+        throw new Error(`${resultEntry.name} unexpectedly retained comments`);
+      }
+    } else if (resultEntry.pureAnnotations < 32) {
+      throw new Error(`${resultEntry.name} has incomplete PURE annotations`);
+    }
   }
   if (result.reproduction.command !== REPRODUCTION_COMMAND) {
     throw new Error("Reproduction result did not record the invoking command");
   }
   if (result.reproduction.resultFile !== RESULT_FILE) {
     throw new Error("Reproduction result did not record its output file");
-  }
-  if (result.reproduction.sourceTag !== SOURCE_TAG) {
-    throw new Error("Reproduction result did not record the immutable source tag");
   }
 }
 
@@ -152,7 +120,6 @@ function runScript(path: string): void {
       ...process.env,
       ...SETTINGS,
       BENCH_REPRODUCTION_COMMAND: REPRODUCTION_COMMAND,
-      BENCH_SOURCE_TAG: SOURCE_TAG,
       STYLED_COMPONENTS_RESULT: RESULT_FILE,
     },
     stdio: "inherit",
