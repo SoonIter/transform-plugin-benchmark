@@ -67,6 +67,25 @@
     },
     {
       "aggregateSha256": "6d1e3689ab9d9d0b5dd1587838bc02542f6ba6075a27618af2cc50f0fd489458",
+      "file": "yuku-oxc-codegen-output.jsx",
+      "representativeBytes": 247,
+      "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
+      "transformer": "Yuku + OXC codegen",
+      "validation": {
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 45528,
+        "outputCodeUnits": 45528,
+        "pureAnnotations": 0,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
+      }
+    },
+    {
+      "aggregateSha256": "6d1e3689ab9d9d0b5dd1587838bc02542f6ba6075a27618af2cc50f0fd489458",
       "file": "oxc-output.jsx",
       "representativeBytes": 247,
       "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",

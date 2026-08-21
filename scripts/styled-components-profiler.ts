@@ -12,6 +12,7 @@ import { decode as yukuDecode } from "yuku-parser/decode.js";
 import type { Program } from "yuku-parser";
 import type { StyledComponentsCorpusFile } from "./styled-components-corpus";
 import {
+  printYukuProgramWithOxc,
   STYLED_COMPONENTS_OPTIONS,
   transformStyledComponentsFor,
   type StyledComponentsTransformerName,
@@ -47,6 +48,13 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "plugin transform", runtime: "JS" },
     { name: "AST encode", runtime: "JS" },
     { name: "codegen", runtime: "native" },
+  ],
+  "Yuku + OXC codegen": [
+    { name: "source encode", runtime: "JS" },
+    { name: "parse", runtime: "native" },
+    { name: "AST decode", runtime: "JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "codegen", runtime: "JS" },
   ],
   "OXC + Yuku walk plugin": [
     { name: "parse + AST transfer", runtime: "native + JS" },
@@ -138,7 +146,10 @@ function profileSwc(file: StyledComponentsCorpusFile): ProfileIteration {
   };
 }
 
-function profileYuku(file: StyledComponentsCorpusFile): ProfileIteration {
+function profileYuku(
+  file: StyledComponentsCorpusFile,
+  codegen: "oxc" | "yuku",
+): ProfileIteration {
   const start = process.hrtime.bigint();
   const sourceBytes = sourceEncoder.encode(file.source);
   const sourceEncodedAt = process.hrtime.bigint();
@@ -158,6 +169,20 @@ function profileYuku(file: StyledComponentsCorpusFile): ProfileIteration {
     STYLED_COMPONENTS_OPTIONS,
   );
   const transformedAt = process.hrtime.bigint();
+  if (codegen === "oxc") {
+    const output = printYukuProgramWithOxc(program);
+    const generatedAt = process.hrtime.bigint();
+    return {
+      durationsNs: [
+        durationNs(start, sourceEncodedAt),
+        durationNs(sourceEncodedAt, parsedAt),
+        durationNs(parsedAt, decodedAt),
+        durationNs(decodedAt, transformedAt),
+        durationNs(transformedAt, generatedAt),
+      ],
+      output,
+    };
+  }
   const encoded = yukuEncode(program);
   const encodedAt = process.hrtime.bigint();
   const generated = yukuCodegenBinding.generate(encoded, {
@@ -230,7 +255,9 @@ export function profileStyledComponentsOnce(
     case "SWC + WASM plugin":
       return profileSwc(file);
     case "Yuku + JS plugin":
-      return profileYuku(file);
+      return profileYuku(file, "yuku");
+    case "Yuku + OXC codegen":
+      return profileYuku(file, "oxc");
     case "OXC + Yuku walk plugin":
       return profileOxc(file, false);
     case "OXC raw transfer + Yuku walk":

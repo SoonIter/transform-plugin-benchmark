@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="590"
-    viewBox="0 0 1500 590" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="690"
+    viewBox="0 0 1500 690" role="img"
     aria-label="Styled-components transform latency, lower is better">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
@@ -13,45 +13,54 @@
     <text x="360" y="103" text-anchor="end" class="label">
         OXC raw transfer + Yuku walk
       </text>
-      <rect x="380" y="72" width="73.02" height="58"
+      <rect x="380" y="72" width="74.07" height="58"
         rx="8" fill="#22c55e" />
-      <text x="471.02" y="108" class="value">
-        6.43 ms
+      <text x="472.07" y="108" class="value">
+        6.49 ms
       </text>
 
       <text x="360" y="203" text-anchor="end" class="label">
-        Yuku + JS plugin
+        Yuku + OXC codegen
       </text>
-      <rect x="380" y="172" width="99.34" height="58"
+      <rect x="380" y="172" width="75.37" height="58"
         rx="8" fill="#f97316" />
-      <text x="497.34" y="208" class="value">
-        8.75 ms
+      <text x="473.37" y="208" class="value">
+        6.61 ms
       </text>
 
       <text x="360" y="303" text-anchor="end" class="label">
-        OXC + Yuku walk plugin
+        Yuku + JS plugin
       </text>
-      <rect x="380" y="272" width="104.80" height="58"
-        rx="8" fill="#22c55e" />
-      <text x="502.80" y="308" class="value">
-        9.23 ms
+      <rect x="380" y="272" width="100.65" height="58"
+        rx="8" fill="#f97316" />
+      <text x="498.65" y="308" class="value">
+        8.82 ms
       </text>
 
       <text x="360" y="403" text-anchor="end" class="label">
-        Babel + JS plugin
+        OXC + Yuku walk plugin
       </text>
-      <rect x="380" y="372" width="368.50" height="58"
-        rx="8" fill="#8b5cf6" />
-      <text x="766.50" y="408" class="value">
-        32.47 ms
+      <rect x="380" y="372" width="105.03" height="58"
+        rx="8" fill="#22c55e" />
+      <text x="503.03" y="408" class="value">
+        9.21 ms
       </text>
 
       <text x="360" y="503" text-anchor="end" class="label">
+        Babel + JS plugin
+      </text>
+      <rect x="380" y="472" width="378.29" height="58"
+        rx="8" fill="#8b5cf6" />
+      <text x="776.29" y="508" class="value">
+        33.16 ms
+      </text>
+
+      <text x="360" y="603" text-anchor="end" class="label">
         SWC + WASM plugin
       </text>
-      <rect x="380" y="472" width="970.00" height="58"
+      <rect x="380" y="572" width="970.00" height="58"
         rx="8" fill="#3b82f6" />
-      <text x="1368.00" y="508" class="value">
-        85.48 ms
+      <text x="1368.00" y="608" class="value">
+        85.02 ms
       </text>
   </svg>

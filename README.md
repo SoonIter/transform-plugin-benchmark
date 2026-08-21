@@ -1,10 +1,11 @@
 # Transform Plugin Benchmark
 
-Reproducible benchmark of five styled-components transform pipelines:
+Reproducible benchmark of six styled-components transform pipelines:
 
 - `babel-plugin-styled-components` as a Babel JavaScript plugin
 - `@swc/plugin-styled-components` as an SWC WASM plugin
 - the Babel plugin behavior ported to a Yuku JavaScript plugin
+- the same Yuku parser and plugin with `oxc-codegen`
 - `oxc-parser` + the Yuku walk plugin + `oxc-codegen`
 - the same OXC pipeline with `experimentalRawTransfer`
 
@@ -19,15 +20,17 @@ Node.js 24.18.1 on the machine documented below. Lower is better.
 
 | Transformer | Median | Independent run medians | Run spread | Relative to Yuku |
 |-------------|-------:|-------------------------|-----------:|-----------------:|
-| **OXC raw transfer + Yuku walk** | **6.43 ms** | 6.470, 6.435, 6.421 ms | 0.76% | 0.74× |
-| Yuku + JS plugin | 8.75 ms | 8.660, 8.754, 8.778 ms | 1.35% | 1.00× |
-| OXC + Yuku walk plugin | 9.23 ms | 9.326, 9.235, 9.220 ms | 1.15% | 1.05× |
-| Babel + JS plugin | 32.47 ms | 32.473, 32.679, 31.923 ms | 2.33% | 3.71× |
-| SWC + WASM plugin | 85.48 ms | 85.568, 85.237, 85.479 ms | 0.39% | 9.76× |
+| **OXC raw transfer + Yuku walk** | **6.49 ms** | 6.473, 6.492, 6.551 ms | 1.20% | 0.74× |
+| Yuku + OXC codegen | 6.61 ms | 6.516, 6.644, 6.606 ms | 1.94% | 0.75× |
+| Yuku + JS plugin | 8.82 ms | 8.832, 8.712, 8.822 ms | 1.36% | 1.00× |
+| OXC + Yuku walk plugin | 9.21 ms | 9.074, 9.206, 9.250 ms | 1.91% | 1.04× |
+| Babel + JS plugin | 33.16 ms | 33.158, 33.422, 33.052 ms | 1.12% | 3.76× |
+| SWC + WASM plugin | 85.02 ms | 84.464, 85.365, 85.021 ms | 1.06% | 9.64× |
 
-On this corpus, OXC raw transfer reduced the complete OXC pipeline median by 30.3%, from 9.23 ms
-to 6.43 ms. This is a full `parse → plugin → codegen` result across 87 modules, not a standalone
-walker microbenchmark.
+Replacing Yuku's AST encode and native codegen path with `oxc-codegen` reduced the complete Yuku
+pipeline median by 25.1%, from 8.82 ms to 6.61 ms. OXC raw transfer reduced the complete OXC
+pipeline median by 29.5%, from 9.21 ms to 6.49 ms. These are full `parse → plugin → codegen`
+results across 87 modules, not standalone walker or codegen microbenchmarks.
 
 ## Real-world workload
 
@@ -67,28 +70,29 @@ All pipelines receive the same source and options:
 ```
 
 The outputs need not be byte-identical. They must provide the same styled-components feature
-coverage: all five pipelines emit 32 `.withConfig` calls, 32 display names, 32 unique component
+coverage: all six pipelines emit 32 `.withConfig` calls, 32 display names, 32 unique component
 IDs, preserve 137 JSX elements, and leave no styled tagged templates. Every output is reparsed
 before measurement. JSX lowering is outside the measured transform endpoint.
 
-**OXC limitation:** `oxc-codegen` does not print comments, so both OXC rows drop PURE annotations.
+**OXC limitation:** `oxc-codegen` does not print comments; its three rows drop PURE annotations.
 
 ## Inspectable artifacts
 
-The full inputs are the vendored corpus. A representative styled component and all five generated
+The full inputs are the vendored corpus. A representative styled component and all six generated
 forms are committed under [`artifacts/styled-components`](artifacts/styled-components):
 
 - [`input.jsx`](artifacts/styled-components/input.jsx)
 - [`babel-output.jsx`](artifacts/styled-components/babel-output.jsx)
 - [`swc-output.jsx`](artifacts/styled-components/swc-output.jsx)
 - [`yuku-output.jsx`](artifacts/styled-components/yuku-output.jsx)
+- [`yuku-oxc-codegen-output.jsx`](artifacts/styled-components/yuku-oxc-codegen-output.jsx)
 - [`oxc-output.jsx`](artifacts/styled-components/oxc-output.jsx)
 - [`oxc-raw-transfer-output.jsx`](artifacts/styled-components/oxc-raw-transfer-output.jsx)
 - [`manifest.json`](artifacts/styled-components/manifest.json), containing aggregate corpus/output
   hashes, byte sizes, and validation counts
 
-The regular and raw-transfer OXC outputs are asserted byte-for-byte equal across the complete
-corpus.
+The Yuku-parser, regular OXC, and raw-transfer OXC outputs printed by `oxc-codegen` are asserted
+byte-for-byte equal across the complete corpus.
 
 ## Stage breakdown
 
@@ -99,22 +103,27 @@ three independent run means; stage values add up within a pipeline.
 
 | Transformer | Stage | Runtime | Median run mean | Share |
 |-------------|-------|---------|----------------:|------:|
-| Babel + JS plugin | parse | JS | 4.303 ms | 10.6% |
-| Babel + JS plugin | plugin transform | JS | 28.742 ms | 71.1% |
-| Babel + JS plugin | codegen | JS | 7.385 ms | 18.3% |
-| SWC + WASM plugin | parse + plugin + codegen | native + WASM | 85.476 ms | 100.0% |
-| Yuku + JS plugin | source encode | JS | 0.110 ms | 1.2% |
-| Yuku + JS plugin | parse | native | 0.746 ms | 8.3% |
-| Yuku + JS plugin | AST decode | JS | 0.369 ms | 4.1% |
-| Yuku + JS plugin | plugin transform | JS | 5.458 ms | 60.4% |
-| Yuku + JS plugin | AST encode | JS | 1.838 ms | 20.3% |
-| Yuku + JS plugin | codegen | native | 0.517 ms | 5.7% |
+| Babel + JS plugin | parse | JS | 4.436 ms | 10.8% |
+| Babel + JS plugin | plugin transform | JS | 28.740 ms | 70.2% |
+| Babel + JS plugin | codegen | JS | 7.783 ms | 19.0% |
+| SWC + WASM plugin | parse + plugin + codegen | native + WASM | 84.775 ms | 100.0% |
+| Yuku + JS plugin | source encode | JS | 0.109 ms | 1.2% |
+| Yuku + JS plugin | parse | native | 0.753 ms | 8.2% |
+| Yuku + JS plugin | AST decode | JS | 0.377 ms | 4.1% |
+| Yuku + JS plugin | plugin transform | JS | 5.538 ms | 60.3% |
+| Yuku + JS plugin | AST encode | JS | 1.872 ms | 20.4% |
+| Yuku + JS plugin | codegen | native | 0.534 ms | 5.8% |
+| Yuku + OXC codegen | source encode | JS | 0.125 ms | 1.8% |
+| Yuku + OXC codegen | parse | native | 0.720 ms | 10.6% |
+| Yuku + OXC codegen | AST decode | JS | 0.357 ms | 5.3% |
+| Yuku + OXC codegen | plugin transform | JS | 5.381 ms | 79.1% |
+| Yuku + OXC codegen | codegen | JS | 0.219 ms | 3.2% |
 | OXC + Yuku walk plugin | parse + AST transfer | native + JS | 1.242 ms | 13.0% |
-| OXC + Yuku walk plugin | plugin transform | JS | 7.992 ms | 83.9% |
-| OXC + Yuku walk plugin | codegen | JS | 0.289 ms | 3.0% |
-| OXC raw transfer + Yuku walk | parse + raw AST transfer | native + JS | 1.048 ms | 15.3% |
-| OXC raw transfer + Yuku walk | plugin transform | JS | 5.549 ms | 81.3% |
-| OXC raw transfer + Yuku walk | codegen | JS | 0.230 ms | 3.4% |
+| OXC + Yuku walk plugin | plugin transform | JS | 8.052 ms | 84.1% |
+| OXC + Yuku walk plugin | codegen | JS | 0.281 ms | 2.9% |
+| OXC raw transfer + Yuku walk | parse + raw AST transfer | native + JS | 1.065 ms | 15.5% |
+| OXC raw transfer + Yuku walk | plugin transform | JS | 5.564 ms | 81.1% |
+| OXC raw transfer + Yuku walk | codegen | JS | 0.229 ms | 3.3% |
 
 SWC exposes the WASM plugin through a complete transform call, not as an independently measurable
 AST stage. Its row therefore stays combined. The benchmark does not estimate plugin time by
@@ -131,11 +140,12 @@ arbitrary JavaScript code.
 
 | Transformer | Directly measured remainder | Remainder normalized to 100% |
 |-------------|----------------------------:|------------------------------|
-| Babel + JS plugin | 11.687 ms | parse 36.8%, codegen 63.2% |
+| Babel + JS plugin | 12.219 ms | parse 36.3%, codegen 63.7% |
 | SWC + WASM plugin | not separable | plugin shares the public transform call |
-| Yuku + JS plugin | 3.581 ms | encode 3.1%, parse 20.8%, decode 10.3%, AST encode 51.3%, codegen 14.4% |
-| OXC + Yuku walk plugin | 1.531 ms | parse + AST transfer 81.1%, codegen 18.9% |
-| OXC raw transfer + Yuku walk | 1.278 ms | parse + raw AST transfer 82.0%, codegen 18.0% |
+| Yuku + JS plugin | 3.645 ms | encode 3.0%, parse 20.7%, decode 10.3%, AST encode 51.4%, codegen 14.7% |
+| Yuku + OXC codegen | 1.420 ms | encode 8.8%, parse 50.7%, decode 25.2%, codegen 15.4% |
+| OXC + Yuku walk plugin | 1.524 ms | parse + AST transfer 81.5%, codegen 18.5% |
+| OXC raw transfer + Yuku walk | 1.294 ms | parse + raw AST transfer 82.3%, codegen 17.7% |
 
 This view removes only the directly measured `plugin transform` stage and renormalizes the
 remainder. It is not a separate no-op benchmark.
@@ -144,14 +154,14 @@ remainder. It is not a separate no-op benchmark.
 
 The Yuku implementation is in
 [`scripts/yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts). The test
-suite has 70 cases:
+suite has 71 cases:
 
 - 48 upstream fixtures from `babel-plugin-styled-components@2.3.0`
 - 14 additional Babel-to-Yuku parity cases
-- 8 corpus, profile, output, and committed-artifact contracts
+- 9 corpus, profile, output, and committed-artifact contracts
 
-The benchmark contract validates feature coverage rather than printer formatting. OXC regular and
-raw transfer must also generate identical corpus outputs.
+The benchmark contract validates feature coverage rather than printer formatting. All three
+`oxc-codegen` pipelines must also generate identical corpus outputs.
 
 ## Measurement environment
 

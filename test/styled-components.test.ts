@@ -13,6 +13,7 @@ import {
 } from "../scripts/styled-components-profiler";
 import {
   assertComparableStyledComponentsFeatures,
+  styledComponentsTransformerPrintsComments,
   STYLED_COMPONENTS_TRANSFORMERS,
   transformStyledComponentsCorpusFor,
   transformStyledComponentsFor,
@@ -43,7 +44,7 @@ test("all transformers provide comparable styled-components feature coverage", (
     assert.equal(validation.uniqueComponentIds, 32);
     assert.equal(validation.jsxElements, 137);
     assert.equal(validation.taggedTemplates, 0);
-    if (name.startsWith("OXC")) {
+    if (!styledComponentsTransformerPrintsComments(name)) {
       assert.equal(validation.pureAnnotations, 0);
     } else {
       assert.ok(validation.pureAnnotations >= 32);
@@ -137,7 +138,7 @@ test("committed artifacts reproduce the representative file and corpus outputs",
       createHash("sha256").update(committed).digest("hex"),
       outputRecord.representativeSha256,
     );
-    if (transformer.startsWith("OXC")) {
+    if (!styledComponentsTransformerPrintsComments(transformer)) {
       oxcHashes.push(outputRecord.aggregateSha256);
     }
   }

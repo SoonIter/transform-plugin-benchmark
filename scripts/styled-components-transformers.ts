@@ -32,6 +32,7 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Babel + JS plugin",
   "SWC + WASM plugin",
   "Yuku + JS plugin",
+  "Yuku + OXC codegen",
   "OXC + Yuku walk plugin",
   "OXC raw transfer + Yuku walk",
 ] as const;
@@ -55,6 +56,11 @@ export interface StyledComponentsValidation {
   taggedTemplates: number;
   uniqueComponentIds: number;
   withConfigCalls: number;
+}
+
+export function printYukuProgramWithOxc(program: Program): string {
+  // Both packages expose ESTree at runtime but publish distinct Program types.
+  return oxcPrintSync(program as never, { jsx: true });
 }
 
 function transformBabel(file: StyledComponentsCorpusFile): string {
@@ -101,7 +107,10 @@ function transformSwc(file: StyledComponentsCorpusFile): string {
   }).code;
 }
 
-function transformYuku(file: StyledComponentsCorpusFile): string {
+function transformYuku(
+  file: StyledComponentsCorpusFile,
+  codegen: "oxc" | "yuku",
+): string {
   const parsed = yukuParse(file.source, {
     attachComments: false,
     lang: "jsx",
@@ -113,6 +122,9 @@ function transformYuku(file: StyledComponentsCorpusFile): string {
     file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
+  if (codegen === "oxc") {
+    return printYukuProgramWithOxc(parsed.program);
+  }
   const result = yukuGenerate(parsed.program, {
     comments: "some",
     format: "pretty",
@@ -158,12 +170,20 @@ export function transformStyledComponentsFor(
     case "SWC + WASM plugin":
       return transformSwc(file);
     case "Yuku + JS plugin":
-      return transformYuku(file);
+      return transformYuku(file, "yuku");
+    case "Yuku + OXC codegen":
+      return transformYuku(file, "oxc");
     case "OXC + Yuku walk plugin":
       return transformOxc(file, false);
     case "OXC raw transfer + Yuku walk":
       return transformOxc(file, true);
   }
+}
+
+export function styledComponentsTransformerPrintsComments(
+  name: StyledComponentsTransformerName,
+): boolean {
+  return name !== "Yuku + OXC codegen" && !name.startsWith("OXC");
 }
 
 export function transformStyledComponentsCorpusFor(
@@ -250,7 +270,7 @@ export function validateStyledComponentsOutputs(
   if (validation.taggedTemplates !== 0) {
     throw new Error(`${name} left styled tagged templates in the corpus output`);
   }
-  if (name.startsWith("OXC")) {
+  if (!styledComponentsTransformerPrintsComments(name)) {
     if (validation.pureAnnotations !== 0) {
       throw new Error(`${name} unexpectedly emitted comments`);
     }

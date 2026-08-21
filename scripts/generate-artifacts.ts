@@ -19,6 +19,7 @@ const OUTPUT_FILES: ReadonlyArray<readonly [StyledComponentsTransformerName, str
   ["Babel + JS plugin", "babel-output.jsx"],
   ["SWC + WASM plugin", "swc-output.jsx"],
   ["Yuku + JS plugin", "yuku-output.jsx"],
+  ["Yuku + OXC codegen", "yuku-oxc-codegen-output.jsx"],
   ["OXC + Yuku walk plugin", "oxc-output.jsx"],
   ["OXC raw transfer + Yuku walk", "oxc-raw-transfer-output.jsx"],
 ];

@@ -2,6 +2,10 @@ import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { STYLED_COMPONENTS_CORPUS_COMMIT } from "./styled-components-corpus";
+import {
+  styledComponentsTransformerPrintsComments,
+  type StyledComponentsTransformerName,
+} from "./styled-components-transformers";
 
 const SETTINGS = {
   BENCH_RUNS: "3",
@@ -39,7 +43,7 @@ interface ReproductionResult {
   results: Array<{
     componentIds: number;
     jsxElements: number;
-    name: string;
+    name: StyledComponentsTransformerName;
     pureAnnotations: number;
     withConfigCalls: number;
   }>;
@@ -92,7 +96,7 @@ function assertResult(result: ReproductionResult): void {
   if (result.versions.oxcCodegen !== "0.144.0") {
     throw new Error("Reproduction result has an unexpected OXC codegen version");
   }
-  if (result.results.length !== 5 || result.profile.results.length !== 5) {
+  if (result.results.length !== 6 || result.profile.results.length !== 6) {
     throw new Error("Reproduction result has an unexpected transformer count");
   }
   for (const resultEntry of result.results) {
@@ -103,7 +107,7 @@ function assertResult(result: ReproductionResult): void {
     ) {
       throw new Error(`${resultEntry.name} has incomplete styled-components coverage`);
     }
-    if (resultEntry.name.startsWith("OXC")) {
+    if (!styledComponentsTransformerPrintsComments(resultEntry.name)) {
       if (resultEntry.pureAnnotations !== 0) {
         throw new Error(`${resultEntry.name} unexpectedly retained comments`);
       }

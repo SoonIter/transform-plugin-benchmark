@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="838"
-    viewBox="0 0 1600 838" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="952"
+    viewBox="0 0 1600 952" role="img"
     aria-label="Styled-components transform stage shares">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
@@ -13,20 +13,20 @@
         Babel + JS plugin
       </text>
       <g clip-path="url(#row-0)">
-<rect x="380.00" y="78" width="123.46"
+<rect x="380.00" y="78" width="125.63"
         height="66" fill="#38bdf8"><title>Parse:
-        10.6%</title></rect>
+        10.8%</title></rect>
 
 
 
-<rect x="503.46" y="78" width="824.66"
+<rect x="505.63" y="78" width="813.94"
         height="66" fill="#8b5cf6"><title>Babel JS plugin:
-        71.1%</title></rect>
+        70.2%</title></rect>
 
 
-<rect x="1328.12" y="78" width="211.88"
+<rect x="1319.58" y="78" width="220.42"
         height="66" fill="#84cc16"><title>Codegen:
-        18.3%</title></rect>
+        19.0%</title></rect>
 </g>
       <clipPath id="row-0"><rect x="380" y="78"
         width="1160" height="66" rx="8" /></clipPath>
@@ -52,116 +52,142 @@
       <text x="360" y="346" text-anchor="end" class="label">
         Yuku + JS plugin
       </text>
-      <g clip-path="url(#row-2)"><rect x="380.00" y="306" width="14.14"
+      <g clip-path="url(#row-2)"><rect x="380.00" y="306" width="13.80"
         height="66" fill="#facc15"><title>Source encode:
         1.2%</title></rect>
-<rect x="394.14" y="306" width="95.78"
+<rect x="393.80" y="306" width="95.10"
         height="66" fill="#38bdf8"><title>Parse:
-        8.3%</title></rect>
+        8.2%</title></rect>
 
 
-<rect x="489.92" y="306" width="47.37"
+<rect x="488.90" y="306" width="47.58"
         height="66" fill="#34d399"><title>AST decode:
         4.1%</title></rect>
 
-<rect x="537.29" y="306" width="700.41"
+<rect x="536.49" y="306" width="699.61"
         height="66" fill="#ec4899"><title>Yuku JS plugin:
-        60.4%</title></rect>
-<rect x="1237.70" y="306" width="235.91"
+        60.3%</title></rect>
+<rect x="1236.09" y="306" width="236.42"
         height="66" fill="#fb923c"><title>AST encode:
-        20.3%</title></rect>
-<rect x="1473.61" y="306" width="66.39"
+        20.4%</title></rect>
+<rect x="1472.51" y="306" width="67.49"
         height="66" fill="#84cc16"><title>Codegen:
-        5.7%</title></rect>
+        5.8%</title></rect>
 </g>
       <clipPath id="row-2"><rect x="380" y="306"
         width="1160" height="66" rx="8" /></clipPath>
 
       <text x="360" y="460" text-anchor="end" class="label">
-        OXC + Yuku walk plugin
+        Yuku + OXC codegen
       </text>
-      <g clip-path="url(#row-3)">
+      <g clip-path="url(#row-3)"><rect x="380.00" y="420" width="21.27"
+        height="66" fill="#facc15"><title>Source encode:
+        1.8%</title></rect>
+<rect x="401.27" y="420" width="122.77"
+        height="66" fill="#38bdf8"><title>Parse:
+        10.6%</title></rect>
 
-<rect x="380.00" y="420" width="151.26"
-        height="66" fill="#60a5fa"><title>Parse + AST transfer:
-        13.0%</title></rect>
 
+<rect x="524.03" y="420" width="60.92"
+        height="66" fill="#34d399"><title>AST decode:
+        5.3%</title></rect>
 
-
-<rect x="531.26" y="420" width="973.55"
+<rect x="584.96" y="420" width="917.76"
         height="66" fill="#ec4899"><title>Yuku JS plugin:
-        83.9%</title></rect>
+        79.1%</title></rect>
 
-<rect x="1504.81" y="420" width="35.19"
+<rect x="1502.72" y="420" width="37.28"
         height="66" fill="#84cc16"><title>Codegen:
-        3.0%</title></rect>
+        3.2%</title></rect>
 </g>
       <clipPath id="row-3"><rect x="380" y="420"
         width="1160" height="66" rx="8" /></clipPath>
 
       <text x="360" y="574" text-anchor="end" class="label">
-        OXC raw transfer + Yuku walk
+        OXC + Yuku walk plugin
       </text>
       <g clip-path="url(#row-4)">
 
+<rect x="380.00" y="534" width="150.50"
+        height="66" fill="#60a5fa"><title>Parse + AST transfer:
+        13.0%</title></rect>
 
-<rect x="380.00" y="534" width="178.03"
-        height="66" fill="#2dd4bf"><title>Parse + raw AST transfer:
-        15.3%</title></rect>
 
 
-<rect x="558.03" y="534" width="942.82"
+<rect x="530.50" y="534" width="975.43"
         height="66" fill="#ec4899"><title>Yuku JS plugin:
-        81.3%</title></rect>
+        84.1%</title></rect>
 
-<rect x="1500.85" y="534" width="39.15"
+<rect x="1505.93" y="534" width="34.07"
         height="66" fill="#84cc16"><title>Codegen:
-        3.4%</title></rect>
+        2.9%</title></rect>
 </g>
       <clipPath id="row-4"><rect x="380" y="534"
         width="1160" height="66" rx="8" /></clipPath>
-    <text x="380" y="648" class="axis">0%</text>
-    <text x="960" y="648"
+
+      <text x="360" y="688" text-anchor="end" class="label">
+        OXC raw transfer + Yuku walk
+      </text>
+      <g clip-path="url(#row-5)">
+
+
+<rect x="380.00" y="648" width="180.06"
+        height="66" fill="#2dd4bf"><title>Parse + raw AST transfer:
+        15.5%</title></rect>
+
+
+<rect x="560.06" y="648" width="941.13"
+        height="66" fill="#ec4899"><title>Yuku JS plugin:
+        81.1%</title></rect>
+
+<rect x="1501.18" y="648" width="38.82"
+        height="66" fill="#84cc16"><title>Codegen:
+        3.3%</title></rect>
+</g>
+      <clipPath id="row-5"><rect x="380" y="648"
+        width="1160" height="66" rx="8" /></clipPath>
+    <text x="380" y="762" class="axis">0%</text>
+    <text x="960" y="762"
       text-anchor="middle" class="axis">50%</text>
-    <text x="1540" y="648"
+    <text x="1540" y="762"
       text-anchor="end" class="axis">100%</text>
-    <rect x="60" y="673" width="20" height="20" rx="4"
+    <rect x="60" y="787" width="20" height="20" rx="4"
         fill="#facc15" />
-      <text x="90" y="689" class="legend">Source encode</text>
+      <text x="90" y="803" class="legend">Source encode</text>
 
-      <rect x="570" y="673" width="20" height="20" rx="4"
+      <rect x="570" y="787" width="20" height="20" rx="4"
         fill="#38bdf8" />
-      <text x="600" y="689" class="legend">Parse</text>
+      <text x="600" y="803" class="legend">Parse</text>
 
-      <rect x="1080" y="673" width="20" height="20" rx="4"
+      <rect x="1080" y="787" width="20" height="20" rx="4"
         fill="#60a5fa" />
-      <text x="1110" y="689" class="legend">Parse + AST transfer</text>
+      <text x="1110" y="803" class="legend">Parse + AST transfer</text>
 
-      <rect x="60" y="715" width="20" height="20" rx="4"
+      <rect x="60" y="829" width="20" height="20" rx="4"
         fill="#2dd4bf" />
-      <text x="90" y="731" class="legend">Parse + raw AST transfer</text>
+      <text x="90" y="845" class="legend">Parse + raw AST transfer</text>
 
-      <rect x="570" y="715" width="20" height="20" rx="4"
+      <rect x="570" y="829" width="20" height="20" rx="4"
         fill="#34d399" />
-      <text x="600" y="731" class="legend">AST decode</text>
+      <text x="600" y="845" class="legend">AST decode</text>
 
-      <rect x="1080" y="715" width="20" height="20" rx="4"
+      <rect x="1080" y="829" width="20" height="20" rx="4"
         fill="#8b5cf6" />
-      <text x="1110" y="731" class="legend">Babel JS plugin</text>
+      <text x="1110" y="845" class="legend">Babel JS plugin</text>
 
-      <rect x="60" y="757" width="20" height="20" rx="4"
+      <rect x="60" y="871" width="20" height="20" rx="4"
         fill="#ec4899" />
-      <text x="90" y="773" class="legend">Yuku JS plugin</text>
+      <text x="90" y="887" class="legend">Yuku JS plugin</text>
 
-      <rect x="570" y="757" width="20" height="20" rx="4"
+      <rect x="570" y="871" width="20" height="20" rx="4"
         fill="#fb923c" />
-      <text x="600" y="773" class="legend">AST encode</text>
+      <text x="600" y="887" class="legend">AST encode</text>
 
-      <rect x="1080" y="757" width="20" height="20" rx="4"
+      <rect x="1080" y="871" width="20" height="20" rx="4"
         fill="#84cc16" />
-      <text x="1110" y="773" class="legend">Codegen</text>
+      <text x="1110" y="887" class="legend">Codegen</text>
 
-      <rect x="60" y="799" width="20" height="20" rx="4"
+      <rect x="60" y="913" width="20" height="20" rx="4"
         fill="#2563eb" />
-      <text x="90" y="815" class="legend">Parse + WASM plugin + codegen</text>
+      <text x="90" y="929" class="legend">Parse + WASM plugin + codegen</text>
   </svg>
