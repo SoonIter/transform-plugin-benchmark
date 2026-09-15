@@ -47,6 +47,25 @@
       }
     },
     {
+      "aggregateSha256": "538e157fdc816af1ef9fda4b8838c94b6d6cd55d835b5abc13bd7676b5e98aeb",
+      "file": "swc-next-output.jsx",
+      "representativeBytes": 245,
+      "representativeSha256": "9f65b484ef553c1ac60042163e80d8f181329f7ef925d3684b25a863f43c6e45",
+      "transformer": "SWC Next + Yuku walk",
+      "validation": {
+        "componentIds": 32,
+        "displayNames": 32,
+        "files": 87,
+        "jsxElements": 137,
+        "outputBytes": 45555,
+        "outputCodeUnits": 45555,
+        "pureAnnotations": 0,
+        "taggedTemplates": 0,
+        "uniqueComponentIds": 32,
+        "withConfigCalls": 32
+      }
+    },
+    {
       "aggregateSha256": "2efd4fb3ed39b47fbcd808a3c3cc86b0772b31d47de07f1f5f9869839f3a6c40",
       "file": "yuku-output.jsx",
       "representativeBytes": 258,

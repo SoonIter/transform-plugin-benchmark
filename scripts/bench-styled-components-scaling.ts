@@ -289,6 +289,7 @@ async function benchmarkScaling(): Promise<object> {
       babelPlugin: await readPackageVersion("babel-plugin-styled-components"),
       oxcCodegen: await readPackageVersion("oxc-codegen"),
       oxcParser: await readPackageVersion("oxc-parser"),
+      swcNextCore: await readPackageVersion("@swc-next/core"),
       swcCore: await readPackageVersion("@swc/core"),
       swcPlugin: await readPackageVersion("@swc/plugin-styled-components"),
       yukuAst: await readPackageVersion("yuku-ast"),

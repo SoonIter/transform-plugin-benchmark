@@ -51,6 +51,7 @@ interface ReproductionResult {
   versions: {
     oxcCodegen: string;
     oxcParser: string;
+    swcNextCore: string;
   };
 }
 
@@ -96,7 +97,10 @@ function assertResult(result: ReproductionResult): void {
   if (result.versions.oxcCodegen !== "0.144.0") {
     throw new Error("Reproduction result has an unexpected OXC codegen version");
   }
-  if (result.results.length !== 6 || result.profile.results.length !== 6) {
+  if (result.versions.swcNextCore !== "0.2.1") {
+    throw new Error("Reproduction result has an unexpected SWC Next core version");
+  }
+  if (result.results.length !== 7 || result.profile.results.length !== 7) {
     throw new Error("Reproduction result has an unexpected transformer count");
   }
   for (const resultEntry of result.results) {

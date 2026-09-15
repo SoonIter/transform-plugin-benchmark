@@ -1,4 +1,11 @@
 import { transformSync as babelTransformSync } from "@babel/core";
+import {
+  CommentMode,
+  Lang,
+  parseSync as swcNextParseSync,
+  printSync as swcNextPrintSync,
+  SourceType,
+} from "@swc-next/core";
 import { transformSync as swcTransformSync } from "@swc/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { printSync as oxcPrintSync } from "oxc-codegen";
@@ -31,6 +38,7 @@ export const STYLED_COMPONENTS_OPTIONS = {
 export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Babel + JS plugin",
   "SWC + WASM plugin",
+  "SWC Next + Yuku walk",
   "Yuku + JS plugin",
   "Yuku + OXC codegen",
   "OXC + Yuku walk plugin",
@@ -107,6 +115,26 @@ function transformSwc(file: StyledComponentsCorpusFile): string {
   }).code;
 }
 
+function transformSwcNext(file: StyledComponentsCorpusFile): string {
+  const parsed = swcNextParseSync(file.source, {
+    comments: CommentMode.None,
+    lang: Lang.Jsx,
+    preserveParens: true,
+    sourceType: SourceType.Module,
+  });
+  if (parsed.diagnostics.length > 0) {
+    throw new Error(`SWC Next parser failed: ${parsed.diagnostics[0]!.message}`);
+  }
+  const program = parsed.program as Program;
+  transformStyledComponentsYuku(
+    program,
+    file.source,
+    file.filename,
+    STYLED_COMPONENTS_OPTIONS,
+  );
+  return swcNextPrintSync(program).code;
+}
+
 function transformYuku(
   file: StyledComponentsCorpusFile,
   codegen: "oxc" | "yuku",
@@ -169,6 +197,8 @@ export function transformStyledComponentsFor(
       return transformBabel(file);
     case "SWC + WASM plugin":
       return transformSwc(file);
+    case "SWC Next + Yuku walk":
+      return transformSwcNext(file);
     case "Yuku + JS plugin":
       return transformYuku(file, "yuku");
     case "Yuku + OXC codegen":
@@ -183,7 +213,9 @@ export function transformStyledComponentsFor(
 export function styledComponentsTransformerPrintsComments(
   name: StyledComponentsTransformerName,
 ): boolean {
-  return name !== "Yuku + OXC codegen" && !name.startsWith("OXC");
+  return name !== "Yuku + OXC codegen" &&
+    !name.startsWith("OXC") &&
+    !name.startsWith("SWC Next");
 }
 
 export function transformStyledComponentsCorpusFor(

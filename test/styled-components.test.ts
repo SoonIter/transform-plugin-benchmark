@@ -138,7 +138,10 @@ test("committed artifacts reproduce the representative file and corpus outputs",
       createHash("sha256").update(committed).digest("hex"),
       outputRecord.representativeSha256,
     );
-    if (!styledComponentsTransformerPrintsComments(transformer)) {
+    if (
+      transformer === "Yuku + OXC codegen" ||
+      transformer.startsWith("OXC")
+    ) {
       oxcHashes.push(outputRecord.aggregateSha256);
     }
   }

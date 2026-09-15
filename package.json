@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@babel/core": "7.29.7",
+    "@swc-next/core": "0.2.1",
     "@swc/core": "1.15.46",
     "@swc/plugin-styled-components": "12.19.0",
     "babel-plugin-styled-components": "2.3.0",

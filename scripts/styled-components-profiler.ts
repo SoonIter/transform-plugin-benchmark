@@ -2,6 +2,13 @@ import {
   parseSync as babelParseSync,
   transformFromAstSync as babelTransformFromAstSync,
 } from "@babel/core";
+import {
+  CommentMode,
+  Lang,
+  parseSync as swcNextParseSync,
+  printSync as swcNextPrintSync,
+  SourceType,
+} from "@swc-next/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { printSync as oxcPrintSync } from "oxc-codegen";
 import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
@@ -40,6 +47,12 @@ const PROFILE_STAGE_DEFINITIONS: Record<
   ],
   "SWC + WASM plugin": [
     { name: "parse + plugin + codegen", runtime: "native + WASM" },
+  ],
+  "SWC Next + Yuku walk": [
+    { name: "parse", runtime: "native" },
+    { name: "AST decode", runtime: "JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "AST encode + codegen", runtime: "JS + native" },
   ],
   "Yuku + JS plugin": [
     { name: "source encode", runtime: "JS" },
@@ -142,6 +155,41 @@ function profileSwc(file: StyledComponentsCorpusFile): ProfileIteration {
   const generatedAt = process.hrtime.bigint();
   return {
     durationsNs: [durationNs(start, generatedAt)],
+    output,
+  };
+}
+
+function profileSwcNext(file: StyledComponentsCorpusFile): ProfileIteration {
+  const start = process.hrtime.bigint();
+  const parsed = swcNextParseSync(file.source, {
+    comments: CommentMode.None,
+    lang: Lang.Jsx,
+    preserveParens: true,
+    sourceType: SourceType.Module,
+  });
+  const parsedAt = process.hrtime.bigint();
+  if (parsed.diagnostics.length > 0) {
+    throw new Error(`SWC Next parser failed: ${parsed.diagnostics[0]!.message}`);
+  }
+  const program = parsed.program as Program;
+  const decodedAt = process.hrtime.bigint();
+  transformStyledComponentsYuku(
+    program,
+    file.source,
+    file.filename,
+    STYLED_COMPONENTS_OPTIONS,
+  );
+  const transformedAt = process.hrtime.bigint();
+  const output = swcNextPrintSync(program).code;
+  const generatedAt = process.hrtime.bigint();
+
+  return {
+    durationsNs: [
+      durationNs(start, parsedAt),
+      durationNs(parsedAt, decodedAt),
+      durationNs(decodedAt, transformedAt),
+      durationNs(transformedAt, generatedAt),
+    ],
     output,
   };
 }
@@ -254,6 +302,8 @@ export function profileStyledComponentsOnce(
       return profileBabel(file);
     case "SWC + WASM plugin":
       return profileSwc(file);
+    case "SWC Next + Yuku walk":
+      return profileSwcNext(file);
     case "Yuku + JS plugin":
       return profileYuku(file, "yuku");
     case "Yuku + OXC codegen":
