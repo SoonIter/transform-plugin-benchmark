@@ -3,13 +3,15 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { transformSync as babelTransformSync } from "@babel/core";
+import { CommentMode, Lang, parseSync, printSync, SourceType } from "@swc-next/core";
 import babelStyledComponentsPlugin from "babel-plugin-styled-components";
 import { generate } from "yuku-codegen";
-import { parse } from "yuku-parser";
+import { parse, type Program } from "yuku-parser";
 import {
     transformStyledComponentsYuku,
     type YukuStyledComponentsOptions,
 } from "../scripts/yuku-styled-components-plugin";
+import { transformStyledComponentsZimmerframe } from "../scripts/zimmerframe-styled-components-plugin";
 
 interface ParityCase {
     filename?: string;
@@ -296,7 +298,7 @@ function babelTransform(testCase: ParityCase): string {
     return result!.code!;
 }
 
-function yukuTransform(testCase: ParityCase): string {
+function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" = "yuku"): string {
     const parsed = parse(testCase.source, {
         attachComments: true,
         lang: "jsx",
@@ -304,18 +306,80 @@ function yukuTransform(testCase: ParityCase): string {
         sourceType: "module",
     });
     assert.equal(parsed.diagnostics.length, 0, parsed.diagnostics[0]?.message);
-    transformStyledComponentsYuku(
+    const plugin = walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
+    const transformed = plugin(
         parsed.program,
         testCase.source,
         testCase.filename ?? "/workspace/src/case.jsx",
         testCase.options,
     );
-    const generated = generate(parsed.program, {
+    const generated = generate(transformed ?? parsed.program, {
         comments: "some",
         format: "pretty",
     });
     assert.equal(generated.errors.length, 0, generated.errors[0]?.message);
     return generated.code;
+}
+
+function swcNextTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe"): string {
+    const parsed = parseSync(testCase.source, {
+        comments: CommentMode.None,
+        lang: Lang.Jsx,
+        preserveParens: true,
+        sourceType: SourceType.Module,
+    });
+    assert.equal(parsed.diagnostics.length, 0, parsed.diagnostics[0]?.message);
+    const program = parsed.program as Program;
+    const plugin = walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
+    const transformed = plugin(
+        program,
+        testCase.source,
+        testCase.filename ?? "/workspace/src/case.jsx",
+        testCase.options,
+    );
+    return printSync(transformed ?? program).code;
+}
+
+// Exercise native replacement returns, pure comments, copied scopes/statements,
+// CSS-attribute removal, and import insertion independently of SWC Next printing.
+const WALKER_CASES: ParityCase[] = [
+    {
+        name: "nested JSX attributes retain CSS component ID order",
+        options: { pure: true },
+        source: 'const App = () => <div before={<span css="color: blue;" />} css="color: red;" after={<main css="color: green;" />} />;',
+    },
+    {
+        name: "nested helpers and non-declarator pure annotations",
+        options: { pure: true },
+        source: 'import styled, { css } from "styled-components"; consume(css`color: red;`); const A = styled.div`color: ${css`color: blue;`};`; const B = [styled.div`margin: 0;`];',
+    },
+    {
+        name: "copied function scopes with CSS props and local bindings",
+        options: { pure: true },
+        source: 'import styled from "styled-components"; function View({ color }) { const Local = styled.div`color: red;`; return <Local css={{ color }} data-x={color}><span css="padding: 0;" /></Local>; }',
+    },
+    {
+        name: "CSS prop custom component declared in a transformed statement",
+        options: { pure: true },
+        source: 'import styled from "styled-components"; const Card = styled.div`color: red;`; const App = () => <Card before="a" css={{ color: active }} after="b" />;',
+    },
+    {
+        name: "CSS import insertion and multiple sibling removals",
+        options: { pure: true },
+        source: 'const App = ({ color }) => <><div before="a" css={{ color }} after="b" /><span css="margin: 0;" /><main css={`color: ${color};`} /></>;',
+    },
+];
+
+for (const testCase of [...CASES, ...UPSTREAM_CORPUS.cases, ...WALKER_CASES]) {
+    test(`independent plugins match including comments for ${testCase.name}`, () => {
+        assert.equal(yukuTransform(testCase, "zimmerframe"), yukuTransform(testCase));
+    });
+}
+
+for (const testCase of [...CASES, ...UPSTREAM_CORPUS.cases, ...WALKER_CASES]) {
+    test(`SWC Next walkers match for ${testCase.name}`, () => {
+        assert.equal(swcNextTransform(testCase, "zimmerframe"), swcNextTransform(testCase, "yuku"));
+    });
 }
 
 for (const testCase of CASES) {

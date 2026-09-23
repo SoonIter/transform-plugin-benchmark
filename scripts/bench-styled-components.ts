@@ -18,6 +18,7 @@ import {
   assertComparableStyledComponentsFeatures,
   STYLED_COMPONENTS_OPTIONS,
   STYLED_COMPONENTS_TRANSFORMERS,
+  SWC_NEXT_WALKER_TRANSFORMERS,
   transformStyledComponentsCorpusFor,
   transformStyledComponentsFor,
   validateStyledComponentsOutputs,
@@ -26,13 +27,19 @@ import {
   type StyledComponentsValidation,
 } from "./styled-components-transformers";
 
+const WALKER_COMPARISON = process.argv.includes("--walkers");
+const SELECTED_TRANSFORMERS: readonly StyledComponentsTransformerName[] = WALKER_COMPARISON
+  ? SWC_NEXT_WALKER_TRANSFORMERS
+  : STYLED_COMPONENTS_TRANSFORMERS;
+
 const BENCH_TIME = Number(process.env.BENCH_TIME ?? 10_000);
 const BENCH_WARMUP = Number(process.env.BENCH_WARMUP ?? 2_000);
 const BENCH_RUNS = Number(process.env.BENCH_RUNS ?? 3);
 const PROFILE_TIME = Number(process.env.PROFILE_TIME ?? BENCH_TIME);
 const PROFILE_WARMUP = Number(process.env.PROFILE_WARMUP ?? BENCH_WARMUP);
 const PROFILE_ITERATIONS_MAX = 100_000;
-const RESULT_FILE = process.env.STYLED_COMPONENTS_RESULT ?? "styled-components.json";
+const RESULT_FILE = process.env.STYLED_COMPONENTS_RESULT ??
+  (WALKER_COMPARISON ? "swc-next-walkers-native.json" : "styled-components.json");
 const RESULT_FILE_PATTERN = /^[a-z0-9][a-z0-9-]*\.json$/;
 
 interface RunResult extends StyledComponentsValidation {
@@ -119,13 +126,15 @@ interface StyledComponentsBenchResult {
     yukuAst: string;
     yukuCodegen: string;
     yukuParser: string;
+    zimmerframe: string;
   };
 }
 
 let outputCodeUnitsLast = 0;
 
 function taskArguments(...args: string[]): string[] {
-  return ["--import", "tsx", "scripts/bench-styled-components.ts", ...args];
+  return ["--import", "tsx", "scripts/bench-styled-components.ts", ...args,
+    ...(WALKER_COMPARISON ? ["--walkers"] : [])];
 }
 
 function spawnTask(...args: string[]) {
@@ -139,7 +148,7 @@ function spawnTask(...args: string[]) {
 }
 
 function isTransformerName(value: string): value is StyledComponentsTransformerName {
-  return STYLED_COMPONENTS_TRANSFORMERS.some((name) => name === value);
+  return SELECTED_TRANSFORMERS.some((name) => name === value);
 }
 
 function createTask(
@@ -337,10 +346,10 @@ function aggregateProfileRuns(
 }
 
 function rotatedTransformers(run: number): StyledComponentsTransformerName[] {
-  const offset = (run - 1) % STYLED_COMPONENTS_TRANSFORMERS.length;
+  const offset = (run - 1) % SELECTED_TRANSFORMERS.length;
   return [
-    ...STYLED_COMPONENTS_TRANSFORMERS.slice(offset),
-    ...STYLED_COMPONENTS_TRANSFORMERS.slice(0, offset),
+    ...SELECTED_TRANSFORMERS.slice(offset),
+    ...SELECTED_TRANSFORMERS.slice(0, offset),
   ];
 }
 
@@ -358,7 +367,7 @@ async function readPackageVersion(packageName: string): Promise<string> {
 function profileStyledComponents(): ProfileResult[] {
   console.log("\nProfiling styled-components stages...");
   const runsByName = new Map<StyledComponentsTransformerName, ProfileRunResult[]>(
-    STYLED_COMPONENTS_TRANSFORMERS.map((name) => [name, []]),
+    SELECTED_TRANSFORMERS.map((name) => [name, []]),
   );
   for (let run = 1; run <= BENCH_RUNS; run++) {
     for (const name of rotatedTransformers(run)) {
@@ -381,7 +390,7 @@ function profileStyledComponents(): ProfileResult[] {
     }
   }
 
-  const results = STYLED_COMPONENTS_TRANSFORMERS.map((name) => {
+  const results = SELECTED_TRANSFORMERS.map((name) => {
     const runs = runsByName.get(name)!;
     if (runs.length !== BENCH_RUNS) {
       throw new Error(`${name} completed ${runs.length} of ${BENCH_RUNS} profile runs`);
@@ -410,7 +419,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
   );
 
   const runsByName = new Map<StyledComponentsTransformerName, RunResult[]>(
-    STYLED_COMPONENTS_TRANSFORMERS.map((name) => [name, []]),
+    SELECTED_TRANSFORMERS.map((name) => [name, []]),
   );
   for (let run = 1; run <= BENCH_RUNS; run++) {
     for (const name of rotatedTransformers(run)) {
@@ -433,7 +442,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
     }
   }
 
-  const results = STYLED_COMPONENTS_TRANSFORMERS.map((name) => {
+  const results = SELECTED_TRANSFORMERS.map((name) => {
     const runs = runsByName.get(name)!;
     if (runs.length !== BENCH_RUNS) {
       throw new Error(`${name} completed ${runs.length} of ${BENCH_RUNS} runs`);
@@ -502,6 +511,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
       yukuAst: await readPackageVersion("yuku-ast"),
       yukuCodegen: await readPackageVersion("yuku-codegen"),
       yukuParser: await readPackageVersion("yuku-parser"),
+      zimmerframe: await readPackageVersion("zimmerframe"),
     },
   };
 }

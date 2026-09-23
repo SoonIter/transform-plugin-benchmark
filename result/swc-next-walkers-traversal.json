@@ -1,0 +1,110 @@
+{
+  "scope": "Read-only Identifier counting over the same 87 pre-parsed SWC Next ASTs; parse, plugin transform, adapter and print excluded. Visitor objects reused. Warmed ASTs reused across iterations.",
+  "runtime": "v24.18.1",
+  "benchmark": {
+    "runs": 6,
+    "warmupMs": 1000,
+    "timeMs": 2000
+  },
+  "versions": {
+    "swcNext": "0.2.1",
+    "yukuAst": "0.8.5",
+    "zimmerframe": "1.1.5"
+  },
+  "results": [
+    {
+      "name": "yuku",
+      "medianMs": 0.19977049999988594
+    },
+    {
+      "name": "zimmerframe",
+      "medianMs": 0.17820849999998245
+    }
+  ],
+  "runs": [
+    {
+      "run": 1,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.2112090000000535,
+      "samples": 8103
+    },
+    {
+      "run": 1,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17600000000015825,
+      "samples": 11041
+    },
+    {
+      "run": 2,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17745899999999892,
+      "samples": 10787
+    },
+    {
+      "run": 2,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.2007499999999709,
+      "samples": 9699
+    },
+    {
+      "run": 3,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19545800000014424,
+      "samples": 9990
+    },
+    {
+      "run": 3,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17970900000000256,
+      "samples": 10144
+    },
+    {
+      "run": 4,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17550000000028376,
+      "samples": 11091
+    },
+    {
+      "run": 4,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19587500000034197,
+      "samples": 10018
+    },
+    {
+      "run": 5,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.198790999999801,
+      "samples": 9938
+    },
+    {
+      "run": 5,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17895799999996598,
+      "samples": 10398
+    },
+    {
+      "run": 6,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.18074999999998909,
+      "samples": 9925
+    },
+    {
+      "run": 6,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.2022500000000491,
+      "samples": 9339
+    }
+  ]
+}

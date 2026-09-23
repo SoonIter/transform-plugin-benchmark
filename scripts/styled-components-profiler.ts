@@ -25,6 +25,7 @@ import {
   type StyledComponentsTransformerName,
 } from "./styled-components-transformers";
 import { transformStyledComponentsYuku } from "./yuku-styled-components-plugin";
+import { transformStyledComponentsZimmerframe } from "./zimmerframe-styled-components-plugin";
 
 export interface ProfileIteration {
   durationsNs: number[];
@@ -49,6 +50,12 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "parse + plugin + codegen", runtime: "native + WASM" },
   ],
   "SWC Next + Yuku walk": [
+    { name: "parse", runtime: "native" },
+    { name: "AST decode", runtime: "JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "AST encode + codegen", runtime: "JS + native" },
+  ],
+  "SWC Next + Zimmerframe": [
     { name: "parse", runtime: "native" },
     { name: "AST decode", runtime: "JS" },
     { name: "plugin transform", runtime: "JS" },
@@ -159,7 +166,11 @@ function profileSwc(file: StyledComponentsCorpusFile): ProfileIteration {
   };
 }
 
-function profileSwcNext(file: StyledComponentsCorpusFile): ProfileIteration {
+function profileSwcNext(
+  file: StyledComponentsCorpusFile,
+  plugin: typeof transformStyledComponentsYuku | typeof transformStyledComponentsZimmerframe
+    = transformStyledComponentsYuku,
+): ProfileIteration {
   const start = process.hrtime.bigint();
   const parsed = swcNextParseSync(file.source, {
     comments: CommentMode.None,
@@ -173,14 +184,14 @@ function profileSwcNext(file: StyledComponentsCorpusFile): ProfileIteration {
   }
   const program = parsed.program as Program;
   const decodedAt = process.hrtime.bigint();
-  transformStyledComponentsYuku(
+  const transformed = plugin(
     program,
     file.source,
     file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
   const transformedAt = process.hrtime.bigint();
-  const output = swcNextPrintSync(program).code;
+  const output = swcNextPrintSync(transformed ?? program).code;
   const generatedAt = process.hrtime.bigint();
 
   return {
@@ -304,6 +315,8 @@ export function profileStyledComponentsOnce(
       return profileSwc(file);
     case "SWC Next + Yuku walk":
       return profileSwcNext(file);
+    case "SWC Next + Zimmerframe":
+      return profileSwcNext(file, transformStyledComponentsZimmerframe);
     case "Yuku + JS plugin":
       return profileYuku(file, "yuku");
     case "Yuku + OXC codegen":

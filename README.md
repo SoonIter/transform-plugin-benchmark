@@ -13,6 +13,54 @@ Reproducible benchmark of seven styled-components transform pipelines:
 The workload is a pinned real-world multi-file corpus. Every timed iteration starts with the same
 87 source files and ends with generated code for all 87 files.
 
+## SWC Next walker comparison
+
+The comparison keeps SWC Next parse/print, corpus, and plugin options unchanged. Each walker
+has its own complete styled-components implementation:
+
+- [`yuku-styled-components-plugin.ts`](scripts/yuku-styled-components-plugin.ts) uses Yuku's
+  native visitors and mutation context.
+- [`zimmerframe-styled-components-plugin.ts`](scripts/zimmerframe-styled-components-plugin.ts)
+  uses Zimmerframe's native `path`, `next`, `visit`, and returned replacement nodes. CSS props
+  are handled directly on JSX opening elements, without emulating Yuku's `replace`/`remove`.
+
+Both plugins use the same option defaults, AST builders, CSS/hash algorithms, and phase order:
+collect imports/bindings, transform styled nodes, collect scopes/names, then transform CSS props.
+Their implementations are intentionally separate; behavior changes must update both files and
+pass the common parity fixtures. There is no shared runtime plugin or walker compatibility layer.
+Tests verify byte-identical output across 87 corpus files and 67 plugin cases, including PURE
+comments through Yuku codegen, nested templates, copied scopes, CSS props, and import insertion.
+This compares two native plugin implementations end to end; plugin work remains part of the
+measurement, so the result is not a standalone walker speed claim.
+
+Latest measurements on Node 24.18.1 / Apple M5 Max, over the full 87-file corpus:
+
+| Pipeline | End-to-end median | Run spread | Plugin stage |
+|---|---:|---:|---:|
+| SWC Next + Yuku walk | 5.247 ms | 3.94% | 4.279 ms |
+| SWC Next + Zimmerframe | 5.221 ms | 2.24% | 4.242 ms |
+
+End-to-end values are medians of six process medians. Plugin stages are medians of six
+separately measured process means. The approximately 0.5% end-to-end difference is smaller
+than either variant's observed run spread and does not establish a stable winner.
+
+See [the native-plugin report](result/swc-next-walkers-native.md) and
+[raw measurements](result/swc-next-walkers-native.json). The earlier
+[adapter report](result/swc-next-walkers.md) and [data](result/swc-next-walkers.json) are historical
+and include compatibility-layer overhead. The seven-pipeline results below are also historical.
+
+```bash
+fnm use 24.18.1
+npm ci
+npm run type-check
+npm test
+npm run bench:walkers
+```
+
+This runs only the two SWC Next variants, with six fresh processes per variant, alternating
+order, 3 seconds of warmup and 10 seconds of measurement. Stage profiles run separately with
+1 second of warmup and 5 seconds of measurement. It writes `result/swc-next-walkers-native.json`, preserving the earlier adapter measurements.
+
 ## Result
 
 Node.js 24.18.1 on the machine documented below. Lower is better.

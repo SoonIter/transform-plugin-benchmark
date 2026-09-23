@@ -1,0 +1,242 @@
+{
+  "benchmark": {
+    "runs": 6,
+    "timeMs": 10000,
+    "warmupMs": 3000
+  },
+  "corpus": {
+    "commit": "d19099afeff64ecfb09133c06c1cb18c0d40887e",
+    "files": 87,
+    "name": "react-boilerplate v4.0.0",
+    "repository": "https://github.com/react-boilerplate/react-boilerplate",
+    "sourceBytes": 57051,
+    "styledComponentsFiles": 34
+  },
+  "options": {
+    "cssProp": true,
+    "displayName": true,
+    "fileName": true,
+    "meaninglessFileNames": [
+      "index"
+    ],
+    "minify": true,
+    "namespace": "",
+    "pure": true,
+    "ssr": true,
+    "topLevelImportPaths": [],
+    "transpileTemplateLiterals": true
+  },
+  "profile": {
+    "results": [
+      {
+        "iterations": 4943,
+        "meanMs": 5.9434555970907414,
+        "name": "SWC Next + Yuku walk",
+        "runs": 6,
+        "stages": [
+          {
+            "meanMs": 0.35946038762625165,
+            "name": "parse",
+            "runMeansMs": [
+              0.33475574330357144,
+              0.46550212926136364,
+              0.3808311854219949,
+              0.33808958983050846,
+              0.3235609521158129,
+              0.40346120179948586
+            ],
+            "runtime": "native",
+            "share": 0.06048003249190651
+          },
+          {
+            "meanMs": 0.25524202265260776,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.2335224185267857,
+              0.2966023295454545,
+              0.3116815869565217,
+              0.2416132406779661,
+              0.23715767817371938,
+              0.2688708046272494
+            ],
+            "runtime": "JS",
+            "share": 0.04294505418321726
+          },
+          {
+            "meanMs": 4.278927947543317,
+            "name": "plugin transform",
+            "runMeansMs": [
+              4.014604972098214,
+              5.034288504261363,
+              4.562060232736573,
+              4.0640288282485875,
+              4.000497469933185,
+              4.493827066838047
+            ],
+            "runtime": "JS",
+            "share": 0.7199394153188942
+          },
+          {
+            "meanMs": 1.049825239268565,
+            "name": "AST encode + codegen",
+            "runMeansMs": [
+              0.9787767265625,
+              1.2731408863636364,
+              1.1120154028132994,
+              0.9820260440677966,
+              0.9876350757238307,
+              1.2221779768637533
+            ],
+            "runtime": "JS + native",
+            "share": 0.17663549800598213
+          }
+        ]
+      },
+      {
+        "iterations": 5010,
+        "meanMs": 5.909300130184772,
+        "name": "SWC Next + Zimmerframe",
+        "runs": 6,
+        "stages": [
+          {
+            "meanMs": 0.3665346838188112,
+            "name": "parse",
+            "runMeansMs": [
+              0.3765846702380952,
+              0.39805954140127386,
+              0.33709888028169016,
+              0.3301340131578947,
+              0.3564846973995272,
+              0.40702398451612903
+            ],
+            "runtime": "native",
+            "share": 0.06202675033318208
+          },
+          {
+            "meanMs": 0.25277029004862506,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.2545241035714286,
+              0.266086650955414,
+              0.2510164765258216,
+              0.2350191370614035,
+              0.24967966430260047,
+              0.26685402193548385
+            ],
+            "runtime": "JS",
+            "share": 0.042774996104440785
+          },
+          {
+            "meanMs": 4.241895863046482,
+            "name": "plugin transform",
+            "runMeansMs": [
+              4.238197113095238,
+              4.444882310828025,
+              4.239181787558685,
+              3.9272414144736842,
+              4.244609938534279,
+              4.590985289032258
+            ],
+            "runtime": "JS",
+            "share": 0.7178338838094936
+          },
+          {
+            "meanMs": 1.0480992932708544,
+            "name": "AST encode + codegen",
+            "runMeansMs": [
+              1.0605735357142856,
+              1.2375872369426753,
+              1.0216685046948357,
+              0.9758700515350878,
+              1.0356250508274232,
+              1.1539288516129032
+            ],
+            "runtime": "JS + native",
+            "share": 0.17736436975288347
+          }
+        ]
+      }
+    ],
+    "runs": 6,
+    "timeMs": 5000,
+    "warmupMs": 1000
+  },
+  "reproduction": {
+    "command": "npm run bench:walkers",
+    "resultFile": "swc-next-walkers-native.json"
+  },
+  "results": [
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 5.221041499999956,
+      "medianRunRme": 0.4518981469937346,
+      "name": "SWC Next + Zimmerframe",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        5.178041000000121,
+        5.190208000000439,
+        5.228750000000218,
+        5.213332999999693,
+        5.252978999999868,
+        5.294833500000095
+      ],
+      "runSpreadPct": 2.2369578943200334,
+      "runs": 6,
+      "samples": 10971,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32
+    },
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 5.246989750000239,
+      "medianRunRme": 0.4929458315760439,
+      "name": "SWC Next + Yuku walk",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        5.222709000000577,
+        5.257020999999895,
+        5.236958500000583,
+        5.1977710000001025,
+        5.404291999999259,
+        5.376791999999114
+      ],
+      "runSpreadPct": 3.935990155100784,
+      "runs": 6,
+      "samples": 10961,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32
+    }
+  ],
+  "runtime": "Node 24.18.1",
+  "system": {
+    "cores": 18,
+    "cpu": "Apple M5 Max",
+    "memoryGb": 64,
+    "os": "darwin 25.6.0 (arm64)"
+  },
+  "versions": {
+    "babelCore": "7.29.7",
+    "babelPlugin": "2.3.0",
+    "oxcCodegen": "0.144.0",
+    "oxcParser": "0.144.0",
+    "swcNextCore": "0.2.1",
+    "swcCore": "1.15.46",
+    "swcPlugin": "12.19.0",
+    "yukuAst": "0.8.5",
+    "yukuCodegen": "0.8.5",
+    "yukuParser": "0.8.5",
+    "zimmerframe": "1.1.5"
+  }
+}

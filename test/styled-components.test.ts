@@ -15,12 +15,32 @@ import {
   assertComparableStyledComponentsFeatures,
   styledComponentsTransformerPrintsComments,
   STYLED_COMPONENTS_TRANSFORMERS,
+  SWC_NEXT_WALKER_TRANSFORMERS,
   transformStyledComponentsCorpusFor,
   transformStyledComponentsFor,
   validateStyledComponentsOutputs,
 } from "../scripts/styled-components-transformers";
 
 const corpus = loadStyledComponentsCorpus();
+
+test("SWC Next walker variants produce identical output for all 87 files", () => {
+  const outputs = SWC_NEXT_WALKER_TRANSFORMERS.map((name) =>
+    transformStyledComponentsCorpusFor(name, corpus),
+  );
+  assert.deepEqual(outputs[1], outputs[0]);
+  assertComparableStyledComponentsFeatures(outputs.map((output, index) =>
+    validateStyledComponentsOutputs(SWC_NEXT_WALKER_TRANSFORMERS[index]!, output),
+  ));
+});
+
+test("Zimmerframe stage profile preserves its public transform for all 87 files", () => {
+  for (const file of corpus.files) {
+    const profile = profileStyledComponentsOnce("SWC Next + Zimmerframe", file);
+    assert.equal(profile.output, transformStyledComponentsFor("SWC Next + Zimmerframe", file));
+    assert.equal(profile.durationsNs.length, 4);
+    assert.ok(profile.durationsNs.every((duration) => duration > 0));
+  }
+});
 
 test("the benchmark corpus is the pinned production source set", () => {
   assert.equal(

@@ -1,0 +1,110 @@
+{
+  "scope": "Single-variable experiment: original yuku-ast 0.8.5 versus a temporary copy caching createDispatch by visitors identity in a WeakMap. Same 87 pre-parsed SWC Next ASTs, immutable visitor object reused, Identifier counting only. Six fresh processes per variant; no installed dependency modified. This cache is not a general fix for mutable visitor objects.",
+  "runtime": "v24.18.1",
+  "benchmark": {
+    "runs": 6,
+    "warmupMs": 1000,
+    "timeMs": 2000
+  },
+  "versions": {
+    "swcNext": "0.2.1",
+    "yukuAst": "0.8.5",
+    "zimmerframe": "1.1.5"
+  },
+  "results": [
+    {
+      "name": "yuku",
+      "medianMs": 0.1989379999998846
+    },
+    {
+      "name": "yuku-cached-dispatch",
+      "medianMs": 0.18712549999980865
+    }
+  ],
+  "runs": [
+    {
+      "run": 1,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19791699999996126,
+      "samples": 9858
+    },
+    {
+      "run": 1,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.18429200000002766,
+      "samples": 10756
+    },
+    {
+      "run": 2,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.18758399999978792,
+      "samples": 10303
+    },
+    {
+      "run": 2,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.20091649999994843,
+      "samples": 9616
+    },
+    {
+      "run": 3,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.20108299999992596,
+      "samples": 9884
+    },
+    {
+      "run": 3,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.2621249999997417,
+      "samples": 7583
+    },
+    {
+      "run": 4,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.1868339999998625,
+      "samples": 10573
+    },
+    {
+      "run": 4,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.1994169999998121,
+      "samples": 9905
+    },
+    {
+      "run": 5,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19574999999986176,
+      "samples": 9912
+    },
+    {
+      "run": 5,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.1874169999997548,
+      "samples": 10382
+    },
+    {
+      "run": 6,
+      "name": "yuku-cached-dispatch",
+      "identifiers": 1916,
+      "medianMs": 0.18466599999976552,
+      "samples": 10162
+    },
+    {
+      "run": 6,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.1984589999999571,
+      "samples": 9516
+    }
+  ]
+}

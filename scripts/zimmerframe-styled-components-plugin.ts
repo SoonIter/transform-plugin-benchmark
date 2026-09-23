@@ -8,7 +8,8 @@ import {
     sep,
 } from "node:path";
 import picomatch from "picomatch";
-import { b, bindingIdentifiers, is, walk, type Visitors, type WalkContext } from "yuku-ast";
+import { b, bindingIdentifiers, is } from "yuku-ast";
+import { walk, type Context } from "zimmerframe";
 import type {
     ArrowFunctionExpression,
     CallExpression,
@@ -51,7 +52,7 @@ const SYMBOL_PATTERN = /(\s*[;:{},]\s*)/g;
 const TAG_NAME_PATTERN = /^[a-z][a-z\d]*(\-[a-z][a-z\d]*)?$/;
 const FILE_SEARCH_DEPTH_MAX = 256;
 
-export interface YukuStyledComponentsOptions {
+export interface ZimmerframeStyledComponentsOptions {
     cssProp?: boolean;
     cssPropImportPath?: string;
     customImportName?: string;
@@ -108,7 +109,7 @@ interface PendingDeclaration {
 type ProgramBodyItem = Program["body"][number];
 type CSSValue = ArrowFunctionExpression | ObjectExpression | TemplateLiteral;
 
-function resolveOptions(options: YukuStyledComponentsOptions): ResolvedOptions {
+function resolveOptions(options: ZimmerframeStyledComponentsOptions): ResolvedOptions {
     return {
         cssProp: options.cssProp ?? true,
         cssPropImportPath: options.cssPropImportPath ?? "styled-components",
@@ -285,52 +286,46 @@ function collectProgramImports(state: PluginState): void {
 }
 
 function collectProgramFacts(state: PluginState): void {
-    // Use the same phase order as the independent Zimmerframe implementation.
+    // Styled-node replacements can copy their enclosing statements. Record scope
+    // and insertion references from the resulting tree before handling CSS props.
     for (const statement of state.program.body) collectBindingStatement(statement, state);
-    const visitors = {
-        CatchClause(node) {
-            if (node.type !== "CatchClause") throw new Error("expected CatchClause");
+    function collectFunction(node: Node, context: Context<Node, PluginState>): void {
+        if (!is.Function(node)) throw new Error("expected Function");
+        const parameters = node.params.flatMap((parameter) => {
+            if (parameter.type === "RestElement") return bindingIdentifiers(parameter.argument);
+            if (parameter.type === "TSParameterProperty") return bindingIdentifiers(parameter.parameter);
+            return bindingIdentifiers(parameter);
+        });
+        addScopeBindings(node, parameters, state);
+        if (node.type === "FunctionDeclaration" && node.id !== null) {
+            addScopeBindings(nearestScope(context.path, false), [node.id], state);
+        }
+        context.next();
+    }
+    walk<Node, PluginState>(state.program, state, {
+        CatchClause(node, context) {
             if (node.param !== null) addScopeBindings(node, bindingIdentifiers(node.param), state);
+            context.next();
         },
         ClassDeclaration(node, context) {
-            if (node.type !== "ClassDeclaration") throw new Error("expected ClassDeclaration");
-            if (node.id === null) return;
-            addScopeBindings(nearestScope(context.ancestors(), false), [node.id], state);
+            if (node.id !== null) addScopeBindings(nearestScope(context.path, false), [node.id], state);
+            context.next();
         },
-        Function(node, context) {
-            if (!is.Function(node)) throw new Error("expected Function");
-            const parameters = node.params.flatMap((parameter) => {
-                if (parameter.type === "RestElement") {
-                    return bindingIdentifiers(parameter.argument);
-                }
-                if (parameter.type === "TSParameterProperty") {
-                    return bindingIdentifiers(parameter.parameter);
-                }
-                return bindingIdentifiers(parameter);
-            });
-            addScopeBindings(node, parameters, state);
-            if (node.type !== "FunctionDeclaration" || node.id === null) return;
-            addScopeBindings(nearestScope(context.ancestors(), false), [node.id], state);
-        },
-        Identifier(node) {
-            if (node.type !== "Identifier") throw new Error("expected Identifier");
+        FunctionDeclaration: collectFunction,
+        FunctionExpression: collectFunction,
+        ArrowFunctionExpression: collectFunction,
+        TSDeclareFunction: collectFunction,
+        TSEmptyBodyFunctionExpression: collectFunction,
+        Identifier(node, context) {
             state.usedNames.add(node.name);
+            context.next();
         },
         VariableDeclaration(node, context) {
-            if (node.type !== "VariableDeclaration") {
-                throw new Error("expected VariableDeclaration");
-            }
-            const bindings = node.declarations.flatMap((declaration) =>
-                bindingIdentifiers(declaration.id),
-            );
-            addScopeBindings(
-                nearestScope(context.ancestors(), node.kind === "var"),
-                bindings,
-                state,
-            );
+            const bindings = node.declarations.flatMap((declaration) => bindingIdentifiers(declaration.id));
+            addScopeBindings(nearestScope(context.path, node.kind === "var"), bindings, state);
+            context.next();
         },
-    } satisfies Visitors<PluginState>;
-    walk(state.program, visitors, state);
+    });
 }
 
 function nearestScope(ancestors: Node[], functionScoped: boolean): Node {
@@ -643,13 +638,13 @@ function callNeedsConfig(node: CallExpression, state: PluginState): boolean {
 
 function addCallConfig(
     node: CallExpression,
-    context: WalkContext<CallExpression, PluginState>,
+    context: Context<Node, PluginState>,
 ): CallExpression {
     const state = context.state;
     if (!callNeedsConfig(node, state)) return node;
     const properties: ObjectProperty[] = [];
     if (state.options.displayName) {
-        const name = displayName(context.ancestors(), state)?.replace(/[^_a-zA-Z0-9-]/g, "");
+        const name = displayName(context.path, state)?.replace(/[^_a-zA-Z0-9-]/g, "");
         if (name) properties.push(property("displayName", name));
     }
     if (state.options.ssr) properties.push(property("componentId", componentId(state)));
@@ -679,9 +674,8 @@ function addCallConfig(
     const configured = call(staticMember(node.callee, "withConfig"), [
         b.ObjectExpression({ properties }),
     ]);
-    const replacement = call(configured, node.arguments);
-    context.replace(replacement);
-    return replacement;
+    node.callee = configured;
+    return node;
 }
 
 function makePlaceholder(index: number): string {
@@ -780,48 +774,56 @@ function transpileTemplate(node: TaggedTemplateExpression): CallExpression {
 
 function processTaggedTemplate(
     node: TaggedTemplateExpression,
-    context: WalkContext<TaggedTemplateExpression, PluginState>,
-): void {
+    context: Context<Node, PluginState>,
+): Node | void {
     const state = context.state;
     const supported = isStyled(node.tag, state) || isHelper(node.tag, state);
-    if (!supported) return;
+    if (!supported) return context.next();
     if (state.options.minify) minifyTemplate(node);
-    addTaggedConfig(node, context.ancestors(), state);
+    addTaggedConfig(node, context.path, state);
     if (state.options.transpileTemplateLiterals) {
         const replacement = transpileTemplate(node);
-        const parent = context.parent;
+        replacement.start = node.start;
+        replacement.end = node.end;
+        const parent = context.path.at(-1);
         const annotatable =
             parent?.type === "VariableDeclarator" ||
             parent?.type === "TaggedTemplateExpression";
         if (state.options.pure && annotatable && shouldAnnotatePure(node, state)) {
             addPureComment(replacement);
         }
-        context.replace(replacement);
-        return;
+        // Visit the lowered call through Zimmerframe's native replacement API.
+        return context.visit(replacement);
     }
     if (state.options.pure && shouldAnnotatePure(node, state)) addPureComment(node);
+    return context.next();
 }
 
 function processCallExpression(
     node: CallExpression,
-    context: WalkContext<CallExpression, PluginState>,
-): void {
+    context: Context<Node, PluginState>,
+): Node | void {
+    const parent = context.path.at(-1);
+    // visit(replacement) puts the original template on the path. The lowered
+    // call is already configured and annotated; visit only its children.
+    if (parent?.type === "TaggedTemplateExpression" && parent.tag !== node) {
+        return context.next();
+    }
     const state = context.state;
     const processed = addCallConfig(node, context);
-    if (!state.options.pure) return;
-    const parent = context.parent;
-    if (parent?.type !== "VariableDeclarator" && parent?.type !== "TaggedTemplateExpression") {
-        return;
+    if (state.options.pure &&
+        (parent?.type === "VariableDeclarator" || parent?.type === "TaggedTemplateExpression") &&
+        shouldAnnotatePure(processed, state)) {
+        addPureComment(processed);
     }
-    if (shouldAnnotatePure(processed, state)) addPureComment(processed);
+    return context.next();
 }
 
-function processStyledNodes(root: Node, state: PluginState): void {
-    const visitors: Visitors<PluginState> = {
+function processStyledNodes<T extends Node>(root: T, state: PluginState): T {
+    return walk<Node, PluginState>(root, state, {
         CallExpression: processCallExpression,
         TaggedTemplateExpression: processTaggedTemplate,
-    };
-    walk(root, visitors, state);
+    }) as T;
 }
 
 function uniqueName(hint: string, state: PluginState): string {
@@ -1066,17 +1068,15 @@ function enclosingJSXElement(ancestors: Node[]): JSXElement | null {
 
 function transformCSSAttribute(
     attribute: JSXAttribute,
-    context: WalkContext<JSXAttribute, PluginState>,
+    opening: JSXOpeningElement,
+    element: JSXElement,
+    ancestors: Node[],
+    state: PluginState,
     pending: PendingDeclaration[],
-): void {
-    if (attribute.name.type !== "JSXIdentifier" || attribute.name.name !== "css") return;
-    const state = context.state;
-    const opening = context.parent;
-    if (opening?.type !== "JSXOpeningElement") return;
-    const element = enclosingJSXElement(context.ancestors());
-    if (element === null) return;
+): boolean {
+    if (attribute.name.type !== "JSXIdentifier" || attribute.name.name !== "css") return false;
     let css = templateFromCSSAttribute(attribute);
-    if (css === null) return;
+    if (css === null) return false;
 
     const originalName = opening.name;
     const name = jsxName(originalName);
@@ -1087,14 +1087,13 @@ function transformCSSAttribute(
         ? call(styledImport, [stringLiteral(name)])
         : call(styledImport, [jsxNameExpression(originalName)]);
 
-    context.remove();
     opening.name = b.JSXIdentifier({ name: generated });
     if (element.closingElement !== null) {
         element.closingElement.name = b.JSXIdentifier({ name: generated });
     }
 
     if (css.type === "ObjectExpression") {
-        if (rewriteCSSObject(css, opening, visibleBindings(context.ancestors(), state), state)) {
+        if (rewriteCSSObject(css, opening, visibleBindings(ancestors, state), state)) {
             const parameter = identifier("p");
             css = b.ArrowFunctionExpression({
                 async: false,
@@ -1119,9 +1118,10 @@ function transformCSSAttribute(
         ],
         kind: "var",
     });
-    processStyledNodes(declaration, state);
+    const transformed = processStyledNodes(declaration, state);
     const binding = TAG_NAME_PATTERN.test(name) ? null : state.bindingStatements.get(name) ?? null;
-    pending.push({ after: binding?.type === "ImportDeclaration" ? null : binding, declaration });
+    pending.push({ after: binding?.type === "ImportDeclaration" ? null : binding, declaration: transformed });
+    return true;
 }
 
 function insertPendingDeclarations(pending: PendingDeclaration[], state: PluginState): void {
@@ -1139,20 +1139,25 @@ function insertPendingDeclarations(pending: PendingDeclaration[], state: PluginS
 function transformCSSProps(state: PluginState): void {
     if (!state.options.cssProp) return;
     const pending: PendingDeclaration[] = [];
-    walk(
-        state.program,
-        {
-            JSXAttribute(node, context) {
-                if (node.type !== "JSXAttribute") throw new Error("expected JSXAttribute");
-                transformCSSAttribute(
-                    node,
-                    context,
-                    pending,
-                );
-            },
+    walk<Node, PluginState>(state.program, state, {
+        JSXOpeningElement(node, context) {
+            const element = enclosingJSXElement(context.path);
+            if (element === null) return context.next();
+            // Walk the known attribute list in source order so nested JSX in an
+            // earlier attribute is transformed before this element's CSS prop.
+            // Removal happens here, without searching or adapting parent nodes.
+            for (let index = 0; index < node.attributes.length;) {
+                const attribute = node.attributes[index]!;
+                if (attribute.type === "JSXAttribute" &&
+                    transformCSSAttribute(attribute, node, element, context.path, state, pending)) {
+                    node.attributes.splice(index, 1);
+                } else {
+                    node.attributes[index] = context.visit(attribute) as typeof attribute;
+                    index++;
+                }
+            }
         },
-        state,
-    );
+    });
     insertPendingDeclarations(pending, state);
 }
 
@@ -1219,14 +1224,15 @@ function fileHash(filename: string, source: string): string {
 }
 
 /**
- * Applies the full babel-plugin-styled-components 2.3.0 transform contract to a Yuku ESTree.
+ * Applies the full babel-plugin-styled-components 2.3.0 transform contract using native Zimmerframe visitors.
+ * Independent from the Yuku plugin: return the transformed root to the caller.
  */
-export function transformStyledComponentsYuku(
+export function transformStyledComponentsZimmerframe(
     program: Program,
     source: string,
     filename: string,
-    options: YukuStyledComponentsOptions = {},
-): void {
+    options: ZimmerframeStyledComponentsOptions = {},
+): Program {
     if (source.length > 100_000_000) {
         throw new RangeError("styled-components source must not exceed 100 MB");
     }
@@ -1254,7 +1260,8 @@ export function transformStyledComponentsYuku(
     state.cssPropDefaultReusable =
         state.options.customImportName !== null ||
         (state.importNames.has("default") && !state.defaultImportIsNamespace);
-    processStyledNodes(program, state);
+    state.program = processStyledNodes(program, state);
     collectProgramFacts(state);
     transformCSSProps(state);
+    return state.program;
 }

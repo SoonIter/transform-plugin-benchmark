@@ -13,7 +13,8 @@
     "charts": "node --import tsx scripts/generate-charts.ts",
     "reproduce:styled-components": "node --import tsx scripts/reproduce-styled-components.ts",
     "test": "node --import tsx --test test/*.test.ts",
-    "type-check": "tsgo --noEmit"
+    "type-check": "tsgo --noEmit",
+    "bench:walkers": "BENCH_RUNS=6 BENCH_TIME=10000 BENCH_WARMUP=3000 PROFILE_TIME=5000 PROFILE_WARMUP=1000 BENCH_REPRODUCTION_COMMAND=\"npm run bench:walkers\" node --import tsx scripts/bench-styled-components.ts --walkers"
   },
   "dependencies": {
     "@babel/core": "7.29.7",
@@ -28,7 +29,8 @@
     "tinybench": "6.0.2",
     "yuku-ast": "0.8.5",
     "yuku-codegen": "0.8.5",
-    "yuku-parser": "0.8.5"
+    "yuku-parser": "0.8.5",
+    "zimmerframe": "1.1.5"
   },
   "devDependencies": {
     "@types/babel__core": "7.20.5",

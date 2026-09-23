@@ -21,6 +21,7 @@ import {
   transformStyledComponentsYuku,
   type YukuStyledComponentsOptions,
 } from "./yuku-styled-components-plugin";
+import { transformStyledComponentsZimmerframe } from "./zimmerframe-styled-components-plugin";
 
 export const STYLED_COMPONENTS_OPTIONS = {
   cssProp: true,
@@ -46,7 +47,12 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
 ] as const;
 
 export type StyledComponentsTransformerName =
-  (typeof STYLED_COMPONENTS_TRANSFORMERS)[number];
+  (typeof STYLED_COMPONENTS_TRANSFORMERS)[number] | "SWC Next + Zimmerframe";
+
+export const SWC_NEXT_WALKER_TRANSFORMERS = [
+  "SWC Next + Yuku walk",
+  "SWC Next + Zimmerframe",
+] as const;
 
 export interface StyledComponentsOutput {
   code: string;
@@ -115,7 +121,11 @@ function transformSwc(file: StyledComponentsCorpusFile): string {
   }).code;
 }
 
-function transformSwcNext(file: StyledComponentsCorpusFile): string {
+function transformSwcNext(
+  file: StyledComponentsCorpusFile,
+  plugin: typeof transformStyledComponentsYuku | typeof transformStyledComponentsZimmerframe
+    = transformStyledComponentsYuku,
+): string {
   const parsed = swcNextParseSync(file.source, {
     comments: CommentMode.None,
     lang: Lang.Jsx,
@@ -126,13 +136,13 @@ function transformSwcNext(file: StyledComponentsCorpusFile): string {
     throw new Error(`SWC Next parser failed: ${parsed.diagnostics[0]!.message}`);
   }
   const program = parsed.program as Program;
-  transformStyledComponentsYuku(
+  const transformed = plugin(
     program,
     file.source,
     file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
-  return swcNextPrintSync(program).code;
+  return swcNextPrintSync(transformed ?? program).code;
 }
 
 function transformYuku(
@@ -199,6 +209,8 @@ export function transformStyledComponentsFor(
       return transformSwc(file);
     case "SWC Next + Yuku walk":
       return transformSwcNext(file);
+    case "SWC Next + Zimmerframe":
+      return transformSwcNext(file, transformStyledComponentsZimmerframe);
     case "Yuku + JS plugin":
       return transformYuku(file, "yuku");
     case "Yuku + OXC codegen":
