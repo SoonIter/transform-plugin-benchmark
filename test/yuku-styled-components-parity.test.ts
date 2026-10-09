@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { transformSync as babelTransformSync } from "@babel/core";
 import { CommentMode, Lang, parseSync, printSync, SourceType } from "@swc-next/core";
-import babelStyledComponentsPlugin from "babel-plugin-styled-components";
+import babelStyledComponentsPlugin from "../scripts/babel-styled-components-plugin";
 import { generate } from "yuku-codegen";
 import { parse, type Program } from "yuku-parser";
 import {
@@ -274,7 +274,7 @@ function normalize(
         format: "compact",
         quotes: "double",
     });
-    assert.equal(generated.errors.length, 0, generated.errors[0]?.message);
+    assert.equal(generated.diagnostics.length, 0, generated.diagnostics[0]?.message);
     return options.canonicalPrivateNames
         ? canonicalizePrivateNames(generated.code)
         : generated.code;
@@ -317,7 +317,7 @@ function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" = "y
         comments: "some",
         format: "pretty",
     });
-    assert.equal(generated.errors.length, 0, generated.errors[0]?.message);
+    assert.equal(generated.diagnostics.length, 0, generated.diagnostics[0]?.message);
     return generated.code;
 }
 

@@ -13,6 +13,22 @@ Reproducible benchmark of seven styled-components transform pipelines:
 The workload is a pinned real-world multi-file corpus. Every timed iteration starts with the same
 87 source files and ends with generated code for all 87 files.
 
+## Dependency update
+
+Direct dependencies are pinned to their npm `latest` releases checked on 2026-10-09.
+Parser stacks now use Babel 8.0.7, SWC 1.16.13, SWC Next 0.2.4,
+OXC 0.153.0, and Yuku 0.18.0. Historical measurements below retain their original
+versions; upgrading dependencies does not retroactively update those timings.
+
+`babel-plugin-styled-components@2.3.0` still declares a Babel 7 peer and calls
+three removed JSX builder aliases. A scoped npm override and
+[`babel-styled-components-plugin.ts`](scripts/babel-styled-components-plugin.ts)
+map those aliases to Babel 8's equivalent builders and preserve the upstream
+visitor's temporary identifier for intrinsic hyphenated JSX tags. The full parity suite covers
+this compatibility wrapper. Babel parsing, traversal, and printing all use Babel 8.
+Yuku 0.18's codegen is now JavaScript, so current profiles use its public `generate`
+API and no longer report the removed native encode/codegen stages.
+
 ## SWC Next walker comparison
 
 The comparison keeps SWC Next parse/print, corpus, and plugin options unchanged. Each walker

@@ -11,6 +11,7 @@ import picomatch from "picomatch";
 import { b, bindingIdentifiers, is, walk, type Visitors, type WalkContext } from "yuku-ast";
 import type {
     ArrowFunctionExpression,
+    BindingPattern,
     CallExpression,
     Expression,
     Identifier,
@@ -301,7 +302,7 @@ function collectProgramFacts(state: PluginState): void {
             if (!is.Function(node)) throw new Error("expected Function");
             const parameters = node.params.flatMap((parameter) => {
                 if (parameter.type === "RestElement") {
-                    return bindingIdentifiers(parameter.argument);
+                    return bindingIdentifiers(parameter.argument as BindingPattern);
                 }
                 if (parameter.type === "TSParameterProperty") {
                     return bindingIdentifiers(parameter.parameter);

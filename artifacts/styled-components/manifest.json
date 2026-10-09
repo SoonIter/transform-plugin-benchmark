@@ -66,7 +66,7 @@
       }
     },
     {
-      "aggregateSha256": "2efd4fb3ed39b47fbcd808a3c3cc86b0772b31d47de07f1f5f9869839f3a6c40",
+      "aggregateSha256": "ab4f7f387dcdf7c4a54b6f76f93af02be4361c97ca4563a7daf76940a9dcca09",
       "file": "yuku-output.jsx",
       "representativeBytes": 258,
       "representativeSha256": "d69e44c250333332fab86dbca0ed533bbced3daa349004a12a21062bd09300e9",
@@ -76,8 +76,8 @@
         "displayNames": 32,
         "files": 87,
         "jsxElements": 137,
-        "outputBytes": 45865,
-        "outputCodeUnits": 45865,
+        "outputBytes": 45890,
+        "outputCodeUnits": 45890,
         "pureAnnotations": 33,
         "taggedTemplates": 0,
         "uniqueComponentIds": 32,

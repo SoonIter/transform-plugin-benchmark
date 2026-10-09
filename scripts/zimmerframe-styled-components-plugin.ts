@@ -12,6 +12,7 @@ import { b, bindingIdentifiers, is } from "yuku-ast";
 import { walk, type Context } from "zimmerframe";
 import type {
     ArrowFunctionExpression,
+    BindingPattern,
     CallExpression,
     Expression,
     Identifier,
@@ -292,7 +293,7 @@ function collectProgramFacts(state: PluginState): void {
     function collectFunction(node: Node, context: Context<Node, PluginState>): void {
         if (!is.Function(node)) throw new Error("expected Function");
         const parameters = node.params.flatMap((parameter) => {
-            if (parameter.type === "RestElement") return bindingIdentifiers(parameter.argument);
+            if (parameter.type === "RestElement") return bindingIdentifiers(parameter.argument as BindingPattern);
             if (parameter.type === "TSParameterProperty") return bindingIdentifiers(parameter.parameter);
             return bindingIdentifiers(parameter);
         });

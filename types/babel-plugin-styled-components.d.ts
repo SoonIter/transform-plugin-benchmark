@@ -1,6 +1,6 @@
 declare module "babel-plugin-styled-components" {
-  import type { PluginTarget } from "@babel/core";
+  import type { PluginObject, types } from "@babel/core";
 
-  const plugin: PluginTarget<object>;
+  const plugin: { default: (api: { types: typeof types & Record<string, unknown> }) => PluginObject };
   export default plugin;
 }

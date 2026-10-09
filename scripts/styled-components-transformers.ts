@@ -7,7 +7,7 @@ import {
   SourceType,
 } from "@swc-next/core";
 import { transformSync as swcTransformSync } from "@swc/core";
-import babelStyledComponentsPlugin from "babel-plugin-styled-components";
+import babelStyledComponentsPlugin from "./babel-styled-components-plugin";
 import { printSync as oxcPrintSync } from "oxc-codegen";
 import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
 import { walk } from "yuku-ast";
@@ -74,7 +74,7 @@ export interface StyledComponentsValidation {
 
 export function printYukuProgramWithOxc(program: Program): string {
   // Both packages expose ESTree at runtime but publish distinct Program types.
-  return oxcPrintSync(program as never, { jsx: true });
+  return oxcPrintSync(program as never, { jsx: true }).code;
 }
 
 function transformBabel(file: StyledComponentsCorpusFile): string {
@@ -167,8 +167,8 @@ function transformYuku(
     comments: "some",
     format: "pretty",
   });
-  if (result.errors.length > 0) {
-    throw new Error(`Yuku codegen failed: ${result.errors[0]!.message}`);
+  if (result.diagnostics.length > 0) {
+    throw new Error(`Yuku codegen failed: ${result.diagnostics[0]!.message}`);
   }
   return result.code;
 }
@@ -195,7 +195,7 @@ function transformOxc(
     file.filename,
     STYLED_COMPONENTS_OPTIONS,
   );
-  return oxcPrintSync(parsed.program, { jsx: true });
+  return oxcPrintSync(parsed.program, { jsx: true }).code;
 }
 
 export function transformStyledComponentsFor(

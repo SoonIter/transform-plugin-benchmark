@@ -91,13 +91,13 @@ function assertResult(result: ReproductionResult): void {
   if (result.runtime !== `Node ${NODE_VERSION}`) {
     throw new Error(`Expected runtime Node ${NODE_VERSION}, received ${result.runtime}`);
   }
-  if (result.versions.oxcParser !== "0.144.0") {
+  if (result.versions.oxcParser !== "0.153.0") {
     throw new Error("Reproduction result has an unexpected OXC parser version");
   }
-  if (result.versions.oxcCodegen !== "0.144.0") {
+  if (result.versions.oxcCodegen !== "0.153.0") {
     throw new Error("Reproduction result has an unexpected OXC codegen version");
   }
-  if (result.versions.swcNextCore !== "0.2.1") {
+  if (result.versions.swcNextCore !== "0.2.4") {
     throw new Error("Reproduction result has an unexpected SWC Next core version");
   }
   if (result.results.length !== 7 || result.profile.results.length !== 7) {

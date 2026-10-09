@@ -9,14 +9,11 @@ import {
   printSync as swcNextPrintSync,
   SourceType,
 } from "@swc-next/core";
-import babelStyledComponentsPlugin from "babel-plugin-styled-components";
+import babelStyledComponentsPlugin from "./babel-styled-components-plugin";
 import { printSync as oxcPrintSync } from "oxc-codegen";
 import { parseSync as oxcParseSync, rawTransferSupported } from "oxc-parser";
-import yukuCodegenBinding from "yuku-codegen/binding.js";
-import { encode as yukuEncode } from "yuku-codegen/encode.js";
-import yukuParserBinding from "yuku-parser/binding.js";
-import { decode as yukuDecode } from "yuku-parser/decode.js";
-import type { Program } from "yuku-parser";
+import { generate as yukuGenerate } from "yuku-codegen";
+import { parse as yukuParse, type Program } from "yuku-parser";
 import type { StyledComponentsCorpusFile } from "./styled-components-corpus";
 import {
   printYukuProgramWithOxc,
@@ -62,15 +59,12 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "AST encode + codegen", runtime: "JS + native" },
   ],
   "Yuku + JS plugin": [
-    { name: "source encode", runtime: "JS" },
     { name: "parse", runtime: "native" },
     { name: "AST decode", runtime: "JS" },
     { name: "plugin transform", runtime: "JS" },
-    { name: "AST encode", runtime: "JS" },
-    { name: "codegen", runtime: "native" },
+    { name: "codegen", runtime: "JS" },
   ],
   "Yuku + OXC codegen": [
-    { name: "source encode", runtime: "JS" },
     { name: "parse", runtime: "native" },
     { name: "AST decode", runtime: "JS" },
     { name: "plugin transform", runtime: "JS" },
@@ -87,8 +81,6 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "codegen", runtime: "JS" },
   ],
 };
-
-const sourceEncoder = new TextEncoder();
 
 export function profileStageDefinitions(
   name: StyledComponentsTransformerName,
@@ -210,15 +202,12 @@ function profileYuku(
   codegen: "oxc" | "yuku",
 ): ProfileIteration {
   const start = process.hrtime.bigint();
-  const sourceBytes = sourceEncoder.encode(file.source);
-  const sourceEncodedAt = process.hrtime.bigint();
-  const buffer = yukuParserBinding.parse(sourceBytes, {
+  const parsed = yukuParse(file.source, {
     attachComments: false,
     lang: "jsx",
     sourceType: "module",
   });
   const parsedAt = process.hrtime.bigint();
-  const parsed = yukuDecode(buffer, file.source);
   const program = parsed.program;
   const decodedAt = process.hrtime.bigint();
   transformStyledComponentsYuku(
@@ -233,8 +222,7 @@ function profileYuku(
     const generatedAt = process.hrtime.bigint();
     return {
       durationsNs: [
-        durationNs(start, sourceEncodedAt),
-        durationNs(sourceEncodedAt, parsedAt),
+        durationNs(start, parsedAt),
         durationNs(parsedAt, decodedAt),
         durationNs(decodedAt, transformedAt),
         durationNs(transformedAt, generatedAt),
@@ -242,25 +230,17 @@ function profileYuku(
       output,
     };
   }
-  const encoded = yukuEncode(program);
-  const encodedAt = process.hrtime.bigint();
-  const generated = yukuCodegenBinding.generate(encoded, {
-    comments: "some",
-    format: "pretty",
-  });
+  const generated = yukuGenerate(program, { comments: "some", format: "pretty" });
   const generatedAt = process.hrtime.bigint();
-  if (generated.errors.length > 0) {
-    throw new Error(`Yuku codegen failed: ${generated.errors[0]!.message}`);
+  if (generated.diagnostics.length > 0) {
+    throw new Error(`Yuku codegen failed: ${generated.diagnostics[0]!.message}`);
   }
-
   return {
     durationsNs: [
-      durationNs(start, sourceEncodedAt),
-      durationNs(sourceEncodedAt, parsedAt),
+      durationNs(start, parsedAt),
       durationNs(parsedAt, decodedAt),
       durationNs(decodedAt, transformedAt),
-      durationNs(transformedAt, encodedAt),
-      durationNs(encodedAt, generatedAt),
+      durationNs(transformedAt, generatedAt),
     ],
     output: generated.code,
   };
@@ -291,7 +271,7 @@ function profileOxc(
     STYLED_COMPONENTS_OPTIONS,
   );
   const transformedAt = process.hrtime.bigint();
-  const output = oxcPrintSync(parsed.program, { jsx: true });
+  const output = oxcPrintSync(parsed.program, { jsx: true }).code;
   const generatedAt = process.hrtime.bigint();
 
   return {

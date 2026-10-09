@@ -17,26 +17,30 @@
     "bench:walkers": "BENCH_RUNS=6 BENCH_TIME=10000 BENCH_WARMUP=3000 PROFILE_TIME=5000 PROFILE_WARMUP=1000 BENCH_REPRODUCTION_COMMAND=\"npm run bench:walkers\" node --import tsx scripts/bench-styled-components.ts --walkers"
   },
   "dependencies": {
-    "@babel/core": "7.29.7",
-    "@swc-next/core": "0.2.1",
-    "@swc/core": "1.15.46",
-    "@swc/plugin-styled-components": "12.19.0",
+    "@babel/core": "8.0.7",
+    "@swc-next/core": "0.2.4",
+    "@swc/core": "1.16.13",
+    "@swc/plugin-styled-components": "17.0.0",
     "babel-plugin-styled-components": "2.3.0",
-    "oxc-codegen": "0.144.0",
-    "oxc-parser": "0.144.0",
-    "picomatch": "4.0.5",
-    "styled-components": "6.5.2",
-    "tinybench": "6.0.2",
-    "yuku-ast": "0.8.5",
-    "yuku-codegen": "0.8.5",
-    "yuku-parser": "0.8.5",
+    "oxc-codegen": "0.153.0",
+    "oxc-parser": "0.153.0",
+    "picomatch": "4.0.7",
+    "styled-components": "6.5.3",
+    "tinybench": "6.2.1",
+    "yuku-ast": "0.18.0",
+    "yuku-codegen": "0.18.0",
+    "yuku-parser": "0.18.0",
     "zimmerframe": "1.1.5"
   },
   "devDependencies": {
-    "@types/babel__core": "7.20.5",
-    "@types/node": "24.13.3",
+    "@types/node": "26.6.4",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
-    "tsx": "4.23.12",
+    "tsx": "4.23.15",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "babel-plugin-styled-components": {
+      "@babel/core": "$@babel/core"
+    }
   }
 }
