@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { pipelineMetadata, type PipelineVersions } from "./pipeline-labels";
 
 interface TransformResult {
   median: number;
@@ -18,6 +19,7 @@ interface ProfileResult {
 }
 
 interface BenchmarkResult {
+  versions?: PipelineVersions;
   profile: {
     results: ProfileResult[];
   };
@@ -48,6 +50,7 @@ interface ScalingTransformResult {
 }
 
 interface ScalingBenchmarkResult {
+  versions?: PipelineVersions;
   benchmark: { runs: number };
   fixture: { maximumBytes: number; minimumBytes: number };
   results: ScalingTransformResult[];
@@ -82,6 +85,8 @@ const SCALING_STYLES = new Map([
   ["Yuku + OXC codegen", { color: "#d97706", dash: "14 4 3 4" }],
   ["OXC + Yuku walk plugin", { color: "#65a30d", dash: "8 4" }],
   ["OXC raw transfer + Yuku walk", { color: "#0891b2", dash: "2 3" }],
+  ["OXC lazy + Yuku walk", { color: "#0d9488", dash: "10 3 2 3" }],
+  ["SWC Next + Zimmerframe", { color: "#6366f1", dash: "8 3 2 3" }],
 ]);
 
 function escapeXML(value: string): string {
@@ -90,6 +95,23 @@ function escapeXML(value: string): string {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function pipelineLabel(
+  name: string,
+  x: number,
+  firstLineY: number,
+  versions?: PipelineVersions,
+  anchor: "start" | "end" = "end",
+  className = "label",
+): string {
+  const metadata = pipelineMetadata(name, versions);
+  return `<text x="${x}" y="${firstLineY}" text-anchor="${anchor}" class="${className}">
+    <title>${escapeXML(metadata.fullLabel)}</title>
+    ${metadata.lines.map((line, index) =>
+      `<tspan x="${x}" dy="${index === 0 ? 0 : 23}">${escapeXML(line)}</tspan>`,
+    ).join("\n")}
+  </text>`;
 }
 
 function transformerColor(name: string): string {
@@ -115,19 +137,17 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
   return "Yuku JS plugin";
 }
 
-function latencyChart(results: TransformResult[]): string {
-  const width = 1_500;
+function latencyChart(results: TransformResult[], versions?: PipelineVersions): string {
+  const width = 1_760;
   const height = 90 + results.length * 100;
-  const labelWidth = 380;
+  const labelWidth = 610;
   const chartWidth = 970;
   const maximum = Math.max(...results.map((result) => result.median));
   const rows = results.map((result, index) => {
     const y = 72 + index * 100;
     const barWidth = (result.median / maximum) * chartWidth;
     return `
-      <text x="${labelWidth - 20}" y="${y + 31}" text-anchor="end" class="label">
-        ${escapeXML(result.name)}
-      </text>
+      ${pipelineLabel(result.name, labelWidth - 20, y + 9, versions)}
       <rect x="${labelWidth}" y="${y}" width="${barWidth.toFixed(2)}" height="58"
         rx="8" fill="${transformerColor(result.name)}" />
       <text x="${(labelWidth + barWidth + 18).toFixed(2)}" y="${y + 36}" class="value">
@@ -139,23 +159,23 @@ function latencyChart(results: TransformResult[]): string {
     aria-label="Styled-components transform latency, lower is better">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
-      .label { fill: #d1d5db; font: 600 20px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 18px system-ui, sans-serif; }
       .value { fill: #f9fafb; font: 700 19px ui-monospace, monospace; }
       .note { fill: #9ca3af; font: 15px system-ui, sans-serif; }
     </style>
     <rect width="100%" height="100%" rx="14" fill="#111827" />
     <text x="36" y="42" class="title">End-to-end latency</text>
-    <text x="1460" y="42" text-anchor="end" class="note">lower is better</text>
+    <text x="${width - 36}" y="42" text-anchor="end" class="note">lower is better</text>
     ${rows.join("\n").trim()}
   </svg>\n`;
 }
 
-function stageChart(profiles: ProfileResult[]): string {
-  const width = 1_600;
+function stageChart(profiles: ProfileResult[], versions?: PipelineVersions): string {
+  const width = 1_800;
   const axisY = 78 + profiles.length * 114;
   const height = axisY + 190;
-  const labelWidth = 380;
-  const chartWidth = 1_160;
+  const labelWidth = 610;
+  const chartWidth = 1_130;
   const categories = Array.from(STAGE_COLORS.keys());
   const rows = profiles.map((profile, index) => {
     const y = 78 + index * 114;
@@ -173,9 +193,7 @@ function stageChart(profiles: ProfileResult[]): string {
         ${(share * 100).toFixed(1)}%</title></rect>`;
     });
     return `
-      <text x="${labelWidth - 20}" y="${y + 40}" text-anchor="end" class="label">
-        ${escapeXML(profile.name)}
-      </text>
+      ${pipelineLabel(profile.name, labelWidth - 20, y + 15, versions)}
       <g clip-path="url(#row-${index})">${segments.join("\n")}</g>
       <clipPath id="row-${index}"><rect x="${labelWidth}" y="${y}"
         width="${chartWidth}" height="66" rx="8" /></clipPath>`;
@@ -195,7 +213,7 @@ function stageChart(profiles: ProfileResult[]): string {
     aria-label="Styled-components transform stage shares">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
-      .label { fill: #d1d5db; font: 600 20px system-ui, sans-serif; }
+      .label { fill: #d1d5db; font: 600 18px system-ui, sans-serif; }
       .legend { fill: #d1d5db; font: 16px system-ui, sans-serif; }
       .axis { fill: #9ca3af; font: 14px ui-monospace, monospace; }
     </style>
@@ -211,11 +229,11 @@ function stageChart(profiles: ProfileResult[]): string {
   </svg>\n`;
 }
 
-function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
-  const width = 1_600;
-  const labelWidth = 380;
-  const chartWidth = 1_160;
-  const rowHeight = 108;
+function stagesWithoutPluginChart(profiles: ProfileResult[], versions?: PipelineVersions): string {
+  const width = 1_800;
+  const labelWidth = 610;
+  const chartWidth = 1_130;
+  const rowHeight = 116;
   const axisY = 100 + profiles.length * rowHeight;
   const height = axisY + 150;
   const categories = [
@@ -225,15 +243,14 @@ function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
     "Parse + raw AST transfer",
     "AST decode",
     "AST encode",
+    "AST encode + codegen",
     "Codegen",
   ];
   const rows = profiles.map((profile, index) => {
     const y = 84 + index * rowHeight;
-    if (profile.name.startsWith("SWC")) {
+    if (profile.stages.some((stage) => stage.name === "parse + plugin + codegen")) {
       return `
-      <text x="${labelWidth - 20}" y="${y + 38}" text-anchor="end" class="label">
-        ${escapeXML(profile.name)}
-      </text>
+      ${pipelineLabel(profile.name, labelWidth - 20, y + 15, versions)}
       <rect x="${labelWidth}" y="${y}" width="${chartWidth}" height="66"
         rx="8" fill="#374151" />
       <text x="${labelWidth + chartWidth / 2}" y="${y + 40}"
@@ -261,10 +278,8 @@ function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
         ${(share * 100).toFixed(1)}%, ${meanMs.toFixed(3)} ms</title></rect>${label}`;
     });
     return `
-      <text x="${labelWidth - 20}" y="${y + 30}" text-anchor="end" class="label">
-        ${escapeXML(profile.name)}
-      </text>
-      <text x="${labelWidth - 20}" y="${y + 54}" text-anchor="end" class="total">
+      ${pipelineLabel(profile.name, labelWidth - 20, y + 8, versions)}
+      <text x="${labelWidth - 20}" y="${y + 78}" text-anchor="end" class="total">
         ${remainingMs.toFixed(2)} ms remaining
       </text>
       <g clip-path="url(#without-plugin-${index})">${segments.join("\n")}</g>
@@ -272,7 +287,7 @@ function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
         width="${chartWidth}" height="66" rx="8" /></clipPath>`;
   });
   const legend = categories.map((category, index) => {
-    const x = 70 + (index % 4) * 380;
+    const x = 70 + (index % 4) * 435;
     const y = axisY + 30 + Math.floor(index / 4) * 42;
     return `
       <rect x="${x}" y="${y}" width="20" height="20" rx="4"
@@ -303,13 +318,14 @@ function stagesWithoutPluginChart(profiles: ProfileResult[]): string {
 
 function scalingChart(data: ScalingBenchmarkResult): string {
   const width = 1_600;
-  const height = 1_080;
   const left = 130;
   const right = 80;
   const top = 150;
-  const bottom = 310;
+  const plotHeight = 620;
+  const legendRowHeight = 120;
+  const legendStart = top + plotHeight + 110;
+  const height = legendStart + Math.ceil(data.results.length / 2) * legendRowHeight + 90;
   const plotWidth = width - left - right;
-  const plotHeight = height - top - bottom;
   const allObserved = data.results.flatMap((result) =>
     result.points.flatMap((point) => point.runMediansMs),
   );
@@ -402,15 +418,15 @@ function scalingChart(data: ScalingBenchmarkResult): string {
 
   const legend = data.results.map((result, index) => {
     const style = SCALING_STYLES.get(result.name)!;
-    const column = index % 3;
-    const row = Math.floor(index / 3);
-    const x = left + column * 460;
-    const y = top + plotHeight + 100 + row * 78;
+    const column = index % 2;
+    const row = Math.floor(index / 2);
+    const x = left + column * 710;
+    const y = legendStart + row * legendRowHeight;
     return `<line x1="${x}" y1="${y}" x2="${x + 52}" y2="${y}"
         stroke="${style.color}" stroke-width="4" stroke-linecap="round"
         ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />
-      <text x="${x + 66}" y="${y + 5}" class="legend-name">${escapeXML(result.name)}</text>
-      <text x="${x + 66}" y="${y + 29}" class="legend-detail">${result.fit.model === "offset-power" ? `p=${result.fit.exponent!.toFixed(3)}` : "log-quadratic"} · holdout MAPE ${result.fit.validationMapePct.toFixed(1)}% · max ${result.fit.validationMaxErrorPct.toFixed(1)}%</text>`;
+      ${pipelineLabel(result.name, x + 66, y + 5, data.versions, "start", "legend-name")}
+      <text x="${x + 66}" y="${y + 76}" class="legend-detail">${result.fit.model === "offset-power" ? `p=${result.fit.exponent!.toFixed(3)}` : "log-quadratic"} · holdout MAPE ${result.fit.validationMapePct.toFixed(1)}% · max ${result.fit.validationMaxErrorPct.toFixed(1)}%</text>`;
   });
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
@@ -459,14 +475,14 @@ async function main(): Promise<void> {
   const results = [...data.results].sort((left, right) => left.median - right.median);
   const chartsPath = join(process.cwd(), "charts");
   await mkdir(chartsPath, { recursive: true });
-  await writeFile(join(chartsPath, "styled-components-latency.svg"), latencyChart(results));
+  await writeFile(join(chartsPath, "styled-components-latency.svg"), latencyChart(results, data.versions));
   await writeFile(
     join(chartsPath, "styled-components-stages.svg"),
-    stageChart(data.profile.results),
+    stageChart(data.profile.results, data.versions),
   );
   await writeFile(
     join(chartsPath, "styled-components-stages-without-plugin.svg"),
-    stagesWithoutPluginChart(data.profile.results),
+    stagesWithoutPluginChart(data.profile.results, data.versions),
   );
   const scalingInputPath = join(process.cwd(), "result", "styled-components-scaling.json");
   const scalingData = JSON.parse(

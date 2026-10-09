@@ -1,3 +1,4 @@
+import { pipelineMetadata } from "./pipeline-labels";
 import { spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { arch, cpus, platform, release, totalmem } from "node:os";
@@ -276,7 +277,7 @@ async function benchmarkScaling(): Promise<object> {
       mapeLimitPct: VALIDATION_MAPE_LIMIT_PCT,
       method: "held-out intermediate file sizes excluded from curve fitting",
     },
-    results,
+    results: results.map((result) => ({ ...result, pipeline: pipelineMetadata(result.name) })),
     runtime: `Node ${process.versions.node}`,
     system: {
       cores: cpus().length,

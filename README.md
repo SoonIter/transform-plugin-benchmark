@@ -13,6 +13,22 @@ Reproducible benchmark of seven styled-components transform pipelines:
 The workload is a pinned real-world multi-file corpus. Every timed iteration starts with the same
 87 source files and ends with generated code for all 87 files.
 
+## Pipeline labels
+
+Chart labels show all three stages. The stable short `name` in raw JSON remains an ID;
+new measurements and artifact manifests also include structured `pipeline` metadata.
+Historical charts resolve codegen runtime from their recorded dependency versions.
+
+| Parser and feature | Styled-components plugin | Codegen |
+|---|---|---|
+| Babel parser (JS, JSX) | styled-components plugin (JS, Babel traverse) | Babel codegen (JS) |
+| SWC parser (native, JSX) | styled-components plugin (WASM, SWC visitor) | SWC codegen (native) |
+| SWC Next parser (binary AST transfer) | styled-components plugin (JS, Yuku walk) | SWC Next codegen (JS encode + native) |
+| Yuku parser (binary AST transfer) | styled-components plugin (JS, Yuku walk) | Yuku codegen (JS) |
+| Yuku parser (binary AST transfer) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
+| OXC parser (default JSON transfer) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
+| OXC parser (experimentalRawTransfer) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
+
 ## Dependency update
 
 Direct dependencies are pinned to their npm `latest` releases checked on 2026-10-09.
@@ -53,8 +69,8 @@ Latest measurements on Node 24.18.1 / Apple M5 Max, over the full 87-file corpus
 
 | Pipeline | End-to-end median | Run spread | Plugin stage |
 |---|---:|---:|---:|
-| SWC Next + Yuku walk | 5.247 ms | 3.94% | 4.279 ms |
-| SWC Next + Zimmerframe | 5.221 ms | 2.24% | 4.242 ms |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | 5.247 ms | 3.94% | 4.279 ms |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Zimmerframe) + SWC Next codegen (JS encode + native) | 5.221 ms | 2.24% | 4.242 ms |
 
 End-to-end values are medians of six process medians. Plugin stages are medians of six
 separately measured process means. The approximately 0.5% end-to-end difference is smaller
@@ -85,13 +101,13 @@ Node.js 24.18.1 on the machine documented below. Lower is better.
 
 | Transformer | Median | Independent run medians | Run spread | Relative to Yuku |
 |-------------|-------:|-------------------------|-----------:|-----------------:|
-| **OXC raw transfer + Yuku walk** | **6.51 ms** | 6.506, 6.506, 6.509 ms | 0.05% | 0.74× |
-| Yuku + OXC codegen | 6.58 ms | 6.575, 6.644, 6.532 ms | 1.70% | 0.75× |
-| SWC Next + Yuku walk | 8.13 ms | 8.133, 8.068, 8.158 ms | 1.11% | 0.92× |
-| Yuku + JS plugin | 8.82 ms | 8.834, 8.821, 8.813 ms | 0.24% | 1.00× |
-| OXC + Yuku walk plugin | 9.28 ms | 9.277, 9.220, 9.298 ms | 0.85% | 1.05× |
-| Babel + JS plugin | 32.80 ms | 32.804, 32.927, 32.412 ms | 1.57% | 3.72× |
-| SWC + WASM plugin | 85.91 ms | 85.941, 85.754, 85.912 ms | 0.22% | 9.74× |
+| **OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)** | **6.51 ms** | 6.506, 6.506, 6.509 ms | 0.05% | 0.74× |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 6.58 ms | 6.575, 6.644, 6.532 ms | 1.70% | 0.75× |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | 8.13 ms | 8.133, 8.068, 8.158 ms | 1.11% | 0.92× |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | 8.82 ms | 8.834, 8.821, 8.813 ms | 0.24% | 1.00× |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 9.28 ms | 9.277, 9.220, 9.298 ms | 0.85% | 1.05× |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | 32.80 ms | 32.804, 32.927, 32.412 ms | 1.57% | 3.72× |
+| SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native) | 85.91 ms | 85.941, 85.754, 85.912 ms | 0.22% | 9.74× |
 
 Replacing Yuku's AST encode and native codegen path with `oxc-codegen` reduced the complete Yuku
 pipeline median by 25.4%, from 8.82 ms to 6.58 ms. OXC raw transfer reduced the complete OXC
@@ -115,13 +131,13 @@ most 6% and the worst held-out point error is at most 15%; all seven fits pass.
 
 | Transformer | 1 KiB | 512 KiB | Fit model | Exponent `p` | Held-out MAPE | Worst held-out error |
 |-------------|------:|------:|-----------|-------------:|--------------:|---------------------:|
-| Babel + JS plugin | 1.159 ms | 318.82 ms | offset-power | 1.031 | 4.51% | 11.22% |
-| SWC + WASM plugin | 2.216 ms | 63.41 ms | offset-power | 0.998 | 0.93% | 2.29% |
-| SWC Next + Yuku walk | 0.118 ms | 37.18 ms | log-quadratic | — | 3.74% | 5.46% |
-| Yuku + JS plugin | 0.138 ms | 42.25 ms | offset-power | 1.032 | 1.24% | 3.08% |
-| Yuku + OXC codegen | 0.092 ms | 22.19 ms | offset-power | 1.011 | 1.25% | 2.01% |
-| OXC + Yuku walk plugin | 0.158 ms | 52.82 ms | offset-power | 1.012 | 1.49% | 3.94% |
-| OXC raw transfer + Yuku walk | 0.088 ms | 21.40 ms | offset-power | 0.997 | 1.15% | 1.87% |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | 1.159 ms | 318.82 ms | offset-power | 1.031 | 4.51% | 11.22% |
+| SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native) | 2.216 ms | 63.41 ms | offset-power | 0.998 | 0.93% | 2.29% |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | 0.118 ms | 37.18 ms | log-quadratic | — | 3.74% | 5.46% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | 0.138 ms | 42.25 ms | offset-power | 1.032 | 1.24% | 3.08% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 0.092 ms | 22.19 ms | offset-power | 1.011 | 1.25% | 2.01% |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 0.158 ms | 52.82 ms | offset-power | 1.012 | 1.49% | 3.94% |
+| OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 0.088 ms | 21.40 ms | offset-power | 0.997 | 1.15% | 1.87% |
 
 The reported value at each size is the median of three independent process-run medians. Each
 process warms the transformer on a 16 KiB module, then measures each size for at least 200 ms;
@@ -201,31 +217,31 @@ three independent run means; stage values add up within a pipeline.
 
 | Transformer | Stage | Runtime | Median run mean | Share |
 |-------------|-------|---------|----------------:|------:|
-| Babel + JS plugin | parse | JS | 4.328 ms | 10.4% |
-| Babel + JS plugin | plugin transform | JS | 29.645 ms | 71.0% |
-| Babel + JS plugin | codegen | JS | 7.808 ms | 18.7% |
-| SWC + WASM plugin | parse + plugin + codegen | native + WASM | 90.597 ms | 100.0% |
-| SWC Next + Yuku walk | parse | native | 0.650 ms | 7.5% |
-| SWC Next + Yuku walk | AST decode | JS | 0.428 ms | 5.0% |
-| SWC Next + Yuku walk | plugin transform | JS | 5.569 ms | 64.6% |
-| SWC Next + Yuku walk | AST encode + codegen | JS + native | 1.979 ms | 22.9% |
-| Yuku + JS plugin | source encode | JS | 0.111 ms | 1.2% |
-| Yuku + JS plugin | parse | native | 0.786 ms | 8.5% |
-| Yuku + JS plugin | AST decode | JS | 0.380 ms | 4.1% |
-| Yuku + JS plugin | plugin transform | JS | 5.636 ms | 60.6% |
-| Yuku + JS plugin | AST encode | JS | 1.862 ms | 20.0% |
-| Yuku + JS plugin | codegen | native | 0.528 ms | 5.7% |
-| Yuku + OXC codegen | source encode | JS | 0.128 ms | 1.8% |
-| Yuku + OXC codegen | parse | native | 0.745 ms | 10.6% |
-| Yuku + OXC codegen | AST decode | JS | 0.364 ms | 5.2% |
-| Yuku + OXC codegen | plugin transform | JS | 5.558 ms | 79.2% |
-| Yuku + OXC codegen | codegen | JS | 0.226 ms | 3.2% |
-| OXC + Yuku walk plugin | parse + AST transfer | native + JS | 1.278 ms | 13.1% |
-| OXC + Yuku walk plugin | plugin transform | JS | 8.170 ms | 83.9% |
-| OXC + Yuku walk plugin | codegen | JS | 0.289 ms | 3.0% |
-| OXC raw transfer + Yuku walk | parse + raw AST transfer | native + JS | 1.072 ms | 15.6% |
-| OXC raw transfer + Yuku walk | plugin transform | JS | 5.568 ms | 81.0% |
-| OXC raw transfer + Yuku walk | codegen | JS | 0.238 ms | 3.5% |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | parse | JS | 4.328 ms | 10.4% |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | plugin transform | JS | 29.645 ms | 71.0% |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | codegen | JS | 7.808 ms | 18.7% |
+| SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native) | parse + plugin + codegen | native + WASM | 90.597 ms | 100.0% |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | parse | native | 0.650 ms | 7.5% |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | AST decode | JS | 0.428 ms | 5.0% |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | plugin transform | JS | 5.569 ms | 64.6% |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | AST encode + codegen | JS + native | 1.979 ms | 22.9% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | source encode | JS | 0.111 ms | 1.2% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | parse | native | 0.786 ms | 8.5% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | AST decode | JS | 0.380 ms | 4.1% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | plugin transform | JS | 5.636 ms | 60.6% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | AST encode | JS | 1.862 ms | 20.0% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | codegen | native | 0.528 ms | 5.7% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | source encode | JS | 0.128 ms | 1.8% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | parse | native | 0.745 ms | 10.6% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | AST decode | JS | 0.364 ms | 5.2% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | plugin transform | JS | 5.558 ms | 79.2% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | codegen | JS | 0.226 ms | 3.2% |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | parse + AST transfer | native + JS | 1.278 ms | 13.1% |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | plugin transform | JS | 8.170 ms | 83.9% |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | codegen | JS | 0.289 ms | 3.0% |
+| OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | parse + raw AST transfer | native + JS | 1.072 ms | 15.6% |
+| OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | plugin transform | JS | 5.568 ms | 81.0% |
+| OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | codegen | JS | 0.238 ms | 3.5% |
 
 SWC exposes the WASM plugin through a complete transform call, not as an independently measurable
 AST stage. Its row therefore stays combined. The benchmark does not estimate plugin time by
@@ -242,13 +258,13 @@ arbitrary JavaScript code.
 
 | Transformer | Directly measured remainder | Remainder normalized to 100% |
 |-------------|----------------------------:|------------------------------|
-| Babel + JS plugin | 12.136 ms | parse 35.7%, codegen 64.3% |
-| SWC + WASM plugin | not separable | plugin shares the public transform call |
-| SWC Next + Yuku walk | 2.407 ms | decode 17.8%, AST encode + codegen 82.2% |
-| Yuku + JS plugin | 3.667 ms | encode 3.0%, parse 21.4%, decode 10.4%, AST encode 50.8%, codegen 14.4% |
-| Yuku + OXC codegen | 1.464 ms | encode 8.8%, parse 50.9%, decode 24.9%, codegen 15.4% |
-| OXC + Yuku walk plugin | 1.567 ms | parse + AST transfer 81.6%, codegen 18.4% |
-| OXC raw transfer + Yuku walk | 1.310 ms | parse + raw AST transfer 81.8%, codegen 18.2% |
+| Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS) | 12.136 ms | parse 35.7%, codegen 64.3% |
+| SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native) | not separable | plugin shares the public transform call |
+| SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native) | 2.407 ms | decode 17.8%, AST encode + codegen 82.2% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native) | 3.667 ms | encode 3.0%, parse 21.4%, decode 10.4%, AST encode 50.8%, codegen 14.4% |
+| Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 1.464 ms | encode 8.8%, parse 50.9%, decode 24.9%, codegen 15.4% |
+| OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 1.567 ms | parse + AST transfer 81.6%, codegen 18.4% |
+| OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS) | 1.310 ms | parse + raw AST transfer 81.8%, codegen 18.2% |
 
 This view removes only the directly measured `plugin transform` stage and renormalizes the
 remainder. It is not a separate no-op benchmark.

@@ -14,6 +14,17 @@
       "representativeBytes": 261,
       "representativeSha256": "c921274167dcfa50c5138a07910c530f0f30dd8b3e361e073f77647d72f64a77",
       "transformer": "Babel + JS plugin",
+      "pipeline": {
+        "parser": "Babel parser (JS, JSX)",
+        "plugin": "styled-components plugin (JS, Babel traverse)",
+        "codegen": "Babel codegen (JS)",
+        "lines": [
+          "Babel parser (JS, JSX)",
+          "styled-components plugin (JS, Babel traverse)",
+          "Babel codegen (JS)"
+        ],
+        "fullLabel": "Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -33,6 +44,17 @@
       "representativeBytes": 279,
       "representativeSha256": "74930c9eb3e9a72e9face809ecc5af19e32df80a22d3c760a168ad0a5887f76d",
       "transformer": "SWC + WASM plugin",
+      "pipeline": {
+        "parser": "SWC parser (native, JSX)",
+        "plugin": "styled-components plugin (WASM, SWC visitor)",
+        "codegen": "SWC codegen (native)",
+        "lines": [
+          "SWC parser (native, JSX)",
+          "styled-components plugin (WASM, SWC visitor)",
+          "SWC codegen (native)"
+        ],
+        "fullLabel": "SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -52,6 +74,17 @@
       "representativeBytes": 245,
       "representativeSha256": "9f65b484ef553c1ac60042163e80d8f181329f7ef925d3684b25a863f43c6e45",
       "transformer": "SWC Next + Yuku walk",
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -71,6 +104,17 @@
       "representativeBytes": 258,
       "representativeSha256": "d69e44c250333332fab86dbca0ed533bbced3daa349004a12a21062bd09300e9",
       "transformer": "Yuku + JS plugin",
+      "pipeline": {
+        "parser": "Yuku parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "Yuku codegen (JS)",
+        "lines": [
+          "Yuku parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "Yuku codegen (JS)"
+        ],
+        "fullLabel": "Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (JS)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -90,6 +134,17 @@
       "representativeBytes": 247,
       "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
       "transformer": "Yuku + OXC codegen",
+      "pipeline": {
+        "parser": "Yuku parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "Yuku parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -109,6 +164,17 @@
       "representativeBytes": 247,
       "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
       "transformer": "OXC + Yuku walk plugin",
+      "pipeline": {
+        "parser": "OXC parser (default JSON transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "OXC parser (default JSON transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,
@@ -128,6 +194,17 @@
       "representativeBytes": 247,
       "representativeSha256": "a66fea32fb35b01c25ef3f035e928cc0a8a3e388a0f9f4ea2cd99544d0242c1b",
       "transformer": "OXC raw transfer + Yuku walk",
+      "pipeline": {
+        "parser": "OXC parser (experimentalRawTransfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "OXC parser (experimentalRawTransfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      },
       "validation": {
         "componentIds": 32,
         "displayNames": 32,

@@ -1,3 +1,4 @@
+import { pipelineMetadata } from "./pipeline-labels";
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -70,6 +71,7 @@ async function main(): Promise<void> {
       representativeBytes: Buffer.byteLength(representativeOutput.code),
       representativeSha256: sha256(representativeOutput.code),
       transformer,
+      pipeline: pipelineMetadata(transformer),
       validation: validateStyledComponentsOutputs(transformer, transformed),
     });
   }

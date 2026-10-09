@@ -1,3 +1,4 @@
+import { pipelineMetadata } from "./pipeline-labels";
 import { spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { arch, cpus, platform, release, totalmem } from "node:os";
@@ -483,7 +484,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
     },
     options: STYLED_COMPONENTS_OPTIONS,
     profile: {
-      results: profileResults,
+      results: profileResults.map((result) => ({ ...result, pipeline: pipelineMetadata(result.name) })),
       runs: BENCH_RUNS,
       timeMs: PROFILE_TIME,
       warmupMs: PROFILE_WARMUP,
@@ -492,7 +493,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
       command: process.env.BENCH_REPRODUCTION_COMMAND ?? "custom benchmark invocation",
       resultFile: RESULT_FILE,
     },
-    results,
+    results: results.map((result) => ({ ...result, pipeline: pipelineMetadata(result.name) })),
     runtime: `Node ${process.versions.node}`,
     system: {
       cores: cpus().length,
