@@ -5,6 +5,8 @@ import { pipelineMetadata, type PipelineVersions } from "./pipeline-labels";
 interface TransformResult {
   median: number;
   name: string;
+  runMedians: number[];
+  runSpreadPct: number;
 }
 
 interface ProfileStage {
@@ -35,6 +37,7 @@ interface ScalingPoint {
 
 interface ScalingTransformResult {
   fit: {
+    accepted: boolean;
     exponent?: number;
     interceptMs?: number;
     logIntercept?: number;
@@ -68,6 +71,8 @@ const STAGE_COLORS = new Map([
   ["Parse", "#38bdf8"],
   ["Parse + AST transfer", "#60a5fa"],
   ["Parse + raw AST transfer", "#2dd4bf"],
+  ["Parse + lazy AST setup", "#14b8a6"],
+  ["Dispose", "#94a3b8"],
   ["AST decode", "#34d399"],
   ["AST encode + codegen", "#fb923c"],
   ["Babel JS plugin", "#8b5cf6"],
@@ -127,6 +132,8 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
   if (stage.name === "AST encode") return "AST encode";
   if (stage.name === "parse + AST transfer") return "Parse + AST transfer";
   if (stage.name === "parse + raw AST transfer") return "Parse + raw AST transfer";
+  if (stage.name === "parse + lazy AST setup") return "Parse + lazy AST setup";
+  if (stage.name === "dispose") return "Dispose";
   if (stage.name === "parse + plugin + codegen") {
     return "Parse + WASM plugin + codegen";
   }
@@ -152,6 +159,9 @@ function latencyChart(results: TransformResult[], versions?: PipelineVersions): 
         rx="8" fill="${transformerColor(result.name)}" />
       <text x="${(labelWidth + barWidth + 18).toFixed(2)}" y="${y + 36}" class="value">
         ${result.median.toFixed(2)} ms
+      </text>
+      <text x="${labelWidth}" y="${y + 80}" class="note">
+        runs: ${result.runMedians.map((value) => value.toFixed(2)).join(" / ")} ms · spread: ${result.runSpreadPct.toFixed(2)}%
       </text>`;
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
@@ -165,7 +175,7 @@ function latencyChart(results: TransformResult[], versions?: PipelineVersions): 
     </style>
     <rect width="100%" height="100%" rx="14" fill="#111827" />
     <text x="36" y="42" class="title">End-to-end latency</text>
-    <text x="${width - 36}" y="42" text-anchor="end" class="note">lower is better</text>
+    <text x="${width - 36}" y="42" text-anchor="end" class="note">median of process medians · compare run variability</text>
     ${rows.join("\n").trim()}
   </svg>\n`;
 }
@@ -173,7 +183,7 @@ function latencyChart(results: TransformResult[], versions?: PipelineVersions): 
 function stageChart(profiles: ProfileResult[], versions?: PipelineVersions): string {
   const width = 1_800;
   const axisY = 78 + profiles.length * 114;
-  const height = axisY + 190;
+  const height = axisY + 55 + Math.ceil(STAGE_COLORS.size / 3) * 42;
   const labelWidth = 610;
   const chartWidth = 1_130;
   const categories = Array.from(STAGE_COLORS.keys());
@@ -219,6 +229,7 @@ function stageChart(profiles: ProfileResult[], versions?: PipelineVersions): str
     </style>
     <rect width="100%" height="100%" rx="14" fill="#111827" />
     <text x="36" y="42" class="title">Pipeline stage share</text>
+    <text x="${width - 36}" y="42" text-anchor="end" class="axis">separate instrumented runs · inspect per-run variation in the raw data</text>
     ${rows.join("\n").trim()}
     <text x="${labelWidth}" y="${axisY}" class="axis">0%</text>
     <text x="${labelWidth + chartWidth / 2}" y="${axisY}"
@@ -241,6 +252,8 @@ function stagesWithoutPluginChart(profiles: ProfileResult[], versions?: Pipeline
     "Parse",
     "Parse + AST transfer",
     "Parse + raw AST transfer",
+    "Parse + lazy AST setup",
+    "Dispose",
     "AST decode",
     "AST encode",
     "AST encode + codegen",
@@ -296,7 +309,7 @@ function stagesWithoutPluginChart(profiles: ProfileResult[], versions?: Pipeline
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
     viewBox="0 0 ${width} ${height}" role="img"
-    aria-label="Non-plugin transform stage shares, remaining stages normalized to 100 percent">
+    aria-label="Measured stages outside the plugin interval, remaining stages normalized to 100 percent">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
       .subtitle { fill: #9ca3af; font: 15px system-ui, sans-serif; }
@@ -307,9 +320,9 @@ function stagesWithoutPluginChart(profiles: ProfileResult[], versions?: Pipeline
       .legend { fill: #d1d5db; font: 15px system-ui, sans-serif; }
     </style>
     <rect width="100%" height="100%" rx="14" fill="#111827" />
-    <text x="36" y="38" class="title">Stage share without plugin execution</text>
+    <text x="36" y="38" class="title">Measured stages outside the plugin interval</text>
     <text x="36" y="64" class="subtitle">
-      directly measured remaining stages, renormalized to 100%
+      remaining stages normalized to 100%; lazy AST reads are charged to the stage that requests them
     </text>
     ${rows.join("\n").trim()}
     ${legend.join("\n").trim()}
@@ -389,7 +402,7 @@ function scalingChart(data: ScalingBenchmarkResult): string {
   const series = data.results.map((result) => {
     const style = SCALING_STYLES.get(result.name);
     if (style === undefined) throw new Error(`Missing scaling style for ${result.name}`);
-    const curvePoints = Array.from({ length: 181 }, (_, index) => {
+    const curvePoints = Array.from({ length: result.fit.accepted ? 181 : 0 }, (_, index) => {
       const logSize = logXMinimum + index / 180 * (logXMaximum - logXMinimum);
       const sizeKiB = 2 ** logSize;
       const timeMs = predict(result, sizeKiB);
@@ -410,10 +423,10 @@ function scalingChart(data: ScalingBenchmarkResult): string {
           y2="${low.toFixed(2)}" stroke="${style.color}" stroke-width="2" opacity="0.42" />
         ${marker}`;
     });
-    return `<polyline points="${curvePoints.join(" ")}" fill="none" stroke="${style.color}"
+    const curve = result.fit.accepted ? `<polyline points="${curvePoints.join(" ")}" fill="none" stroke="${style.color}"
         stroke-width="4" stroke-linejoin="round" stroke-linecap="round"
-        ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />
-      ${observations.join("\n")}`;
+        ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />` : "";
+    return `${curve}\n${observations.join("\n")}`;
   });
 
   const legend = data.results.map((result, index) => {
@@ -426,7 +439,7 @@ function scalingChart(data: ScalingBenchmarkResult): string {
         stroke="${style.color}" stroke-width="4" stroke-linecap="round"
         ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />
       ${pipelineLabel(result.name, x + 66, y + 5, data.versions, "start", "legend-name")}
-      <text x="${x + 66}" y="${y + 76}" class="legend-detail">${result.fit.model === "offset-power" ? `p=${result.fit.exponent!.toFixed(3)}` : "log-quadratic"} · holdout MAPE ${result.fit.validationMapePct.toFixed(1)}% · max ${result.fit.validationMaxErrorPct.toFixed(1)}%</text>`;
+      <text x="${x + 66}" y="${y + 76}" class="legend-detail">${!result.fit.accepted ? "fit rejected" : result.fit.model === "offset-power" ? `p=${result.fit.exponent!.toFixed(3)}` : "log-quadratic"} · holdout MAPE ${result.fit.validationMapePct.toFixed(1)}% · max ${result.fit.validationMaxErrorPct.toFixed(1)}%</text>`;
   });
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"
@@ -447,7 +460,7 @@ function scalingChart(data: ScalingBenchmarkResult): string {
     <rect width="100%" height="100%" fill="#ffffff" />
     <text x="${left}" y="48" class="title">Single-file transform latency by file size</text>
     <text x="${left}" y="78" class="subtitle">1 KiB–512 KiB synthetic JSX · one styled-components hit · log scales · ${data.benchmark.runs} independent process runs</text>
-    <text x="${left}" y="105" class="subtitle">Curves: training-LOO-selected smooth fits · points: measured run medians · lower is better</text>
+    <text x="${left}" y="105" class="subtitle">Curves: accepted smooth fits only · points: measured medians · rejected fits retain all observations</text>
     ${xGrid.join("\n")}
     ${yGrid.join("\n")}
     <line x1="${left}" y1="${top + plotHeight}" x2="${left + plotWidth}"

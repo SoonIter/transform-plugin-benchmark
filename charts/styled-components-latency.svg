@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="790"
-    viewBox="0 0 1760 790" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="890"
+    viewBox="0 0 1760 890" role="img"
     aria-label="Styled-components transform latency, lower is better">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
@@ -9,17 +9,20 @@
     </style>
     <rect width="100%" height="100%" rx="14" fill="#111827" />
     <text x="36" y="42" class="title">End-to-end latency</text>
-    <text x="1724" y="42" text-anchor="end" class="note">lower is better</text>
+    <text x="1724" y="42" text-anchor="end" class="note">median of process medians · compare run variability</text>
     <text x="590" y="81" text-anchor="end" class="label">
     <title>OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
     <tspan x="590" dy="0">OXC parser (experimentalRawTransfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <rect x="610" y="72" width="73.46" height="58"
+      <rect x="610" y="72" width="79.61" height="58"
         rx="8" fill="#22c55e" />
-      <text x="701.46" y="108" class="value">
-        6.51 ms
+      <text x="707.61" y="108" class="value">
+        4.32 ms
+      </text>
+      <text x="610" y="152" class="note">
+        runs: 4.34 / 4.32 / 4.31 ms · spread: 0.71%
       </text>
 
       <text x="590" y="181" text-anchor="end" class="label">
@@ -28,34 +31,43 @@
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <rect x="610" y="172" width="74.24" height="58"
+      <rect x="610" y="172" width="81.63" height="58"
         rx="8" fill="#f97316" />
-      <text x="702.24" y="208" class="value">
-        6.58 ms
+      <text x="709.63" y="208" class="value">
+        4.43 ms
+      </text>
+      <text x="610" y="252" class="note">
+        runs: 4.74 / 4.40 / 4.43 ms · spread: 7.81%
       </text>
 
       <text x="590" y="281" text-anchor="end" class="label">
+    <title>Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (JS)</title>
+    <tspan x="590" dy="0">Yuku parser (binary AST transfer)</tspan>
+<tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
+<tspan x="590" dy="23">Yuku codegen (JS)</tspan>
+  </text>
+      <rect x="610" y="272" width="85.97" height="58"
+        rx="8" fill="#f97316" />
+      <text x="713.97" y="308" class="value">
+        4.67 ms
+      </text>
+      <text x="610" y="352" class="note">
+        runs: 4.81 / 4.56 / 4.67 ms · spread: 5.22%
+      </text>
+
+      <text x="590" y="381" text-anchor="end" class="label">
     <title>SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)</title>
     <tspan x="590" dy="0">SWC Next parser (binary AST transfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">SWC Next codegen (JS encode + native)</tspan>
   </text>
-      <rect x="610" y="272" width="91.83" height="58"
+      <rect x="610" y="372" width="94.33" height="58"
         rx="8" fill="#3b82f6" />
-      <text x="719.83" y="308" class="value">
-        8.13 ms
+      <text x="722.33" y="408" class="value">
+        5.12 ms
       </text>
-
-      <text x="590" y="381" text-anchor="end" class="label">
-    <title>Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (native)</title>
-    <tspan x="590" dy="0">Yuku parser (binary AST transfer)</tspan>
-<tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
-<tspan x="590" dy="23">Yuku codegen (native)</tspan>
-  </text>
-      <rect x="610" y="372" width="99.59" height="58"
-        rx="8" fill="#f97316" />
-      <text x="727.59" y="408" class="value">
-        8.82 ms
+      <text x="610" y="452" class="note">
+        runs: 5.12 / 4.98 / 5.17 ms · spread: 3.68%
       </text>
 
       <text x="590" y="481" text-anchor="end" class="label">
@@ -64,33 +76,57 @@
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <rect x="610" y="472" width="104.74" height="58"
+      <rect x="610" y="472" width="108.58" height="58"
         rx="8" fill="#22c55e" />
-      <text x="732.74" y="508" class="value">
-        9.28 ms
+      <text x="736.58" y="508" class="value">
+        5.89 ms
+      </text>
+      <text x="610" y="552" class="note">
+        runs: 6.26 / 5.85 / 5.89 ms · spread: 6.95%
       </text>
 
       <text x="590" y="581" text-anchor="end" class="label">
+    <title>OXC parser (experimentalLazy + ESTree adapter) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
+    <tspan x="590" dy="0">OXC parser (experimentalLazy + ESTree adapter)</tspan>
+<tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
+<tspan x="590" dy="23">OXC codegen (JS)</tspan>
+  </text>
+      <rect x="610" y="572" width="189.87" height="58"
+        rx="8" fill="#22c55e" />
+      <text x="817.87" y="608" class="value">
+        10.31 ms
+      </text>
+      <text x="610" y="652" class="note">
+        runs: 10.31 / 10.44 / 10.30 ms · spread: 1.39%
+      </text>
+
+      <text x="590" y="681" text-anchor="end" class="label">
     <title>Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS)</title>
     <tspan x="590" dy="0">Babel parser (JS, JSX)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Babel traverse)</tspan>
 <tspan x="590" dy="23">Babel codegen (JS)</tspan>
   </text>
-      <rect x="610" y="572" width="370.38" height="58"
+      <rect x="610" y="672" width="274.56" height="58"
         rx="8" fill="#8b5cf6" />
-      <text x="998.38" y="608" class="value">
-        32.80 ms
+      <text x="902.56" y="708" class="value">
+        14.91 ms
+      </text>
+      <text x="610" y="752" class="note">
+        runs: 98.90 / 14.91 / 14.16 ms · spread: 568.58%
       </text>
 
-      <text x="590" y="681" text-anchor="end" class="label">
+      <text x="590" y="781" text-anchor="end" class="label">
     <title>SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native)</title>
     <tspan x="590" dy="0">SWC parser (native, JSX)</tspan>
 <tspan x="590" dy="23">styled-components plugin (WASM, SWC visitor)</tspan>
 <tspan x="590" dy="23">SWC codegen (native)</tspan>
   </text>
-      <rect x="610" y="672" width="970.00" height="58"
+      <rect x="610" y="772" width="970.00" height="58"
         rx="8" fill="#3b82f6" />
-      <text x="1598.00" y="708" class="value">
-        85.91 ms
+      <text x="1598.00" y="808" class="value">
+        52.66 ms
+      </text>
+      <text x="610" y="852" class="note">
+        runs: 340.19 / 52.66 / 52.38 ms · spread: 546.56%
       </text>
   </svg>

@@ -1,3 +1,4 @@
+import { parseLazyEstree } from "./oxc-lazy-estree";
 import {
   parseSync as babelParseSync,
   transformFromAstSync as babelTransformFromAstSync,
@@ -74,6 +75,12 @@ const PROFILE_STAGE_DEFINITIONS: Record<
     { name: "parse + AST transfer", runtime: "native + JS" },
     { name: "plugin transform", runtime: "JS" },
     { name: "codegen", runtime: "JS" },
+  ],
+  "OXC lazy + Yuku walk": [
+    { name: "parse + lazy AST setup", runtime: "native + JS" },
+    { name: "plugin transform", runtime: "JS (includes lazy ESTree reads)" },
+    { name: "codegen", runtime: "JS (includes lazy ESTree reads)" },
+    { name: "dispose", runtime: "native + JS" },
   ],
   "OXC raw transfer + Yuku walk": [
     { name: "parse + raw AST transfer", runtime: "native + JS" },
@@ -284,6 +291,33 @@ function profileOxc(
   };
 }
 
+function profileOxcLazy(file: StyledComponentsCorpusFile): ProfileIteration {
+  const start = process.hrtime.bigint();
+  const parsed = parseLazyEstree(file.filename, file.source);
+  const parsedAt = process.hrtime.bigint();
+  let output: string;
+  let transformedAt: bigint;
+  let generatedAt: bigint;
+  try {
+    if (parsed.errors.length > 0) throw new Error(`OXC lazy parser failed: ${parsed.errors[0]!.message}`);
+    transformStyledComponentsYuku(parsed.program, file.source, file.filename, STYLED_COMPONENTS_OPTIONS);
+    transformedAt = process.hrtime.bigint();
+    output = printYukuProgramWithOxc(parsed.program);
+    generatedAt = process.hrtime.bigint();
+  } finally {
+    parsed.dispose();
+  }
+  return {
+    output,
+    durationsNs: [
+      durationNs(start, parsedAt),
+      durationNs(parsedAt, transformedAt),
+      durationNs(transformedAt, generatedAt),
+      durationNs(generatedAt, process.hrtime.bigint()),
+    ],
+  };
+}
+
 export function profileStyledComponentsOnce(
   name: StyledComponentsTransformerName,
   file: StyledComponentsCorpusFile,
@@ -305,5 +339,7 @@ export function profileStyledComponentsOnce(
       return profileOxc(file, false);
     case "OXC raw transfer + Yuku walk":
       return profileOxc(file, true);
+    case "OXC lazy + Yuku walk":
+      return profileOxcLazy(file);
   }
 }

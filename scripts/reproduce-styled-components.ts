@@ -1,9 +1,11 @@
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { STYLED_COMPONENTS_CORPUS_COMMIT } from "./styled-components-corpus";
 import {
   styledComponentsTransformerPrintsComments,
+  STYLED_COMPONENTS_TRANSFORMERS,
   type StyledComponentsTransformerName,
 } from "./styled-components-transformers";
 
@@ -48,11 +50,7 @@ interface ReproductionResult {
     withConfigCalls: number;
   }>;
   runtime: string;
-  versions: {
-    oxcCodegen: string;
-    oxcParser: string;
-    swcNextCore: string;
-  };
+  versions: Record<string, string>;
 }
 
 function assertRuntime(): void {
@@ -91,16 +89,18 @@ function assertResult(result: ReproductionResult): void {
   if (result.runtime !== `Node ${NODE_VERSION}`) {
     throw new Error(`Expected runtime Node ${NODE_VERSION}, received ${result.runtime}`);
   }
-  if (result.versions.oxcParser !== "0.153.0") {
-    throw new Error("Reproduction result has an unexpected OXC parser version");
+  const dependencies = JSON.parse(readFileSync("package.json", "utf8")).dependencies as Record<string, string>;
+  const packages: Record<string, string> = {
+    babelCore: "@babel/core", babelPlugin: "babel-plugin-styled-components",
+    oxcCodegen: "oxc-codegen", oxcParser: "oxc-parser", swcNextCore: "@swc-next/core",
+    swcCore: "@swc/core", swcPlugin: "@swc/plugin-styled-components",
+    yukuAst: "yuku-ast", yukuCodegen: "yuku-codegen", yukuParser: "yuku-parser", zimmerframe: "zimmerframe",
+  };
+  for (const [key, name] of Object.entries(packages)) {
+    if (result.versions[key] !== dependencies[name]) throw new Error(`Unexpected ${name} version in results`);
   }
-  if (result.versions.oxcCodegen !== "0.153.0") {
-    throw new Error("Reproduction result has an unexpected OXC codegen version");
-  }
-  if (result.versions.swcNextCore !== "0.2.4") {
-    throw new Error("Reproduction result has an unexpected SWC Next core version");
-  }
-  if (result.results.length !== 7 || result.profile.results.length !== 7) {
+  if (result.results.length !== STYLED_COMPONENTS_TRANSFORMERS.length ||
+      result.profile.results.length !== STYLED_COMPONENTS_TRANSFORMERS.length) {
     throw new Error("Reproduction result has an unexpected transformer count");
   }
   for (const resultEntry of result.results) {
@@ -150,8 +150,7 @@ function runTests(): void {
       "--import",
       "tsx",
       "--test",
-      "test/styled-components.test.ts",
-      "test/yuku-styled-components-parity.test.ts",
+      ...readdirSync("test").filter((file) => file.endsWith(".test.ts")).sort().map((file) => `test/${file}`),
     ],
     { stdio: "inherit" },
   );

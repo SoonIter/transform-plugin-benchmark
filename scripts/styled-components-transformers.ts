@@ -1,3 +1,4 @@
+import { parseLazyEstree } from "./oxc-lazy-estree";
 import { transformSync as babelTransformSync } from "@babel/core";
 import {
   CommentMode,
@@ -44,6 +45,7 @@ export const STYLED_COMPONENTS_TRANSFORMERS = [
   "Yuku + OXC codegen",
   "OXC + Yuku walk plugin",
   "OXC raw transfer + Yuku walk",
+  "OXC lazy + Yuku walk",
 ] as const;
 
 export type StyledComponentsTransformerName =
@@ -198,6 +200,19 @@ function transformOxc(
   return oxcPrintSync(parsed.program, { jsx: true }).code;
 }
 
+function transformOxcLazy(file: StyledComponentsCorpusFile): string {
+  const parsed = parseLazyEstree(file.filename, file.source);
+  try {
+    if (parsed.errors.length > 0) {
+      throw new Error(`OXC lazy parser failed: ${parsed.errors[0]!.message}`);
+    }
+    transformStyledComponentsYuku(parsed.program, file.source, file.filename, STYLED_COMPONENTS_OPTIONS);
+    return printYukuProgramWithOxc(parsed.program);
+  } finally {
+    parsed.dispose();
+  }
+}
+
 export function transformStyledComponentsFor(
   name: StyledComponentsTransformerName,
   file: StyledComponentsCorpusFile,
@@ -219,6 +234,8 @@ export function transformStyledComponentsFor(
       return transformOxc(file, false);
     case "OXC raw transfer + Yuku walk":
       return transformOxc(file, true);
+    case "OXC lazy + Yuku walk":
+      return transformOxcLazy(file);
   }
 }
 

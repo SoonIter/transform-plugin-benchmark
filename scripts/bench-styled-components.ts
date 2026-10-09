@@ -44,6 +44,7 @@ const RESULT_FILE = process.env.STYLED_COMPONENTS_RESULT ??
 const RESULT_FILE_PATTERN = /^[a-z0-9][a-z0-9-]*\.json$/;
 
 interface RunResult extends StyledComponentsValidation {
+  peakRssMiB: number;
   median: number;
   name: StyledComponentsTransformerName;
   rme: number;
@@ -51,6 +52,8 @@ interface RunResult extends StyledComponentsValidation {
 }
 
 interface BenchResult extends StyledComponentsValidation {
+  peakRssMiB: number;
+  runPeakRssMiB: number[];
   median: number;
   medianRunRme: number;
   name: StyledComponentsTransformerName;
@@ -186,6 +189,7 @@ async function runTask(name: StyledComponentsTransformerName): Promise<void> {
   const result: RunResult = {
     name,
     median: latency.p50,
+    peakRssMiB: process.resourceUsage().maxRSS / 1024,
     rme: latency.rme,
     samples: latency.samplesCount,
     ...validation,
@@ -303,6 +307,8 @@ function aggregateRuns(
     files: first.files,
     jsxElements: first.jsxElements,
     median: reportedMedian,
+    peakRssMiB: Math.max(...runs.map((run) => run.peakRssMiB)),
+    runPeakRssMiB: runs.map((run) => run.peakRssMiB),
     medianRunRme: median(runs.map((run) => run.rme)),
     name,
     outputBytes: first.outputBytes,

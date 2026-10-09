@@ -167,3 +167,18 @@ test("committed artifacts reproduce the representative file and corpus outputs",
   }
   assert.equal(new Set(oxcHashes).size, 1);
 });
+
+
+test("lazy pipeline releases native storage after invalid input and profiles all corpus outputs", () => {
+  const reference = corpus.files[0]!;
+  assert.throws(() => transformStyledComponentsFor("OXC lazy + Yuku walk", {
+    ...reference, source: "const = ;",
+  }), /OXC|expected|Unexpected/i);
+  for (const file of corpus.files) {
+    const output = transformStyledComponentsFor("OXC lazy + Yuku walk", file);
+    assert.equal(output, transformStyledComponentsFor("OXC raw transfer + Yuku walk", file));
+    const profile = profileStyledComponentsOnce("OXC lazy + Yuku walk", file);
+    assert.equal(profile.output, output);
+    assert.equal(profile.durationsNs.length, 4);
+  }
+});

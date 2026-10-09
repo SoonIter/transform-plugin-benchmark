@@ -190,7 +190,7 @@ async function readPackageVersion(packageName: string): Promise<string> {
   return packageData.version;
 }
 
-async function benchmarkScaling(): Promise<object> {
+async function benchmarkScaling() {
   const runsByName = new Map<StyledComponentsTransformerName, TaskResult[][]>(
     STYLED_COMPONENTS_TRANSFORMERS.map((name) => [name, []]),
   );
@@ -250,13 +250,6 @@ async function benchmarkScaling(): Promise<object> {
     "Validation max": `${result.fit.validationMaxErrorPct.toFixed(2)}%`,
     Accepted: result.fit.accepted,
   })));
-  const rejected = results.filter((result) => !result.fit.accepted);
-  if (rejected.length > 0) {
-    throw new Error(
-      "Scaling fits exceeded the held-out error limits: " +
-        rejected.map((result) => result.name).join(", "),
-    );
-  }
   return {
     benchmark: {
       minimumSamplesPerSizePerRun: MIN_SAMPLES_PER_SIZE,
@@ -317,6 +310,15 @@ async function main(): Promise<void> {
   const result = await benchmarkScaling();
   await mkdir(join(process.cwd(), "result"), { recursive: true });
   await writeFile(join(process.cwd(), "result", RESULT_FILE), JSON.stringify(result, null, 2));
+  // Preserve every observation even when a smooth model does not describe it.
+  // Keep the validation failure visible to callers; charts omit rejected fits.
+  const rejected = result.results.filter((entry) => !entry.fit.accepted);
+  if (rejected.length > 0) {
+    throw new Error(
+      `Saved measurements to result/${RESULT_FILE}; scaling fits exceeded the held-out error limits: ` +
+        rejected.map((entry) => entry.name).join(", "),
+    );
+  }
 }
 
 main().catch((error: unknown) => {

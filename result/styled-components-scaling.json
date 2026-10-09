@@ -37,1730 +37,2062 @@
   "results": [
     {
       "fit": {
-        "exponent": 1.0310000000000001,
-        "interceptMs": 0.6241012070919487,
-        "slopeMsPerKiBPower": 0.5240168972796697,
-        "looMapePct": 7.517793388689749,
-        "looMaxErrorPct": 14.464534525082923,
-        "mapePct": 4.269018459825692,
-        "maxErrorPct": 10.610222376119486,
+        "exponent": 1.052,
+        "interceptMs": 0.28865455382613303,
+        "slopeMsPerKiBPower": 0.29032803949832164,
+        "looMapePct": 7.1497168518566845,
+        "looMaxErrorPct": 14.864430430417269,
+        "mapePct": 3.6941590522562966,
+        "maxErrorPct": 8.508621702915859,
         "model": "offset-power",
-        "rSquared": 0.9976268100266579,
+        "rSquared": 0.9989857202024328,
         "accepted": true,
-        "validationMapePct": 4.514177633831857,
-        "validationMaxErrorPct": 11.220372552923493
+        "validationMapePct": 4.5599071594508,
+        "validationMaxErrorPct": 11.812248215298391
       },
       "name": "Babel + JS plugin",
       "points": [
         {
-          "medianMs": 1.1592909999999392,
+          "medianMs": 0.5746670000007725,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            1.2119169999999713,
-            1.1329169999999067,
-            1.1592909999999392
+            5.613207999999759,
+            0.5660624999995889,
+            0.5746670000007725
           ],
-          "runSpreadPct": 6.81450990304149,
-          "samples": 437,
+          "runSpreadPct": 878.2730694460244,
+          "samples": 654,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.7735419999999067,
+          "medianMs": 0.8554795000000013,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            1.7093544999999608,
-            1.8456670000000486,
-            1.7735419999999067
+            9.616999999999962,
+            0.8554795000000013,
+            0.8402500000001965
           ],
-          "runSpreadPct": 7.685890720382993,
-          "samples": 296,
+          "runSpreadPct": 1025.9450986259462,
+          "samples": 421,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.780291000000034,
+          "medianMs": 1.6026669999999967,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            2.732250000000022,
-            2.780291000000034,
-            3.0971045000000004
+            13.261290999999801,
+            1.5417909999999893,
+            1.6026669999999967
           ],
-          "runSpreadPct": 13.122888935006232,
-          "samples": 180,
+          "runSpreadPct": 731.2498479097552,
+          "samples": 232,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.839500500000099,
+          "medianMs": 2.8528749999999263,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            4.839500500000099,
-            4.801249999999982,
-            4.968874999999969
+            30.05147950000014,
+            2.722874999999931,
+            2.8528749999999263
           ],
-          "runSpreadPct": 3.4636839070475016,
-          "samples": 107,
+          "runSpreadPct": 957.9320685273949,
+          "samples": 132,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.204334000000017,
+          "medianMs": 5.240874500000018,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            9.204334000000017,
-            8.848041000000194,
-            10.3217085
+            53.676708999999846,
+            5.054708499999947,
+            5.240874500000018
           ],
-          "runSpreadPct": 16.010582623357685,
-          "samples": 54,
+          "runSpreadPct": 927.7459420178776,
+          "samples": 71,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 17.348042000000078,
+          "medianMs": 10.47158300000001,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            18.18085450000001,
-            17.348042000000078,
-            17.216833500000007
+            97.53475000000026,
+            10.041124999999965,
+            10.47158300000001
           ],
-          "runSpreadPct": 5.556944120840831,
-          "samples": 30,
+          "runSpreadPct": 835.533892058156,
+          "samples": 38,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 41.52020900000002,
+          "medianMs": 24.08185400000002,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            44.84241700000007,
-            39.013374999999996,
-            41.52020900000002
+            188.63508300000012,
+            22.338042000000087,
+            24.08185400000002
           ],
-          "runSpreadPct": 14.039047828492551,
-          "samples": 15,
+          "runSpreadPct": 690.5491620371084,
+          "samples": 20,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 61.09620800000016,
+          "medianMs": 37.43162499999994,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            62.031499999999596,
-            60.71625000000017,
-            61.09620800000016
+            39.55162500000006,
+            32.314021000000025,
+            37.43162499999994
           ],
-          "runSpreadPct": 2.152752262463523,
-          "samples": 9,
+          "runSpreadPct": 19.335532454174896,
+          "samples": 14,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 87.91312500000004,
+          "medianMs": 52.59045800000001,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            87.78595900000028,
-            88.918541,
-            87.91312500000004
+            54.84797900000012,
+            50.54633300000023,
+            52.59045800000001
           ],
-          "runSpreadPct": 1.2882968271230593,
-          "samples": 9,
+          "runSpreadPct": 8.179518041086256,
+          "samples": 12,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 117.96991600000001,
+          "medianMs": 72.96845900000017,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            118.75370900000007,
-            115.28758299999981,
-            117.96991600000001
+            74.07258400000137,
+            70.8597090000003,
+            72.96845900000017
           ],
-          "runSpreadPct": 2.938143992575411,
+          "runSpreadPct": 4.4031010713835546,
           "samples": 9,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 155.2730419999998,
+          "medianMs": 97.65187500000002,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            155.2730419999998,
-            150.1299170000002,
-            163.2686660000004
+            96.71979199999987,
+            97.65187500000002,
+            104.25620799999979
           ],
-          "runSpreadPct": 8.46170644354363,
+          "runSpreadPct": 7.717635734080801,
           "samples": 9,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 206.86033400000042,
+          "medianMs": 126.37637500000028,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            209.79466700000012,
-            204.73091699999986,
-            206.86033400000042
+            123.25162500000079,
+            126.37637500000028,
+            127.7699590000002
           ],
-          "runSpreadPct": 2.4479076786177116,
+          "runSpreadPct": 3.575299576364176,
           "samples": 9,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 234.47145799999998,
+          "medianMs": 148.43895799999973,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            229.10483399999976,
-            234.47145799999998,
-            239.19366600000012
+            138.3787080000002,
+            158.3538749999998,
+            148.43895799999973
           ],
-          "runSpreadPct": 4.302797485909934,
+          "runSpreadPct": 13.456822433366607,
           "samples": 9,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 276.39737500000047,
+          "medianMs": 202.92066599999998,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            276.39737500000047,
-            259.41558299999997,
-            281.2540420000005
+            209.40687500000058,
+            202.92066599999998,
+            184.23825000000033
           ],
-          "runSpreadPct": 7.9011094081484945,
+          "runSpreadPct": 12.403184700763918,
           "samples": 9,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 318.8239159999994,
+          "medianMs": 204.06962499999918,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            329.7596249999997,
-            310.19495800000004,
-            318.8239159999994
+            192.36324999999852,
+            204.06962499999918,
+            207.7242500000002
           ],
-          "runSpreadPct": 6.1365117289380775,
+          "runSpreadPct": 7.5273328894497435,
           "samples": 9,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
         }
-      ]
+      ],
+      "pipeline": {
+        "parser": "Babel parser (JS, JSX)",
+        "plugin": "styled-components plugin (JS, Babel traverse)",
+        "codegen": "Babel codegen (JS)",
+        "lines": [
+          "Babel parser (JS, JSX)",
+          "styled-components plugin (JS, Babel traverse)",
+          "Babel codegen (JS)"
+        ],
+        "fullLabel": "Babel parser (JS, JSX) + styled-components plugin (JS, Babel traverse) + Babel codegen (JS)"
+      }
     },
     {
       "fit": {
-        "exponent": 0.998,
-        "interceptMs": 2.110472462161997,
-        "slopeMsPerKiBPower": 0.1206597039090562,
-        "looMapePct": 0.8089959746323074,
-        "looMaxErrorPct": 1.8519820241233376,
-        "mapePct": 0.4675059990047128,
-        "maxErrorPct": 0.6808485079007357,
+        "exponent": 1.006,
+        "interceptMs": 1.388287116611797,
+        "slopeMsPerKiBPower": 0.08337482223030027,
+        "looMapePct": 0.8842023807958231,
+        "looMaxErrorPct": 1.9349080231028633,
+        "mapePct": 0.5299173735850596,
+        "maxErrorPct": 0.9978563602541313,
         "model": "offset-power",
-        "rSquared": 0.9999617922587462,
+        "rSquared": 0.9999650068912993,
         "accepted": true,
-        "validationMapePct": 0.9273383131646418,
-        "validationMaxErrorPct": 2.2884322095480396
+        "validationMapePct": 0.534133418537307,
+        "validationMaxErrorPct": 1.2868503274082648
       },
       "name": "SWC + WASM plugin",
       "points": [
         {
-          "medianMs": 2.216415999999981,
+          "medianMs": 1.4820829999999887,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            2.216415999999981,
-            2.082708000000821,
-            2.3344790000001012
+            1.4820829999999887,
+            1.5235415000001922,
+            1.455374999999549
           ],
-          "runSpreadPct": 11.359374774378207,
-          "samples": 274,
+          "runSpreadPct": 4.599371290315307,
+          "samples": 399,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.368895999999495,
+          "medianMs": 1.5618334999994659,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            2.3476875000000064,
-            2.512666499999966,
-            2.368895999999495
+            1.5473749999999882,
+            1.6047499999999673,
+            1.5618334999994659
           ],
-          "runSpreadPct": 6.964383408980174,
-          "samples": 248,
+          "runSpreadPct": 3.673566996738046,
+          "samples": 378,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.609542000000033,
+          "medianMs": 1.7130000000000223,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            2.6277919999999995,
-            2.591312999999957,
-            2.609542000000033
+            1.7130000000000223,
+            1.7823335000000498,
+            1.6901664999999753
           ],
-          "runSpreadPct": 1.3979081386711576,
-          "samples": 234,
+          "runSpreadPct": 5.380443666087174,
+          "samples": 346,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.0261669999999867,
+          "medianMs": 2.0590830000001006,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            3.1490834999999606,
-            3.0186045000000377,
-            3.0261669999999867
+            2.0590830000001006,
+            2.07558350000005,
+            2.0257080000000087
           ],
-          "runSpreadPct": 4.311691985271254,
-          "samples": 197,
+          "runSpreadPct": 2.4222190169137936,
+          "samples": 292,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.044521000000032,
+          "medianMs": 2.733249999999998,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            3.9630630000000338,
-            4.081708500000104,
-            4.044521000000032
+            2.733249999999998,
+            2.835395500000004,
+            2.701791499999956
           ],
-          "runSpreadPct": 2.9334870557000357,
-          "samples": 150,
-          "sizeKiB": 16,
-          "sourceBytes": 16384,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 5.892374999999902,
-          "records": 294,
-          "role": "validation",
-          "runMediansMs": [
-            5.884521000000063,
-            5.892374999999902,
-            5.968666499999927
-          ],
-          "runSpreadPct": 1.428040476036651,
-          "samples": 103,
-          "sizeKiB": 32,
-          "sourceBytes": 32768,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 9.743791999999985,
-          "records": 592,
-          "role": "training",
-          "runMediansMs": [
-            9.587958000000071,
-            9.960874999999987,
-            9.743791999999985
-          ],
-          "runSpreadPct": 3.8272266074636683,
-          "samples": 63,
-          "sizeKiB": 64,
-          "sourceBytes": 65536,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 13.906791999999996,
-          "records": 891,
-          "role": "validation",
-          "runMediansMs": [
-            13.954167000000325,
-            13.906791999999996,
-            13.607124999999996
-          ],
-          "runSpreadPct": 2.4954856590961367,
-          "samples": 45,
-          "sizeKiB": 96,
-          "sourceBytes": 98304,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 17.306687499999953,
-          "records": 1191,
-          "role": "training",
-          "runMediansMs": [
-            17.53518699999995,
-            17.306687499999953,
-            17.277562999999986
-          ],
-          "runSpreadPct": 1.4885806425982153,
-          "samples": 36,
-          "sizeKiB": 128,
-          "sourceBytes": 131072,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 24.978125500000033,
-          "records": 1788,
-          "role": "validation",
-          "runMediansMs": [
-            25.207292000000052,
-            24.86370799999986,
-            24.978125500000033
-          ],
-          "runSpreadPct": 1.3755395696133854,
-          "samples": 25,
-          "sizeKiB": 192,
-          "sourceBytes": 196608,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 32.78595799999994,
-          "records": 2386,
-          "role": "training",
-          "runMediansMs": [
-            32.78595799999994,
-            32.827541999999994,
-            32.29087499999969
-          ],
-          "runSpreadPct": 1.6368806426223932,
-          "samples": 21,
-          "sizeKiB": 256,
-          "sourceBytes": 262144,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 39.94508300000007,
-          "records": 2983,
-          "role": "validation",
-          "runMediansMs": [
-            39.94508300000007,
-            39.24464549999993,
-            40.0295000000001
-          ],
-          "runSpreadPct": 1.9648338194720079,
-          "samples": 16,
-          "sizeKiB": 320,
-          "sourceBytes": 327680,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 47.7199999999998,
-          "records": 3581,
-          "role": "training",
-          "runMediansMs": [
-            48.07016700000031,
-            47.03712500000029,
-            47.7199999999998
-          ],
-          "runSpreadPct": 2.1647988264879032,
-          "samples": 15,
-          "sizeKiB": 384,
-          "sourceBytes": 393216,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 55.51389600000016,
-          "records": 4179,
-          "role": "validation",
-          "runMediansMs": [
-            55.9872919999998,
-            54.15341699999999,
-            55.51389600000016
-          ],
-          "runSpreadPct": 3.3034521662824776,
-          "samples": 12,
-          "sizeKiB": 448,
-          "sourceBytes": 458752,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 63.41410449999967,
-          "records": 4777,
-          "role": "training",
-          "runMediansMs": [
-            63.41410449999967,
-            61.70093749999978,
-            63.67000000000007
-          ],
-          "runSpreadPct": 3.1050860301911247,
-          "samples": 12,
-          "sizeKiB": 512,
-          "sourceBytes": 524288,
-          "styledComponents": 1
-        }
-      ]
-    },
-    {
-      "fit": {
-        "model": "log-quadratic",
-        "logIntercept": -2.168514057318458,
-        "logLinear": 0.7142124496131125,
-        "logQuadratic": 0.034236263892451296,
-        "looMapePct": 4.860663119752451,
-        "looMaxErrorPct": 16.419143888235546,
-        "mapePct": 2.3187515493091304,
-        "maxErrorPct": 5.443992935333738,
-        "rSquared": 0.9993516932665941,
-        "accepted": true,
-        "validationMapePct": 3.7411264715754595,
-        "validationMaxErrorPct": 5.460947253175593
-      },
-      "name": "SWC Next + Yuku walk",
-      "points": [
-        {
-          "medianMs": 0.1176660000000993,
-          "records": 4,
-          "role": "training",
-          "runMediansMs": [
-            0.12308349999995016,
-            0.1176660000000993,
-            0.1174170000003869
-          ],
-          "runSpreadPct": 4.815749663928811,
-          "samples": 4161,
-          "sizeKiB": 1,
-          "sourceBytes": 1024,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.18083299999943847,
-          "records": 13,
-          "role": "validation",
-          "runMediansMs": [
-            0.17712500000004638,
-            0.19399999999995998,
-            0.18083299999943847
-          ],
-          "runSpreadPct": 9.331814436505505,
-          "samples": 2592,
-          "sizeKiB": 2,
-          "sourceBytes": 2048,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.31172950000001265,
-          "records": 32,
-          "role": "training",
-          "runMediansMs": [
-            0.29720799999995506,
-            0.31172950000001265,
-            0.33725000000004
-          ],
-          "runSpreadPct": 12.845110905475204,
-          "samples": 1627,
-          "sizeKiB": 4,
-          "sourceBytes": 4096,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.5658955000000674,
-          "records": 70,
-          "role": "validation",
-          "runMediansMs": [
-            0.5524169999998776,
-            0.5658955000000674,
-            0.5832910000000311
-          ],
-          "runSpreadPct": 5.455777612677575,
-          "samples": 954,
-          "sizeKiB": 8,
-          "sourceBytes": 8192,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 1.074021000000016,
-          "records": 145,
-          "role": "training",
-          "runMediansMs": [
-            1.0680830000001151,
-            1.074021000000016,
-            1.0849165000000198
-          ],
-          "runSpreadPct": 1.5673343444778487,
-          "samples": 499,
-          "sizeKiB": 16,
-          "sourceBytes": 16384,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 2.1408329999999296,
-          "records": 294,
-          "role": "validation",
-          "runMediansMs": [
-            2.1452500000000327,
-            2.120312500000068,
-            2.1408329999999296
-          ],
-          "runSpreadPct": 1.164850317608396,
-          "samples": 234,
-          "sizeKiB": 32,
-          "sourceBytes": 32768,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 4.168249999999944,
-          "records": 592,
-          "role": "training",
-          "runMediansMs": [
-            4.168249999999944,
-            4.130583000000115,
-            4.206457999999884
-          ],
-          "runSpreadPct": 1.8203082828469985,
-          "samples": 129,
-          "sizeKiB": 64,
-          "sourceBytes": 65536,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 6.349561999999992,
-          "records": 891,
-          "role": "validation",
-          "runMediansMs": [
-            6.2715830000001915,
-            6.349561999999992,
-            6.4502915000000485
-          ],
-          "runSpreadPct": 2.8145012207118723,
-          "samples": 85,
-          "sizeKiB": 96,
-          "sourceBytes": 98304,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 8.301416999999901,
-          "records": 1191,
-          "role": "training",
-          "runMediansMs": [
-            8.231708000000253,
-            8.403583000000253,
-            8.301416999999901
-          ],
-          "runSpreadPct": 2.070429662791329,
-          "samples": 63,
-          "sizeKiB": 128,
-          "sourceBytes": 131072,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 12.878729000000021,
-          "records": 1788,
-          "role": "validation",
-          "runMediansMs": [
-            12.702645500000017,
-            13.351437500000202,
-            12.878729000000021
-          ],
-          "runSpreadPct": 5.037702090013572,
-          "samples": 42,
-          "sizeKiB": 192,
-          "sourceBytes": 196608,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 17.484542000000147,
-          "records": 2386,
-          "role": "training",
-          "runMediansMs": [
-            17.484542000000147,
-            17.523625000000266,
-            16.604749999999967
-          ],
-          "runSpreadPct": 5.2553564171157054,
-          "samples": 33,
-          "sizeKiB": 256,
-          "sourceBytes": 262144,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 21.748375000000124,
-          "records": 2983,
-          "role": "validation",
-          "runMediansMs": [
-            21.99633349999999,
-            21.43449950000013,
-            21.748375000000124
-          ],
-          "runSpreadPct": 2.5833378355847705,
-          "samples": 24,
-          "sizeKiB": 320,
-          "sourceBytes": 327680,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 26.09008300000005,
-          "records": 3581,
-          "role": "training",
-          "runMediansMs": [
-            25.121875000000273,
-            27.25675000000001,
-            26.09008300000005
-          ],
-          "runSpreadPct": 8.1827068162249,
-          "samples": 21,
-          "sizeKiB": 384,
-          "sourceBytes": 393216,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 33.88981249999961,
-          "records": 4179,
-          "role": "validation",
-          "runMediansMs": [
-            33.88981249999961,
-            32.90977100000009,
-            34.3120835000002
-          ],
-          "runSpreadPct": 4.137858537872181,
-          "samples": 18,
-          "sizeKiB": 448,
-          "sourceBytes": 458752,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 37.178375000000415,
-          "records": 4777,
-          "role": "training",
-          "runMediansMs": [
-            35.83745799999997,
-            37.178375000000415,
-            46.26272949999975
-          ],
-          "runSpreadPct": 28.04122423317228,
-          "samples": 14,
-          "sizeKiB": 512,
-          "sourceBytes": 524288,
-          "styledComponents": 1
-        }
-      ]
-    },
-    {
-      "fit": {
-        "exponent": 1.032,
-        "interceptMs": 0.07172045011002794,
-        "slopeMsPerKiBPower": 0.0662017607532349,
-        "looMapePct": 2.2599764221821252,
-        "looMaxErrorPct": 4.420408438463689,
-        "mapePct": 1.4263740358504462,
-        "maxErrorPct": 3.0854662071413417,
-        "model": "offset-power",
-        "rSquared": 0.9990742816457566,
-        "accepted": true,
-        "validationMapePct": 1.237415447376571,
-        "validationMaxErrorPct": 3.0839650606577504
-      },
-      "name": "Yuku + JS plugin",
-      "points": [
-        {
-          "medianMs": 0.13770900000054098,
-          "records": 4,
-          "role": "training",
-          "runMediansMs": [
-            0.14547950000002174,
-            0.13770900000054098,
-            0.13412499999958527
-          ],
-          "runSpreadPct": 8.245285348373649,
-          "samples": 3614,
-          "sizeKiB": 1,
-          "sourceBytes": 1024,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.20945799999992687,
-          "records": 13,
-          "role": "validation",
-          "runMediansMs": [
-            0.20945799999992687,
-            0.22304099999996652,
-            0.19137499999987995
-          ],
-          "runSpreadPct": 15.118066629156024,
-          "samples": 2460,
-          "sizeKiB": 2,
-          "sourceBytes": 2048,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.349790999999982,
-          "records": 32,
-          "role": "training",
-          "runMediansMs": [
-            0.34933299999988776,
-            0.349790999999982,
-            0.35416650000001937
-          ],
-          "runSpreadPct": 1.381825147054057,
-          "samples": 1480,
-          "sizeKiB": 4,
-          "sourceBytes": 4096,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.6402289999999766,
-          "records": 70,
-          "role": "validation",
-          "runMediansMs": [
-            0.65849999999989,
-            0.6402289999999766,
-            0.6232494999999858
-          ],
-          "runSpreadPct": 5.505920537792795,
-          "samples": 802,
-          "sizeKiB": 8,
-          "sourceBytes": 8192,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 1.2355840000000171,
-          "records": 145,
-          "role": "training",
-          "runMediansMs": [
-            1.2355840000000171,
-            1.3055209999999988,
-            1.1861670000000686
-          ],
-          "runSpreadPct": 9.65972366103224,
-          "samples": 426,
-          "sizeKiB": 16,
-          "sourceBytes": 16384,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 2.3656875000000355,
-          "records": 294,
-          "role": "validation",
-          "runMediansMs": [
-            2.3656875000000355,
-            2.4588330000001406,
-            2.2676040000000057
-          ],
-          "runSpreadPct": 8.083442973771135,
+          "runSpreadPct": 4.8881002469605095,
           "samples": 217,
-          "sizeKiB": 32,
-          "sourceBytes": 32768,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 4.799125000000004,
-          "records": 592,
-          "role": "training",
-          "runMediansMs": [
-            4.799125000000004,
-            4.805749999999989,
-            4.645792000000029
-          ],
-          "runSpreadPct": 3.3330659234748086,
-          "samples": 114,
-          "sizeKiB": 64,
-          "sourceBytes": 65536,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 7.334500000000048,
-          "records": 891,
-          "role": "validation",
-          "runMediansMs": [
-            7.860624999999914,
-            7.334500000000048,
-            7.189583000000084
-          ],
-          "runSpreadPct": 9.149117185899856,
-          "samples": 68,
-          "sizeKiB": 96,
-          "sourceBytes": 98304,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 10.13652100000013,
-          "records": 1191,
-          "role": "training",
-          "runMediansMs": [
-            10.13652100000013,
-            10.23370900000009,
-            9.33529099999987
-          ],
-          "runSpreadPct": 8.863178994057312,
-          "samples": 52,
-          "sizeKiB": 128,
-          "sourceBytes": 131072,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 15.004374999999982,
-          "records": 1788,
-          "role": "validation",
-          "runMediansMs": [
-            15.173874999999953,
-            15.004374999999982,
-            14.276062499999853
-          ],
-          "runSpreadPct": 5.983671429167167,
-          "samples": 34,
-          "sizeKiB": 192,
-          "sourceBytes": 196608,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 20.602915999999823,
-          "records": 2386,
-          "role": "training",
-          "runMediansMs": [
-            20.602915999999823,
-            21.63341700000001,
-            18.775333000000046
-          ],
-          "runSpreadPct": 13.872230513389402,
-          "samples": 27,
-          "sizeKiB": 256,
-          "sourceBytes": 262144,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 25.27087500000016,
-          "records": 2983,
-          "role": "validation",
-          "runMediansMs": [
-            25.27087500000016,
-            25.99474999999984,
-            24.06310450000001
-          ],
-          "runSpreadPct": 7.643761840457914,
-          "samples": 22,
-          "sizeKiB": 320,
-          "sourceBytes": 327680,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 29.90291699999989,
-          "records": 3581,
-          "role": "training",
-          "runMediansMs": [
-            30.14064550000012,
-            29.90291699999989,
-            28.482250000000022
-          ],
-          "runSpreadPct": 5.5459321911641695,
-          "samples": 19,
-          "sizeKiB": 384,
-          "sourceBytes": 393216,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 36.48987500000021,
-          "records": 4179,
-          "role": "validation",
-          "runMediansMs": [
-            36.48987500000021,
-            37.223291000000245,
-            33.827000000000226
-          ],
-          "runSpreadPct": 9.307488721186354,
-          "samples": 15,
-          "sizeKiB": 448,
-          "sourceBytes": 458752,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 42.24845800000003,
-          "records": 4777,
-          "role": "training",
-          "runMediansMs": [
-            42.24845800000003,
-            50.68281250000018,
-            38.04724999999962
-          ],
-          "runSpreadPct": 29.90774834906531,
-          "samples": 14,
-          "sizeKiB": 512,
-          "sourceBytes": 524288,
-          "styledComponents": 1
-        }
-      ]
-    },
-    {
-      "fit": {
-        "exponent": 1.0110000000000001,
-        "interceptMs": 0.05106393701300205,
-        "slopeMsPerKiBPower": 0.040718777816317164,
-        "looMapePct": 1.8439765407550295,
-        "looMaxErrorPct": 6.570594278669022,
-        "mapePct": 0.773775690528328,
-        "maxErrorPct": 1.2986580366204874,
-        "model": "offset-power",
-        "rSquared": 0.9999046702663967,
-        "accepted": true,
-        "validationMapePct": 1.2453003350625564,
-        "validationMaxErrorPct": 2.0137169003325823
-      },
-      "name": "Yuku + OXC codegen",
-      "points": [
-        {
-          "medianMs": 0.09220800000002782,
-          "records": 4,
-          "role": "training",
-          "runMediansMs": [
-            0.09737500000005639,
-            0.08795799999961673,
-            0.09220800000002782
-          ],
-          "runSpreadPct": 10.212779802660089,
-          "samples": 5409,
-          "sizeKiB": 1,
-          "sourceBytes": 1024,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.13150000000007367,
-          "records": 13,
-          "role": "validation",
-          "runMediansMs": [
-            0.13150000000007367,
-            0.14095799999995506,
-            0.12862499999982901
-          ],
-          "runSpreadPct": 9.3787072244252,
-          "samples": 3899,
-          "sizeKiB": 2,
-          "sourceBytes": 2048,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.21366699999998673,
-          "records": 32,
-          "role": "training",
-          "runMediansMs": [
-            0.21333299999997735,
-            0.21366699999998673,
-            0.23277099999995698
-          ],
-          "runSpreadPct": 9.09733370149852,
-          "samples": 2435,
-          "sizeKiB": 4,
-          "sourceBytes": 4096,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.3922499999998763,
-          "records": 70,
-          "role": "validation",
-          "runMediansMs": [
-            0.3922499999998763,
-            0.3865414999999075,
-            0.40552050000007966
-          ],
-          "runSpreadPct": 4.838495857279324,
-          "samples": 1349,
-          "sizeKiB": 8,
-          "sourceBytes": 8192,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.7267920000001595,
-          "records": 145,
-          "role": "training",
-          "runMediansMs": [
-            0.7246665000001258,
-            0.7267920000001595,
-            0.7313749999998436
-          ],
-          "runSpreadPct": 0.9230288720454153,
-          "samples": 704,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.4209169999999176,
+          "medianMs": 4.117915999999923,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            1.411833999999999,
-            1.4209169999999176,
-            1.487957999999935
+            4.117915999999923,
+            4.252416999999923,
+            4.055812499999888
           ],
-          "runSpreadPct": 5.357385406743711,
-          "samples": 377,
+          "runSpreadPct": 4.774368879793532,
+          "samples": 146,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.8140829999999823,
+          "medianMs": 6.871103999999946,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            2.8140829999999823,
-            2.7426660000000993,
-            2.8636459999999033
+            6.871103999999946,
+            7.018958999999995,
+            6.739812499999971
           ],
-          "runSpreadPct": 4.299091391398362,
-          "samples": 196,
-          "sizeKiB": 64,
-          "sourceBytes": 65536,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 4.175375000000258,
-          "records": 891,
-          "role": "validation",
-          "runMediansMs": [
-            4.175375000000258,
-            4.089396000000079,
-            4.237917000000152
-          ],
-          "runSpreadPct": 3.5570697242778007,
-          "samples": 130,
-          "sizeKiB": 96,
-          "sourceBytes": 98304,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 5.499333499999921,
-          "records": 1191,
-          "role": "training",
-          "runMediansMs": [
-            5.499333499999921,
-            5.482375000000047,
-            5.813415999999961
-          ],
-          "runSpreadPct": 6.019656745675063,
-          "samples": 94,
-          "sizeKiB": 128,
-          "sourceBytes": 131072,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 8.348375000000033,
-          "records": 1788,
-          "role": "validation",
-          "runMediansMs": [
-            8.446999999999662,
-            8.22679200000016,
-            8.348375000000033
-          ],
-          "runSpreadPct": 2.637734888520236,
-          "samples": 64,
-          "sizeKiB": 192,
-          "sourceBytes": 196608,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 11.19856249999998,
-          "records": 2386,
-          "role": "training",
-          "runMediansMs": [
-            10.962354000000005,
-            11.19856249999998,
-            18.536125000000084
-          ],
-          "runSpreadPct": 67.63163575682229,
-          "samples": 43,
-          "sizeKiB": 256,
-          "sourceBytes": 262144,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 13.668749999999818,
-          "records": 2983,
-          "role": "validation",
-          "runMediansMs": [
-            13.668749999999818,
-            13.562603999999965,
-            13.86587499999996
-          ],
-          "runSpreadPct": 2.2187178783721935,
-          "samples": 40,
-          "sizeKiB": 320,
-          "sourceBytes": 327680,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 16.78749999999991,
-          "records": 3581,
-          "role": "training",
-          "runMediansMs": [
-            16.78749999999991,
-            16.1853329999999,
-            17.37345899999991
-          ],
-          "runSpreadPct": 7.077444527178065,
-          "samples": 31,
-          "sizeKiB": 384,
-          "sourceBytes": 393216,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 19.199353999999857,
-          "records": 4179,
-          "role": "validation",
-          "runMediansMs": [
-            19.256062499999643,
-            18.840687500000058,
-            19.199353999999857
-          ],
-          "runSpreadPct": 2.163484250561703,
-          "samples": 30,
-          "sizeKiB": 448,
-          "sourceBytes": 458752,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 22.187311999999565,
-          "records": 4777,
-          "role": "training",
-          "runMediansMs": [
-            22.187311999999565,
-            21.908583000000363,
-            22.401583500000015
-          ],
-          "runSpreadPct": 2.2219929119834902,
-          "samples": 25,
-          "sizeKiB": 512,
-          "sourceBytes": 524288,
-          "styledComponents": 1
-        }
-      ]
-    },
-    {
-      "fit": {
-        "exponent": 1.012,
-        "interceptMs": 0.06362747778535714,
-        "slopeMsPerKiBPower": 0.09384053797293052,
-        "looMapePct": 1.454398532565727,
-        "looMaxErrorPct": 2.8445934848575885,
-        "mapePct": 0.8531957561291514,
-        "maxErrorPct": 1.8547529738552047,
-        "model": "offset-power",
-        "rSquared": 0.9994586312101352,
-        "accepted": true,
-        "validationMapePct": 1.486542916087404,
-        "validationMaxErrorPct": 3.939361529565408
-      },
-      "name": "OXC + Yuku walk plugin",
-      "points": [
-        {
-          "medianMs": 0.15758399999958783,
-          "records": 4,
-          "role": "training",
-          "runMediansMs": [
-            0.15687500000001364,
-            0.15758399999958783,
-            0.16170799999963492
-          ],
-          "runSpreadPct": 3.066935729283379,
-          "samples": 3448,
-          "sizeKiB": 1,
-          "sourceBytes": 1024,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.24329200000011042,
-          "records": 13,
-          "role": "validation",
-          "runMediansMs": [
-            0.2412499999999227,
-            0.2562910000000329,
-            0.24329200000011042
-          ],
-          "runSpreadPct": 6.182283017979789,
-          "samples": 2228,
-          "sizeKiB": 2,
-          "sourceBytes": 2048,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.4441669999999931,
-          "records": 32,
-          "role": "training",
-          "runMediansMs": [
-            0.42879199999993034,
-            0.4441669999999931,
-            0.4598750000000109
-          ],
-          "runSpreadPct": 6.998043528691024,
-          "samples": 1265,
-          "sizeKiB": 4,
-          "sourceBytes": 4096,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 0.8282295000000204,
-          "records": 70,
-          "role": "validation",
-          "runMediansMs": [
-            0.8137919999999212,
-            0.828708000000006,
-            0.8282295000000204
-          ],
-          "runSpreadPct": 1.8009500989863778,
-          "samples": 682,
-          "sizeKiB": 8,
-          "sourceBytes": 8192,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 1.614417000000003,
-          "records": 145,
-          "role": "training",
-          "runMediansMs": [
-            1.6114165000001321,
-            1.6668750000001182,
-            1.614417000000003
-          ],
-          "runSpreadPct": 3.4352029246462337,
-          "samples": 352,
-          "sizeKiB": 16,
-          "sourceBytes": 16384,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 3.2571875000001,
-          "records": 294,
-          "role": "validation",
-          "runMediansMs": [
-            3.2075625000001082,
-            3.527458000000024,
-            3.2571875000001
-          ],
-          "runSpreadPct": 9.821218459173938,
-          "samples": 151,
-          "sizeKiB": 32,
-          "sourceBytes": 32768,
-          "styledComponents": 1
-        },
-        {
-          "medianMs": 6.476083000000017,
-          "records": 592,
-          "role": "training",
-          "runMediansMs": [
-            6.476083000000017,
-            6.699708000000101,
-            6.392624999999953
-          ],
-          "runSpreadPct": 4.741801487104891,
+          "runSpreadPct": 4.062614974246156,
           "samples": 89,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.679458000000068,
+          "medianMs": 9.739833999999973,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            9.704416000000037,
-            9.628584000000046,
-            9.679458000000068
+            9.801500000000033,
+            9.739833999999973,
+            9.489583000000039
           ],
-          "runSpreadPct": 0.7834322954858702,
+          "runSpreadPct": 3.202487845275339,
           "samples": 63,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 12.728124999999864,
+          "medianMs": 12.500250000000051,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            12.728124999999864,
-            12.919084000000112,
-            12.727604000000042
+            12.500250000000051,
+            12.739145499999836,
+            12.25587500000006
           ],
-          "runSpreadPct": 1.5043849742210391,
-          "samples": 47,
+          "runSpreadPct": 3.8660866782646264,
+          "samples": 50,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 19.094874999999774,
+          "medianMs": 17.939583500000026,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            19.094874999999774,
-            19.11133300000006,
-            19.073249999999916
+            17.717396000000008,
+            18.51037499999984,
+            17.939583500000026
           ],
-          "runSpreadPct": 0.1994409494701739,
-          "samples": 31,
+          "runSpreadPct": 4.420275420551603,
+          "samples": 35,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 25.562041999999792,
+          "medianMs": 23.30679199999986,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            25.562041999999792,
-            25.742082999999866,
-            25.29252049999991
+            23.30679199999986,
+            23.77883299999985,
+            23.055665999999746
           ],
-          "runSpreadPct": 1.7587112172022876,
-          "samples": 24,
+          "runSpreadPct": 3.102816552359962,
+          "samples": 27,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 32.18385450000005,
+          "medianMs": 28.815750000000207,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            31.62516699999992,
-            32.21520849999979,
-            32.18385450000005
+            28.815750000000207,
+            29.52416600000015,
+            28.39541650000001
           ],
-          "runSpreadPct": 1.8333462823723283,
-          "samples": 18,
+          "runSpreadPct": 3.9171269184391586,
+          "samples": 22,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 38.08091649999983,
+          "medianMs": 34.437166499999876,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            38.08091649999983,
-            37.930687499999976,
-            38.44112549999977
+            34.437166499999876,
+            35.14477099999999,
+            34.13337450000017
           ],
-          "runSpreadPct": 1.3404036638661174,
+          "runSpreadPct": 2.936932979081837,
           "samples": 18,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 44.47416700000031,
+          "medianMs": 40.485291999999845,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            44.47416700000031,
-            44.442625000000135,
-            50.90504150000015
+            40.7443330000001,
+            40.485291999999845,
+            38.925792
           ],
-          "runSpreadPct": 14.530719597288854,
-          "samples": 14,
+          "runSpreadPct": 4.4918559559854545,
+          "samples": 16,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 52.82454199999984,
+          "medianMs": 45.822415999999976,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            52.478062000000136,
-            52.82454199999984,
-            56.783228999999665
+            46.212250000000495,
+            45.822415999999976,
+            45.62675000000036
           ],
-          "runSpreadPct": 8.149937201537009,
-          "samples": 12,
+          "runSpreadPct": 1.2777589029791414,
+          "samples": 15,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
         }
-      ]
+      ],
+      "pipeline": {
+        "parser": "SWC parser (native, JSX)",
+        "plugin": "styled-components plugin (WASM, SWC visitor)",
+        "codegen": "SWC codegen (native)",
+        "lines": [
+          "SWC parser (native, JSX)",
+          "styled-components plugin (WASM, SWC visitor)",
+          "SWC codegen (native)"
+        ],
+        "fullLabel": "SWC parser (native, JSX) + styled-components plugin (WASM, SWC visitor) + SWC codegen (native)"
+      }
     },
     {
       "fit": {
-        "exponent": 0.9970000000000001,
-        "interceptMs": 0.04508968220420595,
-        "slopeMsPerKiBPower": 0.04275806992178982,
-        "looMapePct": 2.1884485158400047,
-        "looMaxErrorPct": 5.628444507886456,
-        "mapePct": 1.1716536289021386,
-        "maxErrorPct": 3.1313437258949364,
+        "exponent": 1.0070000000000001,
+        "interceptMs": 0.03432744706422775,
+        "slopeMsPerKiBPower": 0.03416564716684139,
+        "looMapePct": 3.438938207355234,
+        "looMaxErrorPct": 15.216916805383581,
+        "mapePct": 1.1492326474410746,
+        "maxErrorPct": 2.654106968069617,
         "model": "offset-power",
-        "rSquared": 0.9999247413934487,
+        "rSquared": 0.9997200236765321,
         "accepted": true,
-        "validationMapePct": 1.1454337523295504,
-        "validationMaxErrorPct": 1.8700372278842465
+        "validationMapePct": 2.428524750081189,
+        "validationMaxErrorPct": 6.746616614976459
       },
-      "name": "OXC raw transfer + Yuku walk",
+      "name": "SWC Next + Yuku walk",
       "points": [
         {
-          "medianMs": 0.08762500000011642,
+          "medianMs": 0.06791700000030687,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.09145799999998871,
-            0.08399999999983265,
-            0.08762500000011642
+            0.07460449999996399,
+            0.06516699999883713,
+            0.06791700000030687
           ],
-          "runSpreadPct": 8.511269615002744,
-          "samples": 6008,
+          "runSpreadPct": 13.895637323621807,
+          "samples": 7686,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.1292079999999487,
+          "medianMs": 0.10358399999995527,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.1292079999999487,
-            0.1363334999999779,
-            0.12354200000027049
+            0.10745800000006511,
+            0.10358399999995527,
+            0.09991599999921164
           ],
-          "runSpreadPct": 9.899928796755999,
-          "samples": 4073,
+          "runSpreadPct": 7.281047266814117,
+          "samples": 5001,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.21841600000004746,
+          "medianMs": 0.1770209999999679,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.20716599999991558,
-            0.21841600000004746,
-            0.22720800000001873
+            0.1770209999999679,
+            0.16747949999995626,
+            0.18600000000003547
           ],
-          "runSpreadPct": 9.176067687394141,
-          "samples": 2451,
+          "runSpreadPct": 10.462318030110874,
+          "samples": 3086,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.37795899999997573,
+          "medianMs": 0.3342079999999328,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.3657704999999396,
-            0.37795899999997573,
-            0.40560399999998253
+            0.3415834999998424,
+            0.3028750000000855,
+            0.3342079999999328
           ],
-          "runSpreadPct": 10.539106093530116,
-          "samples": 1442,
+          "runSpreadPct": 11.582158416245177,
+          "samples": 1692,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.7015830000000278,
+          "medianMs": 0.5855205000000296,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.6941249999999854,
-            0.7015830000000278,
-            0.7281044999999722
+            0.5966669999999112,
+            0.5534790000000385,
+            0.5855205000000296
           ],
-          "runSpreadPct": 4.843261595561093,
-          "samples": 791,
+          "runSpreadPct": 7.376001352620547,
+          "samples": 936,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.3799160000000938,
+          "medianMs": 1.1293330000000878,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            1.3661669999999049,
-            1.3799160000000938,
-            1.4201665000000503
+            1.1345415000000685,
+            1.06574999999998,
+            1.1293330000000878
           ],
-          "runSpreadPct": 3.9132454439358444,
-          "samples": 408,
+          "runSpreadPct": 6.091338869942093,
+          "samples": 496,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.8334995000000163,
+          "medianMs": 2.257041999999956,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            2.678333000000066,
-            3.0269170000001395,
-            2.8334995000000163
+            2.257041999999956,
+            2.1103959999999233,
+            2.33524999999986
           ],
-          "runSpreadPct": 12.302243215503356,
-          "samples": 196,
+          "runSpreadPct": 9.962331228215557,
+          "samples": 246,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.150270500000033,
+          "medianMs": 3.3271249999997963,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            3.963792000000012,
-            4.2409999999999854,
-            4.150270500000033
+            3.479332999999997,
+            3.0575830000000224,
+            3.3271249999997963
           ],
-          "runSpreadPct": 6.679275483368398,
-          "samples": 127,
+          "runSpreadPct": 12.676109253484627,
+          "samples": 167,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 5.455291500000158,
+          "medianMs": 4.505270499999824,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            5.321312499999976,
-            5.455291500000158,
-            5.562542000000008
+            4.505270499999824,
+            4.15677049999988,
+            4.664416000000074
           ],
-          "runSpreadPct": 4.421936023034228,
-          "samples": 104,
+          "runSpreadPct": 11.267813996966753,
+          "samples": 123,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 8.11652099999992,
+          "medianMs": 6.8941045000001395,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            7.99612500000012,
-            8.11652099999992,
-            8.152166999999963
+            6.8941045000001395,
+            6.3709170000001905,
+            7.570917000000009
           ],
-          "runSpreadPct": 1.9225232091415096,
-          "samples": 72,
+          "runSpreadPct": 17.40617653822616,
+          "samples": 79,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 10.82064550000041,
+          "medianMs": 9.163708500000212,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            10.53191650000008,
-            10.82064550000041,
-            10.843000000000075
+            9.163708500000212,
+            8.425040999999965,
+            9.902062500000056
           ],
-          "runSpreadPct": 2.8749070469038416,
-          "samples": 54,
+          "runSpreadPct": 16.118163296006824,
+          "samples": 59,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 13.690000000000055,
+          "medianMs": 11.672437499999887,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            13.1418749999998,
-            13.690000000000055,
-            13.755811999999878
+            12.914624999999887,
+            10.32662500000015,
+            11.672437499999887
           ],
-          "runSpreadPct": 4.48456537618755,
-          "samples": 43,
+          "runSpreadPct": 22.1718899758492,
+          "samples": 48,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 16.082312499999944,
+          "medianMs": 13.687916500000028,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            15.712125000000015,
-            16.082312499999944,
-            16.30408299999999
+            14.01449999999977,
+            12.81658299999981,
+            13.687916500000028
           ],
-          "runSpreadPct": 3.680801501649585,
-          "samples": 36,
+          "runSpreadPct": 8.751638717258093,
+          "samples": 42,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 19.02300000000014,
+          "medianMs": 15.744937500000106,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            18.546374999999898,
-            19.02300000000014,
-            19.15995799999996
+            15.34614549999992,
+            16.677812500000073,
+            15.744937500000106
           ],
-          "runSpreadPct": 3.225479682489922,
-          "samples": 31,
+          "runSpreadPct": 8.457747133007947,
+          "samples": 34,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 21.397750000000087,
+          "medianMs": 18.608395499999915,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            21.397750000000087,
-            21.315333000000464,
-            21.555624999999964
+            18.608395499999915,
+            22.851062999999613,
+            18.391875000000255
           ],
-          "runSpreadPct": 1.1229778831863082,
-          "samples": 27,
+          "runSpreadPct": 23.96331268861616,
+          "samples": 24,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
         }
-      ]
+      ],
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
+      }
+    },
+    {
+      "fit": {
+        "exponent": 0.9870000000000001,
+        "interceptMs": 0.03319003044212648,
+        "slopeMsPerKiBPower": 0.032149293627706715,
+        "looMapePct": 6.2716934222307525,
+        "looMaxErrorPct": 16.064303419675106,
+        "mapePct": 3.3133396388980088,
+        "maxErrorPct": 10.246298999028033,
+        "model": "offset-power",
+        "rSquared": 0.9957425508937163,
+        "accepted": false,
+        "validationMapePct": 4.728249363778486,
+        "validationMaxErrorPct": 15.16633202930944
+      },
+      "name": "Yuku + JS plugin",
+      "points": [
+        {
+          "medianMs": 0.0647079999998823,
+          "records": 4,
+          "role": "training",
+          "runMediansMs": [
+            0.06585400000000163,
+            0.057999999999992724,
+            0.0647079999998823
+          ],
+          "runSpreadPct": 12.137602769399756,
+          "samples": 8438,
+          "sizeKiB": 1,
+          "sourceBytes": 1024,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.09699999999997999,
+          "records": 13,
+          "role": "validation",
+          "runMediansMs": [
+            0.09699999999997999,
+            0.09754199999997581,
+            0.09429099999988466
+          ],
+          "runSpreadPct": 3.3515463918472412,
+          "samples": 5519,
+          "sizeKiB": 2,
+          "sourceBytes": 2048,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.16383300000006784,
+          "records": 32,
+          "role": "training",
+          "runMediansMs": [
+            0.16383300000006784,
+            0.1493340000000103,
+            0.17070799999999053
+          ],
+          "runSpreadPct": 13.046211691155868,
+          "samples": 3348,
+          "sizeKiB": 4,
+          "sourceBytes": 4096,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.29166699999996126,
+          "records": 70,
+          "role": "validation",
+          "runMediansMs": [
+            0.29166699999996126,
+            0.2666250000000332,
+            0.2963329999998905
+          ],
+          "runSpreadPct": 10.185588359280013,
+          "samples": 1898,
+          "sizeKiB": 8,
+          "sourceBytes": 8192,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.5333749999999782,
+          "records": 145,
+          "role": "training",
+          "runMediansMs": [
+            0.5363750000001346,
+            0.5134795000000167,
+            0.5333749999999782
+          ],
+          "runSpreadPct": 4.292570892921265,
+          "samples": 954,
+          "sizeKiB": 16,
+          "sourceBytes": 16384,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.0102909999998246,
+          "records": 294,
+          "role": "validation",
+          "runMediansMs": [
+            1.0102909999998246,
+            0.9574580000000878,
+            1.0509170000000267
+          ],
+          "runSpreadPct": 9.250701035637764,
+          "samples": 535,
+          "sizeKiB": 32,
+          "sourceBytes": 32768,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.8926250000000664,
+          "records": 592,
+          "role": "training",
+          "runMediansMs": [
+            1.8926250000000664,
+            1.8252919999999904,
+            2.1432085000000143
+          ],
+          "runSpreadPct": 16.79764876824584,
+          "samples": 280,
+          "sizeKiB": 64,
+          "sourceBytes": 65536,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 2.779645999999957,
+          "records": 891,
+          "role": "validation",
+          "runMediansMs": [
+            2.779645999999957,
+            2.646541999999954,
+            3.4415419999997994
+          ],
+          "runSpreadPct": 28.600764269977464,
+          "samples": 188,
+          "sizeKiB": 96,
+          "sourceBytes": 98304,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 3.750332999999955,
+          "records": 1191,
+          "role": "training",
+          "runMediansMs": [
+            3.750332999999955,
+            3.705500000000029,
+            4.6130205000000615
+          ],
+          "runSpreadPct": 24.198397848938836,
+          "samples": 138,
+          "sizeKiB": 128,
+          "sourceBytes": 131072,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 6.83462499999996,
+          "records": 1788,
+          "role": "validation",
+          "runMediansMs": [
+            5.583291999999801,
+            50.514436999999816,
+            6.83462499999996
+          ],
+          "runSpreadPct": 657.4046856996584,
+          "samples": 64,
+          "sizeKiB": 192,
+          "sourceBytes": 196608,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 8.56899999999996,
+          "records": 2386,
+          "role": "training",
+          "runMediansMs": [
+            7.523833999999624,
+            71.196958,
+            8.56899999999996
+          ],
+          "runSpreadPct": 743.0636480336174,
+          "samples": 49,
+          "sizeKiB": 256,
+          "sourceBytes": 262144,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 10.324041999999963,
+          "records": 2983,
+          "role": "validation",
+          "runMediansMs": [
+            9.150416499999892,
+            142.2430000000004,
+            10.324041999999963
+          ],
+          "runSpreadPct": 1289.1518990333532,
+          "samples": 41,
+          "sizeKiB": 320,
+          "sourceBytes": 327680,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 11.505833000000166,
+          "records": 3581,
+          "role": "training",
+          "runMediansMs": [
+            11.015332999999828,
+            11.505833000000166,
+            12.057083000000148
+          ],
+          "runSpreadPct": 9.054103253543703,
+          "samples": 39,
+          "sizeKiB": 384,
+          "sourceBytes": 393216,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 13.1582085,
+          "records": 4179,
+          "role": "validation",
+          "runMediansMs": [
+            13.1582085,
+            12.965312500000437,
+            13.352145999999948
+          ],
+          "runSpreadPct": 2.9398644959875146,
+          "samples": 42,
+          "sizeKiB": 448,
+          "sourceBytes": 458752,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 14.792791999999281,
+          "records": 4777,
+          "role": "training",
+          "runMediansMs": [
+            14.792791999999281,
+            14.30779100000018,
+            15.61833350000029
+          ],
+          "runSpreadPct": 8.859331625836246,
+          "samples": 38,
+          "sizeKiB": 512,
+          "sourceBytes": 524288,
+          "styledComponents": 1
+        }
+      ],
+      "pipeline": {
+        "parser": "Yuku parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "Yuku codegen (JS)",
+        "lines": [
+          "Yuku parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "Yuku codegen (JS)"
+        ],
+        "fullLabel": "Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (JS)"
+      }
+    },
+    {
+      "fit": {
+        "exponent": 0.9970000000000001,
+        "interceptMs": 0.030955571801083274,
+        "slopeMsPerKiBPower": 0.027992221631563383,
+        "looMapePct": 3.434307591850594,
+        "looMaxErrorPct": 12.50443215577757,
+        "mapePct": 1.3658893874946407,
+        "maxErrorPct": 2.4734607534973163,
+        "model": "offset-power",
+        "rSquared": 0.9993941259618643,
+        "accepted": true,
+        "validationMapePct": 2.532994121703055,
+        "validationMaxErrorPct": 5.828380151470552
+      },
+      "name": "Yuku + OXC codegen",
+      "points": [
+        {
+          "medianMs": 0.059458000000063294,
+          "records": 4,
+          "role": "training",
+          "runMediansMs": [
+            0.059458000000063294,
+            0.06041600000025937,
+            0.05554200000005949
+          ],
+          "runSpreadPct": 8.197383027001743,
+          "samples": 9330,
+          "sizeKiB": 1,
+          "sourceBytes": 1024,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.08204200000000128,
+          "records": 13,
+          "role": "validation",
+          "runMediansMs": [
+            0.08679200000005949,
+            0.08204200000000128,
+            0.07870900000034453
+          ],
+          "runSpreadPct": 9.852270787785319,
+          "samples": 6603,
+          "sizeKiB": 2,
+          "sourceBytes": 2048,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.1390415000000189,
+          "records": 32,
+          "role": "training",
+          "runMediansMs": [
+            0.1390415000000189,
+            0.13327049999998053,
+            0.15829099999996288
+          ],
+          "runSpreadPct": 17.994987108150404,
+          "samples": 3797,
+          "sizeKiB": 4,
+          "sourceBytes": 4096,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.25279150000005757,
+          "records": 70,
+          "role": "validation",
+          "runMediansMs": [
+            0.25279150000005757,
+            0.2503749999999627,
+            0.26479200000005676
+          ],
+          "runSpreadPct": 5.703118973577341,
+          "samples": 2146,
+          "sizeKiB": 8,
+          "sourceBytes": 8192,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.48158300000000054,
+          "records": 145,
+          "role": "training",
+          "runMediansMs": [
+            0.48212499999999636,
+            0.4658329999999751,
+            0.48158300000000054
+          ],
+          "runSpreadPct": 3.3830097823264675,
+          "samples": 1165,
+          "sizeKiB": 16,
+          "sourceBytes": 16384,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.9188749999998436,
+          "records": 294,
+          "role": "validation",
+          "runMediansMs": [
+            0.9188749999998436,
+            0.8919169999999212,
+            0.9219789999998511
+          ],
+          "runSpreadPct": 3.2716093048494064,
+          "samples": 606,
+          "sizeKiB": 32,
+          "sourceBytes": 32768,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.8164584999999533,
+          "records": 592,
+          "role": "training",
+          "runMediansMs": [
+            1.8164584999999533,
+            1.7356660000000375,
+            1.8309164999999439
+          ],
+          "runSpreadPct": 5.243747655116198,
+          "samples": 311,
+          "sizeKiB": 64,
+          "sourceBytes": 65536,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 2.625250000000051,
+          "records": 891,
+          "role": "validation",
+          "runMediansMs": [
+            2.6100410000001375,
+            2.625250000000051,
+            2.747041999999965
+          ],
+          "runSpreadPct": 5.2185887058308635,
+          "samples": 209,
+          "sizeKiB": 96,
+          "sourceBytes": 98304,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 3.535707999999886,
+          "records": 1191,
+          "role": "training",
+          "runMediansMs": [
+            3.535707999999886,
+            3.479541499999982,
+            3.7091464999999744
+          ],
+          "runSpreadPct": 6.493890332572703,
+          "samples": 157,
+          "sizeKiB": 128,
+          "sourceBytes": 131072,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 5.265875000000278,
+          "records": 1788,
+          "role": "validation",
+          "runMediansMs": [
+            5.223687500000096,
+            5.265875000000278,
+            5.503521000000092
+          ],
+          "runSpreadPct": 5.314093099437043,
+          "samples": 106,
+          "sizeKiB": 192,
+          "sourceBytes": 196608,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 7.2582704999999805,
+          "records": 2386,
+          "role": "training",
+          "runMediansMs": [
+            7.257583499999782,
+            7.2582704999999805,
+            7.550834000000123
+          ],
+          "runSpreadPct": 4.040225560625511,
+          "samples": 76,
+          "sizeKiB": 256,
+          "sourceBytes": 262144,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 9.093250000000353,
+          "records": 2983,
+          "role": "validation",
+          "runMediansMs": [
+            9.093250000000353,
+            8.51127049999991,
+            9.512333500000068
+          ],
+          "runSpreadPct": 11.00885821900992,
+          "samples": 63,
+          "sizeKiB": 320,
+          "sourceBytes": 327680,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 10.584250500000053,
+          "records": 3581,
+          "role": "training",
+          "runMediansMs": [
+            10.584250500000053,
+            10.041708000000199,
+            11.756083000000217
+          ],
+          "runSpreadPct": 16.197415206679107,
+          "samples": 52,
+          "sizeKiB": 384,
+          "sourceBytes": 393216,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 13.051437499999793,
+          "records": 4179,
+          "role": "validation",
+          "runMediansMs": [
+            12.11029150000013,
+            15.069041999999627,
+            13.051437499999793
+          ],
+          "runSpreadPct": 22.669920458949775,
+          "samples": 43,
+          "sizeKiB": 448,
+          "sourceBytes": 458752,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 13.807062500000029,
+          "records": 4777,
+          "role": "training",
+          "runMediansMs": [
+            13.750749999999243,
+            15.549125000000004,
+            13.807062500000029
+          ],
+          "runSpreadPct": 13.025037005523487,
+          "samples": 40,
+          "sizeKiB": 512,
+          "sourceBytes": 524288,
+          "styledComponents": 1
+        }
+      ],
+      "pipeline": {
+        "parser": "Yuku parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "Yuku parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      }
+    },
+    {
+      "fit": {
+        "exponent": 0.9990000000000001,
+        "interceptMs": 0.02993038292988852,
+        "slopeMsPerKiBPower": 0.06168546092969684,
+        "looMapePct": 0.9193867016426501,
+        "looMaxErrorPct": 2.298593423159138,
+        "mapePct": 0.6140127376163632,
+        "maxErrorPct": 1.8387324996919907,
+        "model": "offset-power",
+        "rSquared": 0.999870203614122,
+        "accepted": true,
+        "validationMapePct": 1.1343550553402626,
+        "validationMaxErrorPct": 2.4230465367491325
+      },
+      "name": "OXC + Yuku walk plugin",
+      "points": [
+        {
+          "medianMs": 0.0915420000001177,
+          "records": 4,
+          "role": "training",
+          "runMediansMs": [
+            0.09754199999997581,
+            0.09054199999991397,
+            0.0915420000001177
+          ],
+          "runSpreadPct": 7.646763234420098,
+          "samples": 6082,
+          "sizeKiB": 1,
+          "sourceBytes": 1024,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.15702049999998735,
+          "records": 13,
+          "role": "validation",
+          "runMediansMs": [
+            0.15702049999998735,
+            0.16674999999997908,
+            0.14602049999984956
+          ],
+          "runSpreadPct": 13.2017793855778,
+          "samples": 3624,
+          "sizeKiB": 2,
+          "sourceBytes": 2048,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.2769999999999868,
+          "records": 32,
+          "role": "training",
+          "runMediansMs": [
+            0.2769999999999868,
+            0.2767910000000029,
+            0.2848334999999338
+          ],
+          "runSpreadPct": 2.9034296028632776,
+          "samples": 1975,
+          "sizeKiB": 4,
+          "sourceBytes": 4096,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.5128129999999942,
+          "records": 70,
+          "role": "validation",
+          "runMediansMs": [
+            0.5058125000000473,
+            0.5230419999999185,
+            0.5128129999999942
+          ],
+          "runSpreadPct": 3.35980172107014,
+          "samples": 1108,
+          "sizeKiB": 8,
+          "sourceBytes": 8192,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.0147079999999846,
+          "records": 145,
+          "role": "training",
+          "runMediansMs": [
+            1.0075829999998405,
+            1.0243124999999509,
+            1.0147079999999846
+          ],
+          "runSpreadPct": 1.6487009070698837,
+          "samples": 563,
+          "sizeKiB": 16,
+          "sourceBytes": 16384,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.976457999999866,
+          "records": 294,
+          "role": "validation",
+          "runMediansMs": [
+            1.976457999999866,
+            2.010291000000052,
+            1.966416499999923
+          ],
+          "runSpreadPct": 2.219854912177847,
+          "samples": 288,
+          "sizeKiB": 32,
+          "sourceBytes": 32768,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 3.9414590000001226,
+          "records": 592,
+          "role": "training",
+          "runMediansMs": [
+            3.9188340000000608,
+            3.9691455000000815,
+            3.9414590000001226
+          ],
+          "runSpreadPct": 1.27646894208513,
+          "samples": 146,
+          "sizeKiB": 64,
+          "sourceBytes": 65536,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 5.884041000000025,
+          "records": 891,
+          "role": "validation",
+          "runMediansMs": [
+            5.853416000000152,
+            6.027916499999947,
+            5.884041000000025
+          ],
+          "runSpreadPct": 2.965657445279423,
+          "samples": 98,
+          "sizeKiB": 96,
+          "sourceBytes": 98304,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 8.00033350000001,
+          "records": 1191,
+          "role": "training",
+          "runMediansMs": [
+            8.040707999999995,
+            7.898584000000028,
+            8.00033350000001
+          ],
+          "runSpreadPct": 1.7764759431587052,
+          "samples": 74,
+          "sizeKiB": 128,
+          "sourceBytes": 131072,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 11.675792000000001,
+          "records": 1788,
+          "role": "validation",
+          "runMediansMs": [
+            12.650833499999862,
+            11.675792000000001,
+            11.670958000000155
+          ],
+          "runSpreadPct": 8.39236858621417,
+          "samples": 50,
+          "sizeKiB": 192,
+          "sourceBytes": 196608,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 15.450000000000273,
+          "records": 2386,
+          "role": "training",
+          "runMediansMs": [
+            16.77856299999985,
+            15.450000000000273,
+            15.43383300000005
+          ],
+          "runSpreadPct": 8.703754045305992,
+          "samples": 38,
+          "sizeKiB": 256,
+          "sourceBytes": 262144,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 19.72585449999997,
+          "records": 2983,
+          "role": "validation",
+          "runMediansMs": [
+            20.88962500000025,
+            19.72585449999997,
+            19.614625500000102
+          ],
+          "runSpreadPct": 6.463595784913405,
+          "samples": 30,
+          "sizeKiB": 320,
+          "sourceBytes": 327680,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 23.625583000000006,
+          "records": 3581,
+          "role": "training",
+          "runMediansMs": [
+            24.46529149999992,
+            23.212708999999904,
+            23.625583000000006
+          ],
+          "runSpreadPct": 5.301805673959524,
+          "samples": 26,
+          "sizeKiB": 384,
+          "sourceBytes": 393216,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 27.387375000000247,
+          "records": 4179,
+          "role": "validation",
+          "runMediansMs": [
+            27.387375000000247,
+            26.951437999999825,
+            28.024709000000257
+          ],
+          "runSpreadPct": 3.918853121193331,
+          "samples": 22,
+          "sizeKiB": 448,
+          "sourceBytes": 458752,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 31.597499999999854,
+          "records": 4777,
+          "role": "training",
+          "runMediansMs": [
+            32.00004099999933,
+            30.773541999999907,
+            31.597499999999854
+          ],
+          "runSpreadPct": 3.8816330405868404,
+          "samples": 21,
+          "sizeKiB": 512,
+          "sourceBytes": 524288,
+          "styledComponents": 1
+        }
+      ],
+      "pipeline": {
+        "parser": "OXC parser (default JSON transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "OXC parser (default JSON transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      }
+    },
+    {
+      "fit": {
+        "exponent": 1.002,
+        "interceptMs": 0.02613238987808721,
+        "slopeMsPerKiBPower": 0.02507659840254937,
+        "looMapePct": 2.491421781367295,
+        "looMaxErrorPct": 4.791673047050147,
+        "mapePct": 1.344281688724176,
+        "maxErrorPct": 2.9360535619911134,
+        "model": "offset-power",
+        "rSquared": 0.999389917544439,
+        "accepted": true,
+        "validationMapePct": 1.7338398162677768,
+        "validationMaxErrorPct": 2.723661823586217
+      },
+      "name": "OXC raw transfer + Yuku walk",
+      "points": [
+        {
+          "medianMs": 0.05133300000034069,
+          "records": 4,
+          "role": "training",
+          "runMediansMs": [
+            0.05083300000001145,
+            0.05283400000007532,
+            0.05133300000034069
+          ],
+          "runSpreadPct": 3.8980772603404983,
+          "samples": 10637,
+          "sizeKiB": 1,
+          "sourceBytes": 1024,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.07633299999997689,
+          "records": 13,
+          "role": "validation",
+          "runMediansMs": [
+            0.07283399999994344,
+            0.07845799999995506,
+            0.07633299999997689
+          ],
+          "runSpreadPct": 7.367717762977116,
+          "samples": 7268,
+          "sizeKiB": 2,
+          "sourceBytes": 2048,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.12512500000002547,
+          "records": 32,
+          "role": "training",
+          "runMediansMs": [
+            0.12316699999996672,
+            0.12512500000002547,
+            0.13531249999999773
+          ],
+          "runSpreadPct": 9.706693306716112,
+          "samples": 4371,
+          "sizeKiB": 4,
+          "sourceBytes": 4096,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.23291700000004312,
+          "records": 70,
+          "role": "validation",
+          "runMediansMs": [
+            0.23702099999991333,
+            0.220437000000004,
+            0.23291700000004312
+          ],
+          "runSpreadPct": 7.120132922846451,
+          "samples": 2447,
+          "sizeKiB": 8,
+          "sourceBytes": 8192,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.442583500000012,
+          "records": 145,
+          "role": "training",
+          "runMediansMs": [
+            0.44529099999999744,
+            0.4155000000000655,
+            0.442583500000012
+          ],
+          "runSpreadPct": 6.73115920497062,
+          "samples": 1300,
+          "sizeKiB": 16,
+          "sourceBytes": 16384,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.8575210000000197,
+          "records": 294,
+          "role": "validation",
+          "runMediansMs": [
+            0.8575210000000197,
+            0.8181459999999561,
+            0.8667910000001484
+          ],
+          "runSpreadPct": 5.672747372972933,
+          "samples": 672,
+          "sizeKiB": 32,
+          "sourceBytes": 32768,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.6212920000001532,
+          "records": 592,
+          "role": "training",
+          "runMediansMs": [
+            1.6212920000001532,
+            1.5792500000000018,
+            1.6490624999999
+          ],
+          "runSpreadPct": 4.305979428745195,
+          "samples": 353,
+          "sizeKiB": 64,
+          "sourceBytes": 65536,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 2.391416999999933,
+          "records": 891,
+          "role": "validation",
+          "runMediansMs": [
+            2.391416999999933,
+            2.3170410000000174,
+            2.461999500000047
+          ],
+          "runSpreadPct": 6.0616153519036535,
+          "samples": 241,
+          "sizeKiB": 96,
+          "sourceBytes": 98304,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 3.245792000000165,
+          "records": 1191,
+          "role": "training",
+          "runMediansMs": [
+            3.245792000000165,
+            3.1652910000000247,
+            3.281896500000016
+          ],
+          "runSpreadPct": 3.5925130137724643,
+          "samples": 178,
+          "sizeKiB": 128,
+          "sourceBytes": 131072,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 4.863499999999931,
+          "records": 1788,
+          "role": "validation",
+          "runMediansMs": [
+            4.863499999999931,
+            4.687249999999949,
+            5.000625000000127
+          ],
+          "runSpreadPct": 6.443404955282876,
+          "samples": 119,
+          "sizeKiB": 192,
+          "sourceBytes": 196608,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 6.442457999999988,
+          "records": 2386,
+          "role": "training",
+          "runMediansMs": [
+            6.442457999999988,
+            6.327916499999901,
+            6.942770999999993
+          ],
+          "runSpreadPct": 9.543787479873263,
+          "samples": 88,
+          "sizeKiB": 256,
+          "sourceBytes": 262144,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 8.029395999999906,
+          "records": 2983,
+          "role": "validation",
+          "runMediansMs": [
+            7.990458500000159,
+            8.029395999999906,
+            8.560124999999971
+          ],
+          "runSpreadPct": 7.0947615486870825,
+          "samples": 71,
+          "sizeKiB": 320,
+          "sourceBytes": 327680,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 9.69770850000009,
+          "records": 3581,
+          "role": "training",
+          "runMediansMs": [
+            9.69770850000009,
+            9.578187499999785,
+            10.325958999999784
+          ],
+          "runSpreadPct": 7.7108061146609215,
+          "samples": 59,
+          "sizeKiB": 384,
+          "sourceBytes": 393216,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 11.130625000000236,
+          "records": 4179,
+          "role": "validation",
+          "runMediansMs": [
+            11.130625000000236,
+            11.10610399999996,
+            11.858042000000296
+          ],
+          "runSpreadPct": 6.755577516988674,
+          "samples": 52,
+          "sizeKiB": 448,
+          "sourceBytes": 458752,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 13.33312500000011,
+          "records": 4777,
+          "role": "training",
+          "runMediansMs": [
+            12.849541999999929,
+            13.626271000000543,
+            13.33312500000011
+          ],
+          "runSpreadPct": 5.825558524356501,
+          "samples": 44,
+          "sizeKiB": 512,
+          "sourceBytes": 524288,
+          "styledComponents": 1
+        }
+      ],
+      "pipeline": {
+        "parser": "OXC parser (experimentalRawTransfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "OXC parser (experimentalRawTransfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      }
+    },
+    {
+      "fit": {
+        "exponent": 1.166,
+        "interceptMs": 0.13189192452589676,
+        "slopeMsPerKiBPower": 0.15493232176817295,
+        "looMapePct": 9.72570695490722,
+        "looMaxErrorPct": 17.740918090583975,
+        "mapePct": 5.435199922718288,
+        "maxErrorPct": 12.584315672182095,
+        "model": "offset-power",
+        "rSquared": 0.9920564172216169,
+        "accepted": true,
+        "validationMapePct": 4.4784341761773865,
+        "validationMaxErrorPct": 8.217319969791422
+      },
+      "name": "OXC lazy + Yuku walk",
+      "points": [
+        {
+          "medianMs": 0.2889380000001438,
+          "records": 4,
+          "role": "training",
+          "runMediansMs": [
+            0.30595800000003237,
+            0.2889380000001438,
+            0.2640000000001237
+          ],
+          "runSpreadPct": 14.5214544296312,
+          "samples": 1536,
+          "sizeKiB": 1,
+          "sourceBytes": 1024,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.484958000000006,
+          "records": 13,
+          "role": "validation",
+          "runMediansMs": [
+            0.4956250000000182,
+            0.484958000000006,
+            0.4608744999995906
+          ],
+          "runSpreadPct": 7.165672078907273,
+          "samples": 918,
+          "sizeKiB": 2,
+          "sourceBytes": 2048,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 0.9039999999999964,
+          "records": 32,
+          "role": "training",
+          "runMediansMs": [
+            0.9039999999999964,
+            0.99543749999998,
+            0.8389590000000453
+          ],
+          "runSpreadPct": 17.30956858406364,
+          "samples": 486,
+          "sizeKiB": 4,
+          "sourceBytes": 4096,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 1.8607494999999972,
+          "records": 70,
+          "role": "validation",
+          "runMediansMs": [
+            1.8607494999999972,
+            1.9150834999999802,
+            1.6741250000000036
+          ],
+          "runSpreadPct": 12.949539956881726,
+          "samples": 245,
+          "sizeKiB": 8,
+          "sourceBytes": 8192,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 3.752499999999827,
+          "records": 145,
+          "role": "training",
+          "runMediansMs": [
+            3.752499999999827,
+            4.093854499999907,
+            3.3293544999999654
+          ],
+          "runSpreadPct": 20.373084610259202,
+          "samples": 123,
+          "sizeKiB": 16,
+          "sourceBytes": 16384,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 8.324978999999871,
+          "records": 294,
+          "role": "validation",
+          "runMediansMs": [
+            8.324978999999871,
+            9.450083500000005,
+            8.067458999999872
+          ],
+          "runSpreadPct": 16.608143996521253,
+          "samples": 59,
+          "sizeKiB": 32,
+          "sourceBytes": 32768,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 22.77431249999995,
+          "records": 592,
+          "role": "training",
+          "runMediansMs": [
+            22.77431249999995,
+            26.148999999999887,
+            22.244854500000088
+          ],
+          "runSpreadPct": 17.142758974611453,
+          "samples": 29,
+          "sizeKiB": 64,
+          "sourceBytes": 65536,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 31.89979100000005,
+          "records": 891,
+          "role": "validation",
+          "runMediansMs": [
+            31.821542000000136,
+            36.546020500000054,
+            31.89979100000005
+          ],
+          "runSpreadPct": 14.810374462954664,
+          "samples": 20,
+          "sizeKiB": 96,
+          "sourceBytes": 98304,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 45.82925000000023,
+          "records": 1191,
+          "role": "training",
+          "runMediansMs": [
+            45.82925000000023,
+            51.07833349999987,
+            40.718000000000075
+          ],
+          "runSpreadPct": 22.606378022768745,
+          "samples": 14,
+          "sizeKiB": 128,
+          "sourceBytes": 131072,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 76.77183399999967,
+          "records": 1788,
+          "role": "validation",
+          "runMediansMs": [
+            76.77183399999967,
+            77.06737500000008,
+            68.74649999999974
+          ],
+          "runSpreadPct": 10.83844760045771,
+          "samples": 9,
+          "sizeKiB": 192,
+          "sourceBytes": 196608,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 107.59691599999996,
+          "records": 2386,
+          "role": "training",
+          "runMediansMs": [
+            107.59691599999996,
+            111.23837500000036,
+            97.66120799999999
+          ],
+          "runSpreadPct": 12.61854661336239,
+          "samples": 9,
+          "sizeKiB": 256,
+          "sourceBytes": 262144,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 121.75237500000003,
+          "records": 2983,
+          "role": "validation",
+          "runMediansMs": [
+            121.75237500000003,
+            137.69966699999986,
+            119.52062500000011
+          ],
+          "runSpreadPct": 14.931160069772561,
+          "samples": 9,
+          "sizeKiB": 320,
+          "sourceBytes": 327680,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 154.97345900000028,
+          "records": 3581,
+          "role": "training",
+          "runMediansMs": [
+            154.97345900000028,
+            196.901167,
+            150.6713749999999
+          ],
+          "runSpreadPct": 29.83078024992654,
+          "samples": 9,
+          "sizeKiB": 384,
+          "sourceBytes": 393216,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 176.8214170000001,
+          "records": 4179,
+          "role": "validation",
+          "runMediansMs": [
+            172.3447500000002,
+            239.78091600000062,
+            176.8214170000001
+          ],
+          "runSpreadPct": 38.13800790884984,
+          "samples": 9,
+          "sizeKiB": 448,
+          "sourceBytes": 458752,
+          "styledComponents": 1
+        },
+        {
+          "medianMs": 207.57012499999928,
+          "records": 4777,
+          "role": "training",
+          "runMediansMs": [
+            205.83637499999986,
+            288.9446250000001,
+            207.57012499999928
+          ],
+          "runSpreadPct": 40.0386375447818,
+          "samples": 9,
+          "sizeKiB": 512,
+          "sourceBytes": 524288,
+          "styledComponents": 1
+        }
+      ],
+      "pipeline": {
+        "parser": "OXC parser (experimentalLazy + ESTree adapter)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "OXC parser (experimentalLazy + ESTree adapter)",
+          "styled-components plugin (JS, Yuku walk)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "OXC parser (experimentalLazy + ESTree adapter) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)"
+      }
     }
   ],
   "runtime": "Node 24.18.1",
   "system": {
-    "cores": 10,
-    "cpu": "Apple M1 Max",
-    "memoryGb": 32,
-    "os": "darwin 24.6.0 (arm64)"
+    "cores": 18,
+    "cpu": "Apple M5 Max",
+    "memoryGb": 64,
+    "os": "darwin 25.6.0 (arm64)"
   },
   "versions": {
-    "babelCore": "7.29.7",
+    "babelCore": "8.0.7",
     "babelPlugin": "2.3.0",
-    "oxcCodegen": "0.144.0",
-    "oxcParser": "0.144.0",
-    "swcNextCore": "0.2.1",
-    "swcCore": "1.15.46",
-    "swcPlugin": "12.19.0",
-    "yukuAst": "0.8.5",
-    "yukuCodegen": "0.8.5",
-    "yukuParser": "0.8.5"
+    "oxcCodegen": "0.153.0",
+    "oxcParser": "0.153.0",
+    "swcNextCore": "0.2.4",
+    "swcCore": "1.16.13",
+    "swcPlugin": "17.0.0",
+    "yukuAst": "0.18.0",
+    "yukuCodegen": "0.18.0",
+    "yukuParser": "0.18.0"
   }
 }

@@ -24,6 +24,7 @@ const OUTPUT_FILES: ReadonlyArray<readonly [StyledComponentsTransformerName, str
   ["Yuku + OXC codegen", "yuku-oxc-codegen-output.jsx"],
   ["OXC + Yuku walk plugin", "oxc-output.jsx"],
   ["OXC raw transfer + Yuku walk", "oxc-raw-transfer-output.jsx"],
+  ["OXC lazy + Yuku walk", "oxc-lazy-output.jsx"],
 ];
 
 function sha256(content: string): string {
