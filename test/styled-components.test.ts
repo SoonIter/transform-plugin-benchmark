@@ -27,18 +27,32 @@ test("SWC Next walker variants produce identical output for all 87 files", () =>
   const outputs = SWC_NEXT_WALKER_TRANSFORMERS.map((name) =>
     transformStyledComponentsCorpusFor(name, corpus),
   );
-  assert.deepEqual(outputs[1], outputs[0]);
+  for (const output of outputs.slice(1)) assert.deepEqual(output, outputs[0]);
   assertComparableStyledComponentsFeatures(outputs.map((output, index) =>
     validateStyledComponentsOutputs(SWC_NEXT_WALKER_TRANSFORMERS[index]!, output),
   ));
 });
 
-test("Zimmerframe stage profile preserves its public transform for all 87 files", () => {
+for (const name of SWC_NEXT_WALKER_TRANSFORMERS) {
+  test(`${name} stage profile preserves its public transform for all 87 files`, () => {
+    for (const file of corpus.files) {
+      const profile = profileStyledComponentsOnce(name, file);
+      assert.equal(profile.output, transformStyledComponentsFor(name, file));
+      assert.equal(profile.durationsNs.length, 4);
+      assert.ok(profile.durationsNs.every((duration) => duration > 0));
+    }
+  });
+}
+
+test("SWC Next with OXC codegen matches eager OXC output and its profile on all 87 files", () => {
+  const name = "SWC Next + OXC codegen";
+  assert.deepEqual(profileStageDefinitions(name).at(-1), { name: "codegen", runtime: "JS" });
   for (const file of corpus.files) {
-    const profile = profileStyledComponentsOnce("SWC Next + Zimmerframe", file);
-    assert.equal(profile.output, transformStyledComponentsFor("SWC Next + Zimmerframe", file));
+    const output = transformStyledComponentsFor(name, file);
+    assert.equal(output, transformStyledComponentsFor("OXC + Yuku walk plugin", file));
+    const profile = profileStyledComponentsOnce(name, file);
+    assert.equal(profile.output, output);
     assert.equal(profile.durationsNs.length, 4);
-    assert.ok(profile.durationsNs.every((duration) => duration > 0));
   }
 });
 
@@ -159,6 +173,7 @@ test("committed artifacts reproduce the representative file and corpus outputs",
       outputRecord.representativeSha256,
     );
     if (
+      transformer === "SWC Next + OXC codegen" ||
       transformer === "Yuku + OXC codegen" ||
       transformer.startsWith("OXC")
     ) {

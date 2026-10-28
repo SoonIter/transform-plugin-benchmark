@@ -1,0 +1,157 @@
+{
+  "scope": "Read-only Identifier counting over the same 87 pre-parsed SWC Next ASTs; parse, plugin transform, adapter and print excluded. Visitor objects reused. Warmed ASTs reused across iterations.",
+  "runtime": "v24.18.1",
+  "benchmark": {
+    "runs": 6,
+    "warmupMs": 1000,
+    "timeMs": 2000
+  },
+  "versions": {
+    "swcNext": "0.4.0",
+    "swcNextWalker": "0.4.0",
+    "yukuAst": "0.18.0",
+    "zimmerframe": "1.1.5"
+  },
+  "results": [
+    {
+      "name": "swc-next",
+      "medianMs": 0.07754149999993842
+    },
+    {
+      "name": "yuku",
+      "medianMs": 0.19814599999995153
+    },
+    {
+      "name": "zimmerframe",
+      "medianMs": 0.1764477499999657
+    }
+  ],
+  "runs": [
+    {
+      "run": 1,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07854199999997036,
+      "samples": 24840
+    },
+    {
+      "run": 1,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.200458000000026,
+      "samples": 9616
+    },
+    {
+      "run": 1,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17670799999996234,
+      "samples": 10985
+    },
+    {
+      "run": 2,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19587500000034197,
+      "samples": 9916
+    },
+    {
+      "run": 2,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.1825420000000122,
+      "samples": 10280
+    },
+    {
+      "run": 2,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07737500000007458,
+      "samples": 24946
+    },
+    {
+      "run": 3,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17787499999985812,
+      "samples": 10865
+    },
+    {
+      "run": 3,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07741699999996854,
+      "samples": 24936
+    },
+    {
+      "run": 3,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19700000000011642,
+      "samples": 10020
+    },
+    {
+      "run": 4,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07766599999990831,
+      "samples": 25314
+    },
+    {
+      "run": 4,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.1962079999998423,
+      "samples": 10100
+    },
+    {
+      "run": 4,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17550000000028376,
+      "samples": 11156
+    },
+    {
+      "run": 5,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.1995839999999589,
+      "samples": 9935
+    },
+    {
+      "run": 5,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17341699999997218,
+      "samples": 11307
+    },
+    {
+      "run": 5,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07625000000007276,
+      "samples": 25753
+    },
+    {
+      "run": 6,
+      "name": "zimmerframe",
+      "identifiers": 1916,
+      "medianMs": 0.17618749999996908,
+      "samples": 11136
+    },
+    {
+      "run": 6,
+      "name": "swc-next",
+      "identifiers": 1916,
+      "medianMs": 0.07783400000016627,
+      "samples": 25175
+    },
+    {
+      "run": 6,
+      "name": "yuku",
+      "identifiers": 1916,
+      "medianMs": 0.19929199999978664,
+      "samples": 9707
+    }
+  ]
+}

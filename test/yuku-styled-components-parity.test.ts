@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { transformSync as babelTransformSync } from "@babel/core";
-import { CommentMode, Lang, parseSync, printSync, SourceType } from "@swc-next/core";
+import { parseSync, printSync } from "@swc-next/core";
 import babelStyledComponentsPlugin from "../scripts/babel-styled-components-plugin";
 import { generate } from "yuku-codegen";
 import { parse, type Program } from "yuku-parser";
@@ -11,6 +11,7 @@ import {
     transformStyledComponentsYuku,
     type YukuStyledComponentsOptions,
 } from "../scripts/yuku-styled-components-plugin";
+import { transformStyledComponentsSwcNext } from "../scripts/swc-next-styled-components-plugin";
 import { transformStyledComponentsZimmerframe } from "../scripts/zimmerframe-styled-components-plugin";
 
 interface ParityCase {
@@ -298,7 +299,7 @@ function babelTransform(testCase: ParityCase): string {
     return result!.code!;
 }
 
-function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" = "yuku"): string {
+function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" | "swc-next" = "yuku"): string {
     const parsed = parse(testCase.source, {
         attachComments: true,
         lang: "jsx",
@@ -306,7 +307,8 @@ function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" = "y
         sourceType: "module",
     });
     assert.equal(parsed.diagnostics.length, 0, parsed.diagnostics[0]?.message);
-    const plugin = walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
+    const plugin = walker === "swc-next" ? transformStyledComponentsSwcNext
+        : walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
     const transformed = plugin(
         parsed.program,
         testCase.source,
@@ -321,23 +323,24 @@ function yukuTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" = "y
     return generated.code;
 }
 
-function swcNextTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe"): string {
+function swcNextTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" | "swc-next"): string {
     const parsed = parseSync(testCase.source, {
-        comments: CommentMode.None,
-        lang: Lang.Jsx,
+        comments: "none",
+        lang: "jsx",
         preserveParens: true,
-        sourceType: SourceType.Module,
+        sourceType: "module",
     });
     assert.equal(parsed.diagnostics.length, 0, parsed.diagnostics[0]?.message);
     const program = parsed.program as Program;
-    const plugin = walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
+    const plugin = walker === "swc-next" ? transformStyledComponentsSwcNext
+        : walker === "yuku" ? transformStyledComponentsYuku : transformStyledComponentsZimmerframe;
     const transformed = plugin(
         program,
         testCase.source,
         testCase.filename ?? "/workspace/src/case.jsx",
         testCase.options,
     );
-    return printSync(transformed ?? program).code;
+    return printSync((transformed ?? program) as unknown as typeof parsed.program, {}, parsed.meta).code;
 }
 
 // Exercise native replacement returns, pure comments, copied scopes/statements,
@@ -373,12 +376,14 @@ const WALKER_CASES: ParityCase[] = [
 for (const testCase of [...CASES, ...UPSTREAM_CORPUS.cases, ...WALKER_CASES]) {
     test(`independent plugins match including comments for ${testCase.name}`, () => {
         assert.equal(yukuTransform(testCase, "zimmerframe"), yukuTransform(testCase));
+        assert.equal(yukuTransform(testCase, "swc-next"), yukuTransform(testCase));
     });
 }
 
 for (const testCase of [...CASES, ...UPSTREAM_CORPUS.cases, ...WALKER_CASES]) {
     test(`SWC Next walkers match for ${testCase.name}`, () => {
         assert.equal(swcNextTransform(testCase, "zimmerframe"), swcNextTransform(testCase, "yuku"));
+        assert.equal(swcNextTransform(testCase, "swc-next"), swcNextTransform(testCase, "yuku"));
     });
 }
 

@@ -40,7 +40,7 @@ const PROFILE_TIME = Number(process.env.PROFILE_TIME ?? BENCH_TIME);
 const PROFILE_WARMUP = Number(process.env.PROFILE_WARMUP ?? BENCH_WARMUP);
 const PROFILE_ITERATIONS_MAX = 100_000;
 const RESULT_FILE = process.env.STYLED_COMPONENTS_RESULT ??
-  (WALKER_COMPARISON ? "swc-next-walkers-native.json" : "styled-components.json");
+  (WALKER_COMPARISON ? "swc-next-walkers-current.json" : "styled-components.json");
 const RESULT_FILE_PATTERN = /^[a-z0-9][a-z0-9-]*\.json$/;
 
 interface RunResult extends StyledComponentsValidation {
@@ -125,6 +125,7 @@ interface StyledComponentsBenchResult {
     oxcCodegen: string;
     oxcParser: string;
     swcNextCore: string;
+    swcNextWalker: string;
     swcCore: string;
     swcPlugin: string;
     yukuAst: string;
@@ -513,6 +514,7 @@ async function benchStyledComponents(): Promise<StyledComponentsBenchResult> {
       oxcCodegen: await readPackageVersion("oxc-codegen"),
       oxcParser: await readPackageVersion("oxc-parser"),
       swcNextCore: await readPackageVersion("@swc-next/core"),
+      swcNextWalker: await readPackageVersion("@swc-next/walker"),
       swcCore: await readPackageVersion("@swc/core"),
       swcPlugin: await readPackageVersion("@swc/plugin-styled-components"),
       yukuAst: await readPackageVersion("yuku-ast"),

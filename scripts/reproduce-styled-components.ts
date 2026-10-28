@@ -92,7 +92,7 @@ function assertResult(result: ReproductionResult): void {
   const dependencies = JSON.parse(readFileSync("package.json", "utf8")).dependencies as Record<string, string>;
   const packages: Record<string, string> = {
     babelCore: "@babel/core", babelPlugin: "babel-plugin-styled-components",
-    oxcCodegen: "oxc-codegen", oxcParser: "oxc-parser", swcNextCore: "@swc-next/core",
+    oxcCodegen: "oxc-codegen", oxcParser: "oxc-parser", swcNextCore: "@swc-next/core", swcNextWalker: "@swc-next/walker",
     swcCore: "@swc/core", swcPlugin: "@swc/plugin-styled-components",
     yukuAst: "yuku-ast", yukuCodegen: "yuku-codegen", yukuParser: "yuku-parser", zimmerframe: "zimmerframe",
   };

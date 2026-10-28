@@ -284,6 +284,7 @@ async function benchmarkScaling() {
       oxcCodegen: await readPackageVersion("oxc-codegen"),
       oxcParser: await readPackageVersion("oxc-parser"),
       swcNextCore: await readPackageVersion("@swc-next/core"),
+      swcNextWalker: await readPackageVersion("@swc-next/walker"),
       swcCore: await readPackageVersion("@swc/core"),
       swcPlugin: await readPackageVersion("@swc/plugin-styled-components"),
       yukuAst: await readPackageVersion("yuku-ast"),

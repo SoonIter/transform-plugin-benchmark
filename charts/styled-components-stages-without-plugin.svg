@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1178"
-    viewBox="0 0 1800 1178" role="img"
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1294"
+    viewBox="0 0 1800 1294" role="img"
     aria-label="Measured stages outside the plugin interval, remaining stages normalized to 100 percent">
     <style>
       .title { fill: #e5e7eb; font: 700 24px system-ui, sans-serif; }
@@ -22,13 +22,13 @@
 <tspan x="590" dy="23">Babel codegen (JS)</tspan>
   </text>
       <text x="590" y="162" text-anchor="end" class="total">
-        7.95 ms remaining
+        5.38 ms remaining
       </text>
       <g clip-path="url(#without-plugin-0)">
-<rect x="610.00" y="84" width="359.31"
+<rect x="610.00" y="84" width="443.92"
         height="66" fill="#38bdf8"><title>Parse:
-        31.8%, 2.529 ms</title></rect><text x="789.65" y="124"
-            text-anchor="middle" class="segment">31.8%</text>
+        39.3%, 2.112 ms</title></rect><text x="831.96" y="124"
+            text-anchor="middle" class="segment">39.3%</text>
 
 
 
@@ -36,10 +36,10 @@
 
 
 
-<rect x="969.31" y="84" width="770.69"
+<rect x="1053.92" y="84" width="686.08"
         height="66" fill="#84cc16"><title>Codegen:
-        68.2%, 5.424 ms</title></rect><text x="1354.65" y="124"
-            text-anchor="middle" class="segment">68.2%</text></g>
+        60.7%, 3.265 ms</title></rect><text x="1396.96" y="124"
+            text-anchor="middle" class="segment">60.7%</text></g>
       <clipPath id="without-plugin-0"><rect x="610" y="84"
         width="1130" height="66" rx="8" /></clipPath>
 
@@ -55,220 +55,251 @@
         text-anchor="middle" class="unavailable">plugin is not separable in the public API</text>
 
       <text x="590" y="324" text-anchor="end" class="label">
-    <title>SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)</title>
+    <title>SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native)</title>
     <tspan x="590" dy="0">SWC Next parser (binary AST transfer)</tspan>
-<tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
+<tspan x="590" dy="23">styled-components plugin (JS, @swc-next/walker)</tspan>
 <tspan x="590" dy="23">SWC Next codegen (JS encode + native)</tspan>
   </text>
       <text x="590" y="394" text-anchor="end" class="total">
-        1.44 ms remaining
+        1.39 ms remaining
       </text>
       <g clip-path="url(#without-plugin-2)">
-<rect x="610.00" y="316" width="311.30"
+<rect x="610.00" y="316" width="332.93"
         height="66" fill="#38bdf8"><title>Parse:
-        27.5%, 0.397 ms</title></rect><text x="765.65" y="356"
-            text-anchor="middle" class="segment">27.5%</text>
+        29.5%, 0.410 ms</title></rect><text x="776.46" y="356"
+            text-anchor="middle" class="segment">29.5%</text>
 
 
 
 
-<rect x="921.30" y="316" width="131.82"
+<rect x="942.93" y="316" width="137.35"
         height="66" fill="#34d399"><title>AST decode:
-        11.7%, 0.168 ms</title></rect><text x="987.21" y="356"
-            text-anchor="middle" class="segment">11.7%</text>
+        12.2%, 0.169 ms</title></rect><text x="1011.60" y="356"
+            text-anchor="middle" class="segment">12.2%</text>
 
-<rect x="1053.12" y="316" width="686.88"
+<rect x="1080.28" y="316" width="659.72"
         height="66" fill="#fb923c"><title>AST encode + codegen:
-        60.8%, 0.876 ms</title></rect><text x="1396.56" y="356"
-            text-anchor="middle" class="segment">60.8%</text>
+        58.4%, 0.812 ms</title></rect><text x="1410.14" y="356"
+            text-anchor="middle" class="segment">58.4%</text>
 </g>
       <clipPath id="without-plugin-2"><rect x="610" y="316"
         width="1130" height="66" rx="8" /></clipPath>
 
       <text x="590" y="440" text-anchor="end" class="label">
+    <title>SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + OXC codegen (JS)</title>
+    <tspan x="590" dy="0">SWC Next parser (binary AST transfer)</tspan>
+<tspan x="590" dy="23">styled-components plugin (JS, @swc-next/walker)</tspan>
+<tspan x="590" dy="23">OXC codegen (JS)</tspan>
+  </text>
+      <text x="590" y="510" text-anchor="end" class="total">
+        0.73 ms remaining
+      </text>
+      <g clip-path="url(#without-plugin-3)">
+<rect x="610.00" y="432" width="613.34"
+        height="66" fill="#38bdf8"><title>Parse:
+        54.3%, 0.394 ms</title></rect><text x="916.67" y="472"
+            text-anchor="middle" class="segment">54.3%</text>
+
+
+
+
+<rect x="1223.34" y="432" width="255.49"
+        height="66" fill="#34d399"><title>AST decode:
+        22.6%, 0.164 ms</title></rect><text x="1351.09" y="472"
+            text-anchor="middle" class="segment">22.6%</text>
+
+
+<rect x="1478.84" y="432" width="261.16"
+        height="66" fill="#84cc16"><title>Codegen:
+        23.1%, 0.168 ms</title></rect><text x="1609.42" y="472"
+            text-anchor="middle" class="segment">23.1%</text></g>
+      <clipPath id="without-plugin-3"><rect x="610" y="432"
+        width="1130" height="66" rx="8" /></clipPath>
+
+      <text x="590" y="556" text-anchor="end" class="label">
     <title>Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + Yuku codegen (JS)</title>
     <tspan x="590" dy="0">Yuku parser (binary AST transfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">Yuku codegen (JS)</tspan>
   </text>
-      <text x="590" y="510" text-anchor="end" class="total">
-        1.09 ms remaining
+      <text x="590" y="626" text-anchor="end" class="total">
+        1.10 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-3)">
-<rect x="610.00" y="432" width="584.25"
+      <g clip-path="url(#without-plugin-4)">
+<rect x="610.00" y="548" width="537.71"
         height="66" fill="#38bdf8"><title>Parse:
-        51.7%, 0.563 ms</title></rect><text x="902.13" y="472"
-            text-anchor="middle" class="segment">51.7%</text>
+        47.6%, 0.522 ms</title></rect><text x="878.85" y="588"
+            text-anchor="middle" class="segment">47.6%</text>
 
 
 
 
-<rect x="1194.25" y="432" width="184.54"
+<rect x="1147.71" y="548" width="190.84"
         height="66" fill="#34d399"><title>AST decode:
-        16.3%, 0.178 ms</title></rect><text x="1286.52" y="472"
-            text-anchor="middle" class="segment">16.3%</text>
+        16.9%, 0.185 ms</title></rect><text x="1243.13" y="588"
+            text-anchor="middle" class="segment">16.9%</text>
 
 
-<rect x="1378.79" y="432" width="361.21"
+<rect x="1338.55" y="548" width="401.45"
         height="66" fill="#84cc16"><title>Codegen:
-        32.0%, 0.348 ms</title></rect><text x="1559.39" y="472"
-            text-anchor="middle" class="segment">32.0%</text></g>
-      <clipPath id="without-plugin-3"><rect x="610" y="432"
+        35.5%, 0.390 ms</title></rect><text x="1539.27" y="588"
+            text-anchor="middle" class="segment">35.5%</text></g>
+      <clipPath id="without-plugin-4"><rect x="610" y="548"
         width="1130" height="66" rx="8" /></clipPath>
 
-      <text x="590" y="556" text-anchor="end" class="label">
+      <text x="590" y="672" text-anchor="end" class="label">
     <title>Yuku parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
     <tspan x="590" dy="0">Yuku parser (binary AST transfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <text x="590" y="626" text-anchor="end" class="total">
-        0.89 ms remaining
+      <text x="590" y="742" text-anchor="end" class="total">
+        0.86 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-4)">
-<rect x="610.00" y="548" width="690.26"
+      <g clip-path="url(#without-plugin-5)">
+<rect x="610.00" y="664" width="667.70"
         height="66" fill="#38bdf8"><title>Parse:
-        61.1%, 0.546 ms</title></rect><text x="955.13" y="588"
-            text-anchor="middle" class="segment">61.1%</text>
+        59.1%, 0.509 ms</title></rect><text x="943.85" y="704"
+            text-anchor="middle" class="segment">59.1%</text>
 
 
 
 
-<rect x="1300.26" y="548" width="223.33"
+<rect x="1277.70" y="664" width="236.60"
         height="66" fill="#34d399"><title>AST decode:
-        19.8%, 0.177 ms</title></rect><text x="1411.93" y="588"
-            text-anchor="middle" class="segment">19.8%</text>
+        20.9%, 0.180 ms</title></rect><text x="1395.99" y="704"
+            text-anchor="middle" class="segment">20.9%</text>
 
 
-<rect x="1523.59" y="548" width="216.41"
+<rect x="1514.29" y="664" width="225.71"
         height="66" fill="#84cc16"><title>Codegen:
-        19.2%, 0.171 ms</title></rect><text x="1631.79" y="588"
-            text-anchor="middle" class="segment">19.2%</text></g>
-      <clipPath id="without-plugin-4"><rect x="610" y="548"
+        20.0%, 0.172 ms</title></rect><text x="1627.15" y="704"
+            text-anchor="middle" class="segment">20.0%</text></g>
+      <clipPath id="without-plugin-5"><rect x="610" y="664"
         width="1130" height="66" rx="8" /></clipPath>
 
-      <text x="590" y="672" text-anchor="end" class="label">
+      <text x="590" y="788" text-anchor="end" class="label">
     <title>OXC parser (default JSON transfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
     <tspan x="590" dy="0">OXC parser (default JSON transfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <text x="590" y="742" text-anchor="end" class="total">
-        0.90 ms remaining
+      <text x="590" y="858" text-anchor="end" class="total">
+        0.87 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-5)">
+      <g clip-path="url(#without-plugin-6)">
 
-<rect x="610.00" y="664" width="872.46"
+<rect x="610.00" y="780" width="878.00"
         height="66" fill="#60a5fa"><title>Parse + AST transfer:
-        77.2%, 0.693 ms</title></rect><text x="1046.23" y="704"
-            text-anchor="middle" class="segment">77.2%</text>
+        77.7%, 0.679 ms</title></rect><text x="1049.00" y="820"
+            text-anchor="middle" class="segment">77.7%</text>
 
 
 
 
 
 
-<rect x="1482.46" y="664" width="257.54"
+<rect x="1488.00" y="780" width="252.00"
         height="66" fill="#84cc16"><title>Codegen:
-        22.8%, 0.204 ms</title></rect><text x="1611.23" y="704"
-            text-anchor="middle" class="segment">22.8%</text></g>
-      <clipPath id="without-plugin-5"><rect x="610" y="664"
+        22.3%, 0.195 ms</title></rect><text x="1614.00" y="820"
+            text-anchor="middle" class="segment">22.3%</text></g>
+      <clipPath id="without-plugin-6"><rect x="610" y="780"
         width="1130" height="66" rx="8" /></clipPath>
 
-      <text x="590" y="788" text-anchor="end" class="label">
+      <text x="590" y="904" text-anchor="end" class="label">
     <title>OXC parser (experimentalRawTransfer) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
     <tspan x="590" dy="0">OXC parser (experimentalRawTransfer)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <text x="590" y="858" text-anchor="end" class="total">
-        0.74 ms remaining
+      <text x="590" y="974" text-anchor="end" class="total">
+        0.71 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-6)">
+      <g clip-path="url(#without-plugin-7)">
 
 
-<rect x="610.00" y="780" width="867.89"
+<rect x="610.00" y="896" width="858.32"
         height="66" fill="#2dd4bf"><title>Parse + raw AST transfer:
-        76.8%, 0.565 ms</title></rect><text x="1043.95" y="820"
-            text-anchor="middle" class="segment">76.8%</text>
+        76.0%, 0.539 ms</title></rect><text x="1039.16" y="936"
+            text-anchor="middle" class="segment">76.0%</text>
 
 
 
 
 
-<rect x="1477.89" y="780" width="262.11"
+<rect x="1468.32" y="896" width="271.68"
         height="66" fill="#84cc16"><title>Codegen:
-        23.2%, 0.171 ms</title></rect><text x="1608.95" y="820"
-            text-anchor="middle" class="segment">23.2%</text></g>
-      <clipPath id="without-plugin-6"><rect x="610" y="780"
+        24.0%, 0.171 ms</title></rect><text x="1604.16" y="936"
+            text-anchor="middle" class="segment">24.0%</text></g>
+      <clipPath id="without-plugin-7"><rect x="610" y="896"
         width="1130" height="66" rx="8" /></clipPath>
 
-      <text x="590" y="904" text-anchor="end" class="label">
+      <text x="590" y="1020" text-anchor="end" class="label">
     <title>OXC parser (experimentalLazy + ESTree adapter) + styled-components plugin (JS, Yuku walk) + OXC codegen (JS)</title>
     <tspan x="590" dy="0">OXC parser (experimentalLazy + ESTree adapter)</tspan>
 <tspan x="590" dy="23">styled-components plugin (JS, Yuku walk)</tspan>
 <tspan x="590" dy="23">OXC codegen (JS)</tspan>
   </text>
-      <text x="590" y="974" text-anchor="end" class="total">
-        1.47 ms remaining
+      <text x="590" y="1090" text-anchor="end" class="total">
+        1.44 ms remaining
       </text>
-      <g clip-path="url(#without-plugin-7)">
+      <g clip-path="url(#without-plugin-8)">
 
 
 
-<rect x="610.00" y="896" width="567.51"
+<rect x="610.00" y="1012" width="591.93"
         height="66" fill="#14b8a6"><title>Parse + lazy AST setup:
-        50.2%, 0.736 ms</title></rect><text x="893.75" y="936"
-            text-anchor="middle" class="segment">50.2%</text>
-<rect x="1177.51" y="896" width="21.96"
+        52.4%, 0.754 ms</title></rect><text x="905.96" y="1052"
+            text-anchor="middle" class="segment">52.4%</text>
+<rect x="1201.93" y="1012" width="23.44"
         height="66" fill="#94a3b8"><title>Dispose:
-        1.9%, 0.028 ms</title></rect>
+        2.1%, 0.030 ms</title></rect>
 
 
 
-<rect x="1199.47" y="896" width="540.53"
+<rect x="1225.37" y="1012" width="514.63"
         height="66" fill="#84cc16"><title>Codegen:
-        47.8%, 0.701 ms</title></rect><text x="1469.73" y="936"
-            text-anchor="middle" class="segment">47.8%</text></g>
-      <clipPath id="without-plugin-7"><rect x="610" y="896"
+        45.5%, 0.656 ms</title></rect><text x="1482.68" y="1052"
+            text-anchor="middle" class="segment">45.5%</text></g>
+      <clipPath id="without-plugin-8"><rect x="610" y="1012"
         width="1130" height="66" rx="8" /></clipPath>
-    <rect x="70" y="1058" width="20" height="20" rx="4"
+    <rect x="70" y="1174" width="20" height="20" rx="4"
         fill="#facc15" />
-      <text x="100" y="1074" class="legend">Source encode</text>
+      <text x="100" y="1190" class="legend">Source encode</text>
 
-      <rect x="505" y="1058" width="20" height="20" rx="4"
+      <rect x="505" y="1174" width="20" height="20" rx="4"
         fill="#38bdf8" />
-      <text x="535" y="1074" class="legend">Parse</text>
+      <text x="535" y="1190" class="legend">Parse</text>
 
-      <rect x="940" y="1058" width="20" height="20" rx="4"
+      <rect x="940" y="1174" width="20" height="20" rx="4"
         fill="#60a5fa" />
-      <text x="970" y="1074" class="legend">Parse + AST transfer</text>
+      <text x="970" y="1190" class="legend">Parse + AST transfer</text>
 
-      <rect x="1375" y="1058" width="20" height="20" rx="4"
+      <rect x="1375" y="1174" width="20" height="20" rx="4"
         fill="#2dd4bf" />
-      <text x="1405" y="1074" class="legend">Parse + raw AST transfer</text>
+      <text x="1405" y="1190" class="legend">Parse + raw AST transfer</text>
 
-      <rect x="70" y="1100" width="20" height="20" rx="4"
+      <rect x="70" y="1216" width="20" height="20" rx="4"
         fill="#14b8a6" />
-      <text x="100" y="1116" class="legend">Parse + lazy AST setup</text>
+      <text x="100" y="1232" class="legend">Parse + lazy AST setup</text>
 
-      <rect x="505" y="1100" width="20" height="20" rx="4"
+      <rect x="505" y="1216" width="20" height="20" rx="4"
         fill="#94a3b8" />
-      <text x="535" y="1116" class="legend">Dispose</text>
+      <text x="535" y="1232" class="legend">Dispose</text>
 
-      <rect x="940" y="1100" width="20" height="20" rx="4"
+      <rect x="940" y="1216" width="20" height="20" rx="4"
         fill="#34d399" />
-      <text x="970" y="1116" class="legend">AST decode</text>
+      <text x="970" y="1232" class="legend">AST decode</text>
 
-      <rect x="1375" y="1100" width="20" height="20" rx="4"
+      <rect x="1375" y="1216" width="20" height="20" rx="4"
         fill="#fb923c" />
-      <text x="1405" y="1116" class="legend">AST encode</text>
+      <text x="1405" y="1232" class="legend">AST encode</text>
 
-      <rect x="70" y="1142" width="20" height="20" rx="4"
+      <rect x="70" y="1258" width="20" height="20" rx="4"
         fill="#fb923c" />
-      <text x="100" y="1158" class="legend">AST encode + codegen</text>
+      <text x="100" y="1274" class="legend">AST encode + codegen</text>
 
-      <rect x="505" y="1142" width="20" height="20" rx="4"
+      <rect x="505" y="1258" width="20" height="20" rx="4"
         fill="#84cc16" />
-      <text x="535" y="1158" class="legend">Codegen</text>
+      <text x="535" y="1274" class="legend">Codegen</text>
   </svg>

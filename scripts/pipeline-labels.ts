@@ -40,13 +40,19 @@ export function pipelineMetadata(
       plugin = "styled-components plugin (WASM, SWC visitor)";
       codegen = "SWC codegen (native)";
       break;
+    case "SWC Next + OXC codegen":
+    case "SWC Next + SWC Next walker":
     case "SWC Next + Yuku walk":
     case "SWC Next + Zimmerframe":
       parser = "SWC Next parser (binary AST transfer)";
-      if (name === "SWC Next + Zimmerframe") {
+      if (name === "SWC Next + SWC Next walker" || name === "SWC Next + OXC codegen") {
+        plugin = "styled-components plugin (JS, @swc-next/walker)";
+      } else if (name === "SWC Next + Zimmerframe") {
         plugin = "styled-components plugin (JS, Zimmerframe)";
       }
-      codegen = "SWC Next codegen (JS encode + native)";
+      codegen = name === "SWC Next + OXC codegen"
+        ? "OXC codegen (JS)"
+        : "SWC Next codegen (JS encode + native)";
       break;
     case "Yuku + JS plugin":
     case "Yuku + OXC codegen":

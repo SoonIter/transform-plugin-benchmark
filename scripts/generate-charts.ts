@@ -77,6 +77,7 @@ const STAGE_COLORS = new Map([
   ["AST encode + codegen", "#fb923c"],
   ["Babel JS plugin", "#8b5cf6"],
   ["Yuku JS plugin", "#ec4899"],
+  ["SWC Next JS plugin", "#ec4899"],
   ["AST encode", "#fb923c"],
   ["Codegen", "#84cc16"],
   ["Parse + WASM plugin + codegen", "#2563eb"],
@@ -85,6 +86,8 @@ const STAGE_COLORS = new Map([
 const SCALING_STYLES = new Map([
   ["Babel + JS plugin", { color: "#8b5cf6", dash: "" }],
   ["SWC + WASM plugin", { color: "#2563eb", dash: "12 5" }],
+  ["SWC Next + SWC Next walker", { color: "#1d4ed8", dash: "6 3" }],
+  ["SWC Next + OXC codegen", { color: "#0284c7", dash: "5 3 1 3" }],
   ["SWC Next + Yuku walk", { color: "#1d4ed8", dash: "6 3" }],
   ["Yuku + JS plugin", { color: "#f97316", dash: "3 4" }],
   ["Yuku + OXC codegen", { color: "#d97706", dash: "14 4 3 4" }],
@@ -141,6 +144,7 @@ function stageCategory(transformer: string, stage: ProfileStage): string {
   if (stage.name === "parse") return "Parse";
   if (stage.name === "codegen") return "Codegen";
   if (transformer.startsWith("Babel")) return "Babel JS plugin";
+  if (transformer === "SWC Next + SWC Next walker" || transformer === "SWC Next + OXC codegen") return "SWC Next JS plugin";
   return "Yuku JS plugin";
 }
 

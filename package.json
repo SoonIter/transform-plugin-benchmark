@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@babel/core": "8.0.7",
-    "@swc-next/core": "0.2.4",
+    "@swc-next/core": "0.4.0",
+    "@swc-next/walker": "0.4.0",
     "@swc/core": "1.16.13",
     "@swc/plugin-styled-components": "17.0.0",
     "babel-plugin-styled-components": "2.3.0",

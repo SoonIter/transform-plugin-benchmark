@@ -29,43 +29,43 @@
   "profile": {
     "results": [
       {
-        "iterations": 473,
-        "meanMs": 21.569800158645588,
+        "iterations": 812,
+        "meanMs": 18.453147045963853,
         "name": "Babel + JS plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 2.52894848,
+            "meanMs": 2.11233251459854,
             "name": "parse",
             "runMeansMs": [
-              2.52894848,
-              2.3156713846153845,
-              3.6476414662576686
+              2.084165605166052,
+              2.176823745318352,
+              2.11233251459854
             ],
             "runtime": "JS",
-            "share": 0.11724487298906888
+            "share": 0.11447004184907084
           },
           {
-            "meanMs": 13.61635848846154,
+            "meanMs": 13.076171590405904,
             "name": "plugin transform",
             "runMeansMs": [
-              13.57454404,
-              13.61635848846154,
-              21.57071171779141
+              13.076171590405904,
+              13.216076067415731,
+              12.975227120437955
             ],
             "runtime": "JS",
-            "share": 0.6312695708033179
+            "share": 0.7086147180117972
           },
           {
-            "meanMs": 5.424493190184049,
+            "meanMs": 3.2646429409594098,
             "name": "codegen",
             "runMeansMs": [
-              268.1246168,
-              3.3179678653846154,
-              5.424493190184049
+              3.2646429409594098,
+              3.349850220973783,
+              3.143342299270073
             ],
             "runtime": "JS",
-            "share": 0.2514855562076132
+            "share": 0.176915240139132
           }
         ],
         "pipeline": {
@@ -81,18 +81,18 @@
         }
       },
       {
-        "iterations": 98,
-        "meanMs": 177.70191786206894,
+        "iterations": 248,
+        "meanMs": 59.57635675,
         "name": "SWC + WASM plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 177.70191786206894,
+            "meanMs": 59.57635675,
             "name": "parse + plugin + codegen",
             "runMeansMs": [
-              105.0986784375,
-              44465.27904514286,
-              177.70191786206894
+              58.02194771264367,
+              65.3712856103896,
+              59.57635675
             ],
             "runtime": "native + WASM",
             "share": 1
@@ -111,117 +111,180 @@
         }
       },
       {
-        "iterations": 2711,
-        "meanMs": 5.651646138479001,
-        "name": "SWC Next + Yuku walk",
+        "iterations": 2865,
+        "meanMs": 5.155335743005181,
+        "name": "SWC Next + SWC Next walker",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.39678215437003406,
+            "meanMs": 0.409670274611399,
             "name": "parse",
             "runMeansMs": [
-              0.3370341732124874,
-              0.41093253524492235,
-              0.39678215437003406
+              0.3696805772681954,
+              0.409670274611399,
+              0.441352099219621
             ],
             "runtime": "native",
-            "share": 0.07020647518402807
+            "share": 0.07946529480009995
           },
           {
-            "meanMs": 0.16802379568671966,
+            "meanMs": 0.1690066860103627,
             "name": "AST decode",
             "runMeansMs": [
-              0.150599667673716,
-              0.1859280991636798,
-              0.16802379568671966
+              0.1635305034895314,
+              0.1690066860103627,
+              0.18247055629877368
             ],
             "runtime": "JS",
-            "share": 0.02973006298868157
+            "share": 0.03278286700137288
           },
           {
-            "meanMs": 4.211328659477866,
+            "meanMs": 3.764864899481865,
             "name": "plugin transform",
             "runMeansMs": [
-              3.7241502739174224,
-              4.391435475507766,
-              4.211328659477866
+              3.668155703888335,
+              3.764864899481865,
+              4.049874726867335
             ],
             "runtime": "JS",
-            "share": 0.7451508031978873
+            "share": 0.730285104047797
           },
           {
-            "meanMs": 0.8755115289443814,
+            "meanMs": 0.8117938829015544,
             "name": "AST encode + codegen",
             "runMeansMs": [
-              0.8120143695871098,
-              0.9634749271206691,
-              0.8755115289443814
+              0.7638133010967099,
+              0.8117938829015544,
+              0.8687149052396879
             ],
             "runtime": "JS + native",
-            "share": 0.15491265862940304
+            "share": 0.1574667341507303
           }
         ],
         "pipeline": {
           "parser": "SWC Next parser (binary AST transfer)",
-          "plugin": "styled-components plugin (JS, Yuku walk)",
+          "plugin": "styled-components plugin (JS, @swc-next/walker)",
           "codegen": "SWC Next codegen (JS encode + native)",
           "lines": [
             "SWC Next parser (binary AST transfer)",
-            "styled-components plugin (JS, Yuku walk)",
+            "styled-components plugin (JS, @swc-next/walker)",
             "SWC Next codegen (JS encode + native)"
           ],
-          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
+          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native)"
         }
       },
       {
-        "iterations": 2889,
-        "meanMs": 5.316171581643544,
+        "iterations": 3169,
+        "meanMs": 4.550448907792804,
+        "name": "SWC Next + OXC codegen",
+        "runs": 3,
+        "stages": [
+          {
+            "meanMs": 0.3944682317518248,
+            "name": "parse",
+            "runMeansMs": [
+              0.3944682317518248,
+              0.3914729158460161,
+              0.48854747803347276
+            ],
+            "runtime": "native",
+            "share": 0.08668776196482156
+          },
+          {
+            "meanMs": 0.1643174260948905,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.1643174260948905,
+              0.15700955953446732,
+              0.19004958577405856
+            ],
+            "runtime": "JS",
+            "share": 0.03611015735469332
+          },
+          {
+            "meanMs": 3.8236975328467153,
+            "name": "plugin transform",
+            "runMeansMs": [
+              3.8236975328467153,
+              3.743700734109221,
+              4.308720943514644
+            ],
+            "runtime": "JS",
+            "share": 0.840290180227823
+          },
+          {
+            "meanMs": 0.16796571709937333,
+            "name": "codegen",
+            "runMeansMs": [
+              0.16323384945255473,
+              0.16796571709937333,
+              0.21173582635983262
+            ],
+            "runtime": "JS",
+            "share": 0.03691190045266218
+          }
+        ],
+        "pipeline": {
+          "parser": "SWC Next parser (binary AST transfer)",
+          "plugin": "styled-components plugin (JS, @swc-next/walker)",
+          "codegen": "OXC codegen (JS)",
+          "lines": [
+            "SWC Next parser (binary AST transfer)",
+            "styled-components plugin (JS, @swc-next/walker)",
+            "OXC codegen (JS)"
+          ],
+          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + OXC codegen (JS)"
+        }
+      },
+      {
+        "iterations": 2750,
+        "meanMs": 5.382641412526998,
         "name": "Yuku + JS plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.5628875176093917,
+            "meanMs": 0.5218479632829374,
             "name": "parse",
             "runMeansMs": [
-              0.44662082024597916,
-              0.5849728670391061,
-              0.5628875176093917
+              0.5218479632829374,
+              0.5026701235602095,
+              0.5896957848101265
             ],
             "runtime": "native",
-            "share": 0.1058821200491369
+            "share": 0.09695016317981779
           },
           {
-            "meanMs": 0.17779213340448238,
+            "meanMs": 0.18521081965442765,
             "name": "AST decode",
             "runMeansMs": [
-              0.1637851078524125,
-              0.18232666033519554,
-              0.17779213340448238
+              0.18521081965442765,
+              0.18004245968586388,
+              0.19588434522439585
             ],
             "runtime": "JS",
-            "share": 0.033443640912266474
+            "share": 0.03440890920643298
           },
           {
-            "meanMs": 4.227488934898613,
+            "meanMs": 4.285974363930886,
             "name": "plugin transform",
             "runMeansMs": [
-              3.7934037038789024,
-              4.427341699441341,
-              4.227488934898613
+              4.285974363930886,
+              4.164755381151832,
+              4.548396263521289
             ],
             "runtime": "JS",
-            "share": 0.7952130344129422
+            "share": 0.7962585718521312
           },
           {
-            "meanMs": 0.34800299573105653,
+            "meanMs": 0.3896082656587473,
             "name": "codegen",
             "runMeansMs": [
-              0.31434863197729424,
-              0.36800987932960894,
-              0.34800299573105653
+              0.3896082656587473,
+              0.37291577486911,
+              0.39548759838895287
             ],
             "runtime": "JS",
-            "share": 0.06546120462565434
+            "share": 0.07238235576161801
           }
         ],
         "pipeline": {
@@ -237,54 +300,54 @@
         }
       },
       {
-        "iterations": 3018,
-        "meanMs": 5.110730413757701,
+        "iterations": 2957,
+        "meanMs": 5.0398330729817165,
         "name": "Yuku + OXC codegen",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.5461596806981519,
+            "meanMs": 0.5091916881937437,
             "name": "parse",
             "runMeansMs": [
-              0.4398639808568824,
-              0.566627237592397,
-              0.5461596806981519
+              0.5037991089613035,
+              0.5091916881937437,
+              0.5132433445121951
             ],
             "runtime": "native",
-            "share": 0.10686528861470196
+            "share": 0.10103344313594312
           },
           {
-            "meanMs": 0.1767041273100616,
+            "meanMs": 0.1804318248472505,
             "name": "AST decode",
             "runMeansMs": [
-              0.15436033637192342,
-              0.18669078563885955,
-              0.1767041273100616
+              0.1804318248472505,
+              0.17793458526740666,
+              0.19308449288617888
             ],
             "runtime": "JS",
-            "share": 0.03457512195015949
+            "share": 0.035801150997348735
           },
           {
-            "meanMs": 4.216634983572896,
+            "meanMs": 4.178082569105691,
             "name": "plugin transform",
             "runMeansMs": [
-              3.799559222424795,
-              4.325011748680042,
-              4.216634983572896
+              4.2162585030549895,
+              4.162354657921291,
+              4.178082569105691
             ],
             "runtime": "JS",
-            "share": 0.8250552547678962
+            "share": 0.8290120939727499
           },
           {
-            "meanMs": 0.17123162217659135,
+            "meanMs": 0.17212699083503055,
             "name": "codegen",
             "runMeansMs": [
-              0.15076175387420238,
-              0.17836529672650475,
-              0.17123162217659135
+              0.17212699083503055,
+              0.17320356306760848,
+              0.1713857693089431
             ],
             "runtime": "JS",
-            "share": 0.033504334667242223
+            "share": 0.03415331189395824
           }
         ],
         "pipeline": {
@@ -300,43 +363,43 @@
         }
       },
       {
-        "iterations": 2271,
-        "meanMs": 6.526149401832461,
+        "iterations": 2285,
+        "meanMs": 6.531748901703801,
         "name": "OXC + Yuku walk plugin",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.6926734031413613,
+            "meanMs": 0.6786797352555701,
             "name": "parse + AST transfer",
             "runMeansMs": [
-              0.6568400508259212,
-              0.7022536652777778,
-              0.6926734031413613
+              0.6612958236057069,
+              0.703151483355526,
+              0.6786797352555701
             ],
             "runtime": "native + JS",
-            "share": 0.10613814678328806
+            "share": 0.1039047497797316
           },
           {
-            "meanMs": 5.629009070680628,
+            "meanMs": 5.658278897771953,
             "name": "plugin transform",
             "runMeansMs": [
-              5.482869099110546,
-              6.015299043055556,
-              5.629009070680628
+              5.612358005188067,
+              5.73226558988016,
+              5.658278897771953
             ],
             "runtime": "JS",
-            "share": 0.8625314445145974
+            "share": 0.8662731808774823
           },
           {
-            "meanMs": 0.2044669280104712,
+            "meanMs": 0.19479026867627786,
             "name": "codegen",
             "runMeansMs": [
-              0.19795625285895807,
-              0.20594326805555555,
-              0.2044669280104712
+              0.1918720402075227,
+              0.20294649533954728,
+              0.19479026867627786
             ],
             "runtime": "JS",
-            "share": 0.031330408702114516
+            "share": 0.029822069342786126
           }
         ],
         "pipeline": {
@@ -352,43 +415,43 @@
         }
       },
       {
-        "iterations": 3112,
-        "meanMs": 4.7907006256015405,
+        "iterations": 3074,
+        "meanMs": 4.877105575345553,
         "name": "OXC raw transfer + Yuku walk",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.5647551501443696,
+            "meanMs": 0.5391218538461539,
             "name": "parse + raw AST transfer",
             "runMeansMs": [
-              0.4923112781818182,
-              0.572428197327852,
-              0.5647551501443696
+              0.5357559345703125,
+              0.5391218538461539,
+              0.5646513376237624
             ],
             "runtime": "native + JS",
-            "share": 0.11788571114761666
+            "share": 0.1105413539890319
           },
           {
-            "meanMs": 4.055386213666988,
+            "meanMs": 4.167335709960938,
             "name": "plugin transform",
             "runMeansMs": [
-              3.883763517272727,
-              4.3708429445015415,
-              4.055386213666988
+              4.167335709960938,
+              4.081579553846154,
+              4.189201531683168
             ],
             "runtime": "JS",
-            "share": 0.8465121347794042
+            "share": 0.8544690381580828
           },
           {
-            "meanMs": 0.17055926179018288,
+            "meanMs": 0.17064801153846154,
             "name": "codegen",
             "runMeansMs": [
-              0.15736543909090908,
-              0.17475519938335046,
-              0.17055926179018288
+              0.1630078271484375,
+              0.17064801153846154,
+              0.17996624356435645
             ],
             "runtime": "JS",
-            "share": 0.03560215407297899
+            "share": 0.034989607852885324
           }
         ],
         "pipeline": {
@@ -404,54 +467,54 @@
         }
       },
       {
-        "iterations": 1075,
-        "meanMs": 13.672320767123288,
+        "iterations": 1128,
+        "meanMs": 13.428478704933672,
         "name": "OXC lazy + Yuku walk",
         "runs": 3,
         "stages": [
           {
-            "meanMs": 0.7362724767123288,
+            "meanMs": 0.7540408545454544,
             "name": "parse + lazy AST setup",
             "runMeansMs": [
-              0.6879652531328321,
-              0.7362724767123288,
-              0.9276882154340836
+              0.802953727027027,
+              0.6941271742627346,
+              0.7540408545454544
             ],
             "runtime": "native + JS",
-            "share": 0.053851316777381565
+            "share": 0.056152366259360195
           },
           {
-            "meanMs": 12.206276210958904,
+            "meanMs": 11.988997584450402,
             "name": "plugin transform",
             "runMeansMs": [
-              11.185393929824562,
-              12.206276210958904,
-              14.372839958199357
+              12.023722016216217,
+              11.988997584450402,
+              11.528636862337661
             ],
             "runtime": "JS (includes lazy ESTree reads)",
-            "share": 0.892772808571778
+            "share": 0.8928038572266269
           },
           {
-            "meanMs": 0.7012770465753424,
+            "meanMs": 0.6555782337662338,
             "name": "codegen",
             "runMeansMs": [
-              0.6306875012531328,
-              0.7012770465753424,
-              0.7487854951768489
+              0.6276822405405406,
+              0.6695977024128686,
+              0.6555782337662338
             ],
             "runtime": "JS (includes lazy ESTree reads)",
-            "share": 0.05129173448458333
+            "share": 0.048819992805690784
           },
           {
-            "meanMs": 0.028495032876712328,
+            "meanMs": 0.02986203217158177,
             "name": "dispose",
             "runMeansMs": [
-              0.025219343358395988,
-              0.028495032876712328,
-              0.033683279742765276
+              0.03016945135135135,
+              0.02986203217158177,
+              0.027278675324675324
             ],
             "runtime": "native + JS",
-            "share": 0.0020841401662570706
+            "share": 0.002223783708322101
           }
         ],
         "pipeline": {
@@ -481,26 +544,66 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 4.321583999999348,
-      "peakRssMiB": 453.140625,
+      "median": 4.292124999999942,
+      "peakRssMiB": 715.578125,
       "runPeakRssMiB": [
-        450.1875,
-        448.75,
-        453.140625
+        714.59375,
+        705.421875,
+        715.578125
       ],
-      "medianRunRme": 0.7389330657920438,
+      "medianRunRme": 0.8570465504752507,
+      "name": "SWC Next + OXC codegen",
+      "outputBytes": 45528,
+      "outputCodeUnits": 45528,
+      "pureAnnotations": 0,
+      "runMedians": [
+        4.207332999999835,
+        4.299250000000029,
+        4.292124999999942
+      ],
+      "runSpreadPct": 2.141526633082572,
+      "runs": 3,
+      "samples": 3371,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32,
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, @swc-next/walker)",
+        "codegen": "OXC codegen (JS)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, @swc-next/walker)",
+          "OXC codegen (JS)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + OXC codegen (JS)"
+      }
+    },
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 4.655250000000251,
+      "peakRssMiB": 453.421875,
+      "runPeakRssMiB": [
+        453.046875,
+        453.421875,
+        448.484375
+      ],
+      "medianRunRme": 1.040703747998429,
       "name": "OXC raw transfer + Yuku walk",
       "outputBytes": 45528,
       "outputCodeUnits": 45528,
       "pureAnnotations": 0,
       "runMedians": [
-        4.344062500000064,
-        4.321583999999348,
-        4.313250000000153
+        4.753708000000188,
+        4.6066249999998945,
+        4.655250000000251
       ],
-      "runSpreadPct": 0.712990884821758,
+      "runSpreadPct": 3.159508082278835,
       "runs": 3,
-      "samples": 3342,
+      "samples": 2995,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -521,26 +624,26 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 4.431540999999925,
-      "peakRssMiB": 458.109375,
+      "median": 4.721082999999908,
+      "peakRssMiB": 467.3125,
       "runPeakRssMiB": [
-        456.546875,
-        458.109375,
-        457.59375
+        467.3125,
+        459.03125,
+        461.796875
       ],
-      "medianRunRme": 0.6350964663566717,
+      "medianRunRme": 0.9696827087808227,
       "name": "Yuku + OXC codegen",
       "outputBytes": 45528,
       "outputCodeUnits": 45528,
       "pureAnnotations": 0,
       "runMedians": [
-        4.742832999999905,
-        4.3966669999999795,
-        4.431540999999925
+        4.642958999999792,
+        4.8208959999997205,
+        4.721082999999908
       ],
-      "runSpreadPct": 7.81141368205623,
+      "runSpreadPct": 3.7689869040627424,
       "runs": 3,
-      "samples": 3240,
+      "samples": 3036,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -561,26 +664,66 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 4.666957999999795,
-      "peakRssMiB": 460.703125,
+      "median": 4.836916499999916,
+      "peakRssMiB": 685.3125,
       "runPeakRssMiB": [
-        457.796875,
-        457.34375,
-        460.703125
+        685.3125,
+        678.578125,
+        679.15625
       ],
-      "medianRunRme": 0.6237178150274979,
+      "medianRunRme": 1.0996336552653723,
+      "name": "SWC Next + SWC Next walker",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        4.785417000000052,
+        4.836916499999916,
+        4.84204200000022
+      ],
+      "runSpreadPct": 1.1706838437291265,
+      "runs": 3,
+      "samples": 2918,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32,
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, @swc-next/walker)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, @swc-next/walker)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native)"
+      }
+    },
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 4.9014790000001085,
+      "peakRssMiB": 465.734375,
+      "runPeakRssMiB": [
+        464.484375,
+        464.171875,
+        465.734375
+      ],
+      "medianRunRme": 0.7474312711076433,
       "name": "Yuku + JS plugin",
       "outputBytes": 45890,
       "outputCodeUnits": 45890,
       "pureAnnotations": 33,
       "runMedians": [
-        4.805249999999887,
-        4.5615829999997,
-        4.666957999999795
+        4.9014790000001085,
+        4.890875000000051,
+        4.920500000000175
       ],
-      "runSpreadPct": 5.221109767865868,
+      "runSpreadPct": 0.6044094037763507,
       "runs": 3,
-      "samples": 2615,
+      "samples": 2940,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -601,66 +744,26 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 5.121041999999761,
-      "peakRssMiB": 634.75,
+      "median": 6.315583000000061,
+      "peakRssMiB": 681.4375,
       "runPeakRssMiB": [
-        634.75,
-        588.859375,
-        538.90625
+        676.078125,
+        681.4375,
+        663.140625
       ],
-      "medianRunRme": 7.410363125673662,
-      "name": "SWC Next + Yuku walk",
-      "outputBytes": 45555,
-      "outputCodeUnits": 45555,
-      "pureAnnotations": 0,
-      "runMedians": [
-        5.121041999999761,
-        4.980749999998807,
-        5.169062499999882
-      ],
-      "runSpreadPct": 3.6772301418555795,
-      "runs": 3,
-      "samples": 1781,
-      "taggedTemplates": 0,
-      "uniqueComponentIds": 32,
-      "withConfigCalls": 32,
-      "pipeline": {
-        "parser": "SWC Next parser (binary AST transfer)",
-        "plugin": "styled-components plugin (JS, Yuku walk)",
-        "codegen": "SWC Next codegen (JS encode + native)",
-        "lines": [
-          "SWC Next parser (binary AST transfer)",
-          "styled-components plugin (JS, Yuku walk)",
-          "SWC Next codegen (JS encode + native)"
-        ],
-        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
-      }
-    },
-    {
-      "componentIds": 32,
-      "displayNames": 32,
-      "files": 87,
-      "jsxElements": 137,
-      "median": 5.894749999999931,
-      "peakRssMiB": 704.96875,
-      "runPeakRssMiB": [
-        685.0625,
-        704.96875,
-        703.0625
-      ],
-      "medianRunRme": 0.5972326786638341,
+      "medianRunRme": 1.0676120270893512,
       "name": "OXC + Yuku walk plugin",
       "outputBytes": 45528,
       "outputCodeUnits": 45528,
       "pureAnnotations": 0,
       "runMedians": [
-        6.262249999999767,
-        5.85254199999963,
-        5.894749999999931
+        6.315583000000061,
+        6.309228999999959,
+        6.499084000000039
       ],
-      "runSpreadPct": 6.950388057171921,
+      "runSpreadPct": 3.0061357755899616,
       "runs": 3,
-      "samples": 2451,
+      "samples": 2216,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -681,26 +784,26 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 10.307625000000371,
-      "peakRssMiB": 495.25,
+      "median": 12.340166999999838,
+      "peakRssMiB": 509.453125,
       "runPeakRssMiB": [
-        495.1875,
-        495.25,
-        495.234375
+        509.453125,
+        496.734375,
+        496.03125
       ],
-      "medianRunRme": 2.0958652858209543,
+      "medianRunRme": 2.5380719669053144,
       "name": "OXC lazy + Yuku walk",
       "outputBytes": 45528,
       "outputCodeUnits": 45528,
       "pureAnnotations": 0,
       "runMedians": [
-        10.307625000000371,
-        10.439832999999908,
-        10.296291999999994
+        12.340166999999838,
+        11.785208999999668,
+        13.258936999999833
       ],
-      "runSpreadPct": 1.3925710335786237,
+      "runSpreadPct": 11.942528816669856,
       "runs": 3,
-      "samples": 1211,
+      "samples": 1086,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -721,26 +824,26 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 14.905228999999963,
-      "peakRssMiB": 468.046875,
+      "median": 15.657165999999961,
+      "peakRssMiB": 469.421875,
       "runPeakRssMiB": [
-        461.796875,
-        468.046875,
-        465.671875
+        468.5625,
+        469.421875,
+        467.625
       ],
-      "medianRunRme": 1.3482593818813888,
+      "medianRunRme": 1.479985852164772,
       "name": "Babel + JS plugin",
       "outputBytes": 46741,
       "outputCodeUnits": 46741,
       "pureAnnotations": 33,
       "runMedians": [
-        98.90489600000001,
-        14.905228999999963,
-        14.156875000000127
+        15.676708499999904,
+        15.657165999999961,
+        15.360896000000139
       ],
-      "runSpreadPct": 568.5791274994842,
+      "runSpreadPct": 2.017047657282079,
       "runs": 3,
-      "samples": 751,
+      "samples": 969,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -761,26 +864,26 @@
       "displayNames": 32,
       "files": 87,
       "jsxElements": 137,
-      "median": 52.6587499999996,
-      "peakRssMiB": 189.140625,
+      "median": 54.62062500000002,
+      "peakRssMiB": 188.703125,
       "runPeakRssMiB": [
-        183.40625,
-        188.8125,
-        189.140625
+        187.78125,
+        188.296875,
+        188.703125
       ],
-      "medianRunRme": 0.6810078087434501,
+      "medianRunRme": 1.351967441732045,
       "name": "SWC + WASM plugin",
       "outputBytes": 60100,
       "outputCodeUnits": 60096,
       "pureAnnotations": 35,
       "runMedians": [
-        340.19337500000074,
-        52.6587499999996,
-        52.384000000000015
+        53.25062500000058,
+        54.62062500000002,
+        55.480499999999665
       ],
-      "runSpreadPct": 546.5556531440699,
+      "runSpreadPct": 4.082478001668934,
       "runs": 3,
-      "samples": 254,
+      "samples": 271,
       "taggedTemplates": 0,
       "uniqueComponentIds": 32,
       "withConfigCalls": 32,
@@ -809,7 +912,8 @@
     "babelPlugin": "2.3.0",
     "oxcCodegen": "0.153.0",
     "oxcParser": "0.153.0",
-    "swcNextCore": "0.2.4",
+    "swcNextCore": "0.4.0",
+    "swcNextWalker": "0.4.0",
     "swcCore": "1.16.13",
     "swcPlugin": "17.0.0",
     "yukuAst": "0.18.0",

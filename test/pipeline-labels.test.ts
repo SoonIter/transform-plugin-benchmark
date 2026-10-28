@@ -28,13 +28,24 @@ test("historical results keep the recorded Yuku codegen runtime", () => {
 });
 
 test("SWC Next labels expose binary transfer, walker and native codegen", () => {
+  const swcNext = pipelineMetadata("SWC Next + SWC Next walker");
+  assert.equal(swcNext.plugin, "styled-components plugin (JS, @swc-next/walker)");
   const yuku = pipelineMetadata("SWC Next + Yuku walk");
+  assert.equal(yuku.plugin, "styled-components plugin (JS, Yuku walk)");
   const zimmerframe = pipelineMetadata("SWC Next + Zimmerframe");
   assert.equal(yuku.parser, "SWC Next parser (binary AST transfer)");
   assert.equal(yuku.codegen, "SWC Next codegen (JS encode + native)");
   assert.equal(zimmerframe.parser, yuku.parser);
   assert.equal(zimmerframe.codegen, yuku.codegen);
   assert.equal(zimmerframe.plugin, "styled-components plugin (JS, Zimmerframe)");
+});
+
+test("SWC Next with OXC codegen keeps its parser and own walker labels", () => {
+  const native = pipelineMetadata("SWC Next + SWC Next walker");
+  const oxc = pipelineMetadata("SWC Next + OXC codegen");
+  assert.equal(oxc.parser, native.parser);
+  assert.equal(oxc.plugin, native.plugin);
+  assert.equal(oxc.codegen, "OXC codegen (JS)");
 });
 
 test("unknown pipelines fail instead of producing an incomplete label", () => {

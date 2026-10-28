@@ -4,11 +4,8 @@ import {
   transformFromAstSync as babelTransformFromAstSync,
 } from "@babel/core";
 import {
-  CommentMode,
-  Lang,
   parseSync as swcNextParseSync,
   printSync as swcNextPrintSync,
-  SourceType,
 } from "@swc-next/core";
 import babelStyledComponentsPlugin from "./babel-styled-components-plugin";
 import { printSync as oxcPrintSync } from "oxc-codegen";
@@ -17,12 +14,13 @@ import { generate as yukuGenerate } from "yuku-codegen";
 import { parse as yukuParse, type Program } from "yuku-parser";
 import type { StyledComponentsCorpusFile } from "./styled-components-corpus";
 import {
-  printYukuProgramWithOxc,
+  printEstreeProgramWithOxc,
   STYLED_COMPONENTS_OPTIONS,
   transformStyledComponentsFor,
   type StyledComponentsTransformerName,
 } from "./styled-components-transformers";
 import { transformStyledComponentsYuku } from "./yuku-styled-components-plugin";
+import { transformStyledComponentsSwcNext } from "./swc-next-styled-components-plugin";
 import { transformStyledComponentsZimmerframe } from "./zimmerframe-styled-components-plugin";
 
 export interface ProfileIteration {
@@ -46,6 +44,18 @@ const PROFILE_STAGE_DEFINITIONS: Record<
   ],
   "SWC + WASM plugin": [
     { name: "parse + plugin + codegen", runtime: "native + WASM" },
+  ],
+  "SWC Next + SWC Next walker": [
+    { name: "parse", runtime: "native" },
+    { name: "AST decode", runtime: "JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "AST encode + codegen", runtime: "JS + native" },
+  ],
+  "SWC Next + OXC codegen": [
+    { name: "parse", runtime: "native" },
+    { name: "AST decode", runtime: "JS" },
+    { name: "plugin transform", runtime: "JS" },
+    { name: "codegen", runtime: "JS" },
   ],
   "SWC Next + Yuku walk": [
     { name: "parse", runtime: "native" },
@@ -167,15 +177,16 @@ function profileSwc(file: StyledComponentsCorpusFile): ProfileIteration {
 
 function profileSwcNext(
   file: StyledComponentsCorpusFile,
-  plugin: typeof transformStyledComponentsYuku | typeof transformStyledComponentsZimmerframe
-    = transformStyledComponentsYuku,
+  plugin: typeof transformStyledComponentsYuku | typeof transformStyledComponentsZimmerframe | typeof transformStyledComponentsSwcNext
+    = transformStyledComponentsSwcNext,
+  codegen: "swc-next" | "oxc" = "swc-next",
 ): ProfileIteration {
   const start = process.hrtime.bigint();
   const parsed = swcNextParseSync(file.source, {
-    comments: CommentMode.None,
-    lang: Lang.Jsx,
+    comments: "none",
+    lang: "jsx",
     preserveParens: true,
-    sourceType: SourceType.Module,
+    sourceType: "module",
   });
   const parsedAt = process.hrtime.bigint();
   if (parsed.diagnostics.length > 0) {
@@ -190,7 +201,9 @@ function profileSwcNext(
     STYLED_COMPONENTS_OPTIONS,
   );
   const transformedAt = process.hrtime.bigint();
-  const output = swcNextPrintSync(transformed ?? program).code;
+  const output = codegen === "oxc"
+    ? printEstreeProgramWithOxc(transformed ?? program)
+    : swcNextPrintSync((transformed ?? program) as unknown as typeof parsed.program, {}, parsed.meta).code;
   const generatedAt = process.hrtime.bigint();
 
   return {
@@ -225,7 +238,7 @@ function profileYuku(
   );
   const transformedAt = process.hrtime.bigint();
   if (codegen === "oxc") {
-    const output = printYukuProgramWithOxc(program);
+    const output = printEstreeProgramWithOxc(program);
     const generatedAt = process.hrtime.bigint();
     return {
       durationsNs: [
@@ -302,7 +315,7 @@ function profileOxcLazy(file: StyledComponentsCorpusFile): ProfileIteration {
     if (parsed.errors.length > 0) throw new Error(`OXC lazy parser failed: ${parsed.errors[0]!.message}`);
     transformStyledComponentsYuku(parsed.program, file.source, file.filename, STYLED_COMPONENTS_OPTIONS);
     transformedAt = process.hrtime.bigint();
-    output = printYukuProgramWithOxc(parsed.program);
+    output = printEstreeProgramWithOxc(parsed.program);
     generatedAt = process.hrtime.bigint();
   } finally {
     parsed.dispose();
@@ -327,8 +340,12 @@ export function profileStyledComponentsOnce(
       return profileBabel(file);
     case "SWC + WASM plugin":
       return profileSwc(file);
-    case "SWC Next + Yuku walk":
+    case "SWC Next + SWC Next walker":
       return profileSwcNext(file);
+    case "SWC Next + OXC codegen":
+      return profileSwcNext(file, transformStyledComponentsSwcNext, "oxc");
+    case "SWC Next + Yuku walk":
+      return profileSwcNext(file, transformStyledComponentsYuku);
     case "SWC Next + Zimmerframe":
       return profileSwcNext(file, transformStyledComponentsZimmerframe);
     case "Yuku + JS plugin":
