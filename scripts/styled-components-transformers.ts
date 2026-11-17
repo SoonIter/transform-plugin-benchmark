@@ -2,7 +2,7 @@ import { parseLazyEstree } from "./oxc-lazy-estree";
 import { transformSync as babelTransformSync } from "@babel/core";
 import {
   parseSync as swcNextParseSync,
-  printSync as swcNextPrintSync,
+  generateSync as swcNextGenerateSync,
 } from "@swc-next/core";
 import { transformSync as swcTransformSync } from "@swc/core";
 import babelStyledComponentsPlugin from "./babel-styled-components-plugin";
@@ -146,7 +146,7 @@ function transformSwcNext(
     STYLED_COMPONENTS_OPTIONS,
   );
   if (codegen === "oxc") return printEstreeProgramWithOxc(transformed ?? program);
-  return swcNextPrintSync((transformed ?? program) as unknown as typeof parsed.program, {}, parsed.meta).code;
+  return swcNextGenerateSync((transformed ?? program) as unknown as typeof parsed.program).code;
 }
 
 function transformYuku(

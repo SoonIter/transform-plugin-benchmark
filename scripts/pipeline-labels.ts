@@ -12,10 +12,10 @@ export interface PipelineMetadata {
 }
 
 function yukuCodegenLabel(versions?: PipelineVersions): string {
-  // Keep committed 0.8.5 measurements native; 0.18.0 uses the JS generator.
+  // Keep committed 0.8.5 measurements native; 0.18.0 and 0.19.0 use the JS generator.
   // Do not infer the runtime of other historical versions from today's install.
   if (versions?.yukuCodegen === "0.8.5") return "Yuku codegen (native)";
-  if (versions === undefined || versions.yukuCodegen === "0.18.0") {
+  if (versions === undefined || versions.yukuCodegen === "0.18.0" || versions.yukuCodegen === "0.19.0") {
     return "Yuku codegen (JS)";
   }
   return "Yuku codegen";

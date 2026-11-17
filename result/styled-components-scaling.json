@@ -37,241 +37,241 @@
   "results": [
     {
       "fit": {
-        "exponent": 1.091,
-        "interceptMs": 0.27355862602480796,
-        "slopeMsPerKiBPower": 0.2148406195296029,
-        "looMapePct": 5.869592560051531,
-        "looMaxErrorPct": 9.697847625727471,
-        "mapePct": 3.299977506702354,
-        "maxErrorPct": 7.224084685003637,
+        "exponent": 1.108,
+        "interceptMs": 0.19811156050853912,
+        "slopeMsPerKiBPower": 0.07927466134416708,
+        "looMapePct": 5.5858055630071775,
+        "looMaxErrorPct": 13.869150363161822,
+        "mapePct": 2.7944370505905534,
+        "maxErrorPct": 5.8259440796847555,
         "model": "offset-power",
-        "rSquared": 0.9949382784227634,
-        "accepted": true,
-        "validationMapePct": 3.9111903319022128,
-        "validationMaxErrorPct": 8.891226044167638
+        "rSquared": 0.9979697998425305,
+        "accepted": false,
+        "validationMapePct": 6.361929046461924,
+        "validationMaxErrorPct": 11.66594701238498
       },
       "name": "Babel + JS plugin",
       "points": [
         {
-          "medianMs": 0.48581200000035096,
+          "medianMs": 0.2736669999994774,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.48137499999995725,
-            0.48581200000035096,
-            0.48858299999938026
+            0.34608300000002146,
+            0.2734375,
+            0.2736669999994774
           ],
-          "runSpreadPct": 1.4837015140461336,
-          "samples": 1068,
+          "runSpreadPct": 26.54521736276576,
+          "samples": 1642,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.755916999999954,
+          "medianMs": 0.3554169999997612,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.755916999999954,
-            0.7826249999999391,
-            0.7166670000005979
+            0.47318749999999454,
+            0.35387500000001637,
+            0.3554169999997612
           ],
-          "runSpreadPct": 8.725561139562304,
-          "samples": 691,
+          "runSpreadPct": 33.5697223261854,
+          "samples": 1240,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.2778125000000387,
+          "medianMs": 0.5893125000000055,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            1.2778125000000387,
-            1.261624999999981,
-            1.3584579999999278
+            0.7565839999999753,
+            0.5780829999999924,
+            0.5893125000000055
           ],
-          "runSpreadPct": 7.578028857907084,
-          "samples": 409,
+          "runSpreadPct": 30.289701983240008,
+          "samples": 754,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.40462500000001,
+          "medianMs": 1.025312500000041,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            2.4480210000000397,
-            2.40462500000001,
-            2.3772500000000036
+            1.2674160000000256,
+            1.004583499999967,
+            1.025312500000041
           ],
-          "runSpreadPct": 2.9431200291120576,
-          "samples": 218,
+          "runSpreadPct": 25.634379762272296,
+          "samples": 436,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.533124999999927,
+          "medianMs": 1.849375000000009,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            4.502083000000084,
-            4.548291999999947,
-            4.533124999999927
+            2.3226660000000265,
+            1.79181200000005,
+            1.849375000000009
           ],
-          "runSpreadPct": 1.0193630221946943,
-          "samples": 117,
+          "runSpreadPct": 28.70450827982286,
+          "samples": 240,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.262166500000035,
+          "medianMs": 3.4804999999998927,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            9.262166500000035,
-            9.330771000000027,
-            9.127312500000016
+            4.6319369999999935,
+            3.4485625000000937,
+            3.4804999999998927
           ],
-          "runSpreadPct": 2.196662087644504,
-          "samples": 60,
+          "runSpreadPct": 34.0001292917666,
+          "samples": 127,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 20.584666999999854,
+          "medianMs": 8.1782915,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            22.370166000000154,
-            20.459749999999985,
-            20.584666999999854
+            14.471000000000004,
+            8.1782915,
+            8.154479000000038
           ],
-          "runSpreadPct": 9.280771945449406,
-          "samples": 27,
+          "runSpreadPct": 77.23521471446654,
+          "samples": 58,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 28.944583000000193,
+          "medianMs": 13.464457999999922,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            29.66045899999972,
-            28.449582999999848,
-            28.944583000000193
+            20.72454099999959,
+            13.460541999999805,
+            13.464457999999922
           ],
-          "runSpreadPct": 4.183428726542244,
-          "samples": 21,
+          "runSpreadPct": 53.94943487513443,
+          "samples": 39,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 44.425874999999905,
+          "medianMs": 18.020999999999958,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            44.554041999999754,
-            44.425874999999905,
-            44.034958999999844
+            30.517062500000065,
+            17.404291999999714,
+            18.020999999999958
           ],
-          "runSpreadPct": 1.1684249325419267,
-          "samples": 15,
+          "runSpreadPct": 72.76383386049821,
+          "samples": 27,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 64.44237500000008,
+          "medianMs": 24.901374999999916,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            70.12579199999982,
-            64.44237500000008,
-            63.7737089999996
+            49.49135450000017,
+            24.272041499999887,
+            24.901374999999916
           ],
-          "runSpreadPct": 9.856997045810637,
-          "samples": 9,
+          "runSpreadPct": 101.27678893233956,
+          "samples": 19,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 87.228208,
+          "medianMs": 35.09095800000023,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            88.80208300000004,
-            86.5361670000002,
-            87.228208
+            83.10808399999996,
+            35.09095800000023,
+            34.84883300000001
           ],
-          "runSpreadPct": 2.597687206872155,
-          "samples": 9,
+          "runSpreadPct": 137.52617127181205,
+          "samples": 13,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 114.15237500000012,
+          "medianMs": 46.78462500000023,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            114.94816700000001,
-            112.52091699999983,
-            114.15237500000012
+            58.86195799999996,
+            45.864187499999844,
+            46.78462500000023
           ],
-          "runSpreadPct": 2.126324572747771,
-          "samples": 9,
+          "runSpreadPct": 27.782141034581446,
+          "samples": 11,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 153.1170830000001,
+          "medianMs": 57.905666999999994,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            153.1170830000001,
-            153.20658300000014,
-            133.20325000000003
+            86.59483399999999,
+            57.905666999999994,
+            56.466042000000016
           ],
-          "runSpreadPct": 13.064076592942996,
+          "runSpreadPct": 52.03081764000746,
           "samples": 9,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 163.9033330000002,
+          "medianMs": 76.21504099999993,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            169.67033399999946,
-            163.11191600000075,
-            163.9033330000002
+            108.36874999999964,
+            76.21504099999993,
+            70.82304199999999
           ],
-          "runSpreadPct": 4.001393919182047,
+          "runSpreadPct": 49.262858757761066,
           "samples": 9,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 187.39649999999983,
+          "medianMs": 82.76441599999998,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            189.1807920000001,
-            187.39649999999983,
-            186.38116700000046
+            92.78879199999938,
+            82.76441599999998,
+            73.93066599999975
           ],
-          "runSpreadPct": 1.4939579981481261,
+          "runSpreadPct": 22.785306670924413,
           "samples": 9,
           "sizeKiB": 512,
           "sourceBytes": 524288,
@@ -292,242 +292,242 @@
     },
     {
       "fit": {
-        "exponent": 0.996,
-        "interceptMs": 1.3018574280288395,
-        "slopeMsPerKiBPower": 0.08411425148810342,
-        "looMapePct": 1.078098510038543,
-        "looMaxErrorPct": 2.7373428769878405,
-        "mapePct": 0.6251504401080891,
-        "maxErrorPct": 1.7043299047451475,
+        "exponent": 0.9990000000000001,
+        "interceptMs": 0.14560124533019736,
+        "slopeMsPerKiBPower": 0.082494877098478,
+        "looMapePct": 3.429343564170104,
+        "looMaxErrorPct": 11.514109836925867,
+        "mapePct": 1.4688840132717564,
+        "maxErrorPct": 2.8046109922566513,
         "model": "offset-power",
-        "rSquared": 0.9999821820230355,
+        "rSquared": 0.9997963131735433,
         "accepted": true,
-        "validationMapePct": 0.7736181693234075,
-        "validationMaxErrorPct": 1.1925291733527428
+        "validationMapePct": 0.9502224008116877,
+        "validationMaxErrorPct": 1.2247346714255518
       },
       "name": "SWC + WASM plugin",
       "points": [
         {
-          "medianMs": 1.3959590000000617,
+          "medianMs": 0.22585449999996854,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            1.3959590000000617,
-            1.4257920000000013,
-            1.3818334999996296
+            0.5041664999999966,
+            0.22585449999996854,
+            0.22412500000064028
           ],
-          "runSpreadPct": 3.14898216927358,
-          "samples": 422,
+          "runSpreadPct": 123.99199484597179,
+          "samples": 2105,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.4761660000000347,
+          "medianMs": 0.3122709999999529,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            1.4761660000000347,
-            1.5196249999999623,
-            1.4590829999997368
+            0.6178955000000315,
+            0.3122709999999529,
+            0.30106249999971624
           ],
-          "runSpreadPct": 4.101300260284009,
-          "samples": 400,
+          "runSpreadPct": 101.46091055537114,
+          "samples": 1578,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.629165999999941,
+          "medianMs": 0.48883349999999837,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            1.629165999999941,
-            1.8595419999999763,
-            1.6168129999999508
+            0.9413334999999279,
+            0.48883349999999837,
+            0.4614169999999831
           ],
-          "runSpreadPct": 14.898972848686645,
-          "samples": 351,
+          "runSpreadPct": 98.17586151520842,
+          "samples": 995,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.948959000000059,
+          "medianMs": 0.79718749999995,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            1.948959000000059,
-            2.0601250000000846,
-            1.9439579999999523
+            0.9185419999998885,
+            0.79718749999995,
+            0.7889589999999771
           ],
-          "runSpreadPct": 5.96046402208198,
-          "samples": 302,
+          "runSpreadPct": 16.25502156016239,
+          "samples": 686,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.602583999999979,
+          "medianMs": 1.4338330000000497,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            2.602583999999979,
-            2.6803330000000187,
-            2.6009590000001026
+            1.6071670000001177,
+            1.4338330000000497,
+            1.4325000000000045
           ],
-          "runSpreadPct": 3.0498151068290884,
-          "samples": 228,
+          "runSpreadPct": 12.181823127247531,
+          "samples": 396,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.004208000000062,
+          "medianMs": 2.754833500000018,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            4.004208000000062,
-            4.085416499999951,
-            3.878729499999963
+            3.900875000000042,
+            2.754833500000018,
+            2.7292079999999714
           ],
-          "runSpreadPct": 5.161744844423288,
-          "samples": 149,
+          "runSpreadPct": 42.53131813592592,
+          "samples": 194,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 6.710729000000015,
+          "medianMs": 5.4686249999999745,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            6.814166999999998,
-            6.710729000000015,
-            6.467374999999947
+            7.400709000000006,
+            5.243062499999951,
+            5.4686249999999745
           ],
-          "runSpreadPct": 5.167724698762975,
-          "samples": 90,
+          "runSpreadPct": 39.45500925735565,
+          "samples": 102,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.144479000000047,
+          "medianMs": 7.936833000000092,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            9.144479000000047,
-            9.763750000000073,
-            9.127937500000144
+            10.876291000000037,
+            7.845416500000056,
+            7.936833000000092
           ],
-          "runSpreadPct": 6.952965827795392,
-          "samples": 64,
+          "runSpreadPct": 38.18745461823307,
+          "samples": 71,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 11.831375000000207,
+          "medianMs": 10.391541499999903,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            11.831375000000207,
-            11.929583000000093,
-            11.771208999999999
+            14.311958499999946,
+            10.391541499999903,
+            10.333395500000051
           ],
-          "runSpreadPct": 1.3385933587608507,
-          "samples": 51,
+          "runSpreadPct": 38.286552577400876,
+          "samples": 54,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 17.230583499999966,
+          "medianMs": 15.70916699999998,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            17.25954149999984,
-            17.230583499999966,
-            16.98243699999989
+            21.91904149999982,
+            15.70916699999998,
+            15.704874999999902
           ],
-          "runSpreadPct": 1.6082130938859436,
+          "runSpreadPct": 39.55758125176165,
           "samples": 36,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 22.246666000000005,
+          "medianMs": 21.08681199999978,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            22.50908299999992,
-            22.246666000000005,
-            21.850520999999844
+            26.69358350000016,
+            20.901146000000153,
+            21.08681199999978
           ],
-          "runSpreadPct": 2.960272788740903,
+          "runSpreadPct": 27.46947950216498,
           "samples": 28,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 27.64539549999995,
+          "medianMs": 26.124458500000173,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            27.975333500000033,
-            27.64539549999995,
-            27.15610400000014
+            30.177208999999948,
+            26.124458500000173,
+            26.096208500000103
           ],
-          "runSpreadPct": 2.963348815175727,
-          "samples": 24,
+          "runSpreadPct": 15.621378334022957,
+          "samples": 23,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 32.81333300000006,
+          "medianMs": 32.14270799999986,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            32.97816700000021,
-            32.81333300000006,
-            32.5126250000003
+            42.16516599999977,
+            32.14270799999986,
+            32.03295799999978
           ],
-          "runSpreadPct": 1.4187586491134965,
-          "samples": 21,
+          "runSpreadPct": 31.522571153619154,
+          "samples": 19,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 38.45397849999972,
+          "medianMs": 37.25393699999995,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            38.45397849999972,
-            38.562437500000215,
-            37.6869999999999
+            50.018833000000086,
+            36.952396000000135,
+            37.25393699999995
           ],
-          "runSpreadPct": 2.276584983268566,
-          "samples": 18,
+          "runSpreadPct": 35.07397620820578,
+          "samples": 17,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 43.3535839999995,
+          "medianMs": 42.29633300000023,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            43.79533300000003,
-            43.3535839999995,
-            42.76670800000011
+            50.24020849999988,
+            42.29633300000023,
+            41.518167000000176
           ],
-          "runSpreadPct": 2.3726412100091467,
-          "samples": 15,
+          "runSpreadPct": 20.621271115866374,
+          "samples": 14,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -547,242 +547,242 @@
     },
     {
       "fit": {
-        "exponent": 0.996,
-        "interceptMs": 0.027612584427054925,
-        "slopeMsPerKiBPower": 0.02016887435846998,
-        "looMapePct": 5.222005976348743,
-        "looMaxErrorPct": 15.121630125463945,
-        "mapePct": 2.485869146967877,
-        "maxErrorPct": 5.192034633641648,
+        "exponent": 0.994,
+        "interceptMs": 0.025898179867224407,
+        "slopeMsPerKiBPower": 0.016075712539105738,
+        "looMapePct": 4.537029813597743,
+        "looMaxErrorPct": 19.165673001828587,
+        "mapePct": 1.6108385447444267,
+        "maxErrorPct": 4.141035896716424,
         "model": "offset-power",
-        "rSquared": 0.9991637272709036,
+        "rSquared": 0.9995350288399639,
         "accepted": true,
-        "validationMapePct": 2.4282295002307763,
-        "validationMaxErrorPct": 4.879516629102782
+        "validationMapePct": 2.4195852346189284,
+        "validationMaxErrorPct": 3.120189386953397
       },
       "name": "SWC Next + SWC Next walker",
       "points": [
         {
-          "medianMs": 0.047290999999859196,
+          "medianMs": 0.04133300000012241,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.05456250000003138,
-            0.04679200000009587,
-            0.047290999999859196
+            0.06558400000005804,
+            0.038540999999895575,
+            0.04133300000012241
           ],
-          "runSpreadPct": 16.43124484565487,
-          "samples": 10399,
+          "runSpreadPct": 65.42714054165528,
+          "samples": 11009,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.06666699999993853,
+          "medianMs": 0.05958399999997255,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.06666699999993853,
-            0.07379200000002584,
-            0.06462499999997817
+            0.07799999999997453,
+            0.05958399999997255,
+            0.0555000000003929
           ],
-          "runSpreadPct": 13.750431247927938,
-          "samples": 7599,
+          "runSpreadPct": 37.761815251732,
+          "samples": 8271,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.11124999999992724,
+          "medianMs": 0.09354200000001356,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.11124999999992724,
-            0.11110400000001164,
-            0.11775000000000091
+            0.1262290000000803,
+            0.0881249999999909,
+            0.09354200000001356
           ],
-          "runSpreadPct": 5.973932584263927,
-          "samples": 4653,
+          "runSpreadPct": 40.73464326193996,
+          "samples": 5248,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.19087500000000546,
+          "medianMs": 0.15783399999997982,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.19087500000000546,
-            0.1918749999999818,
-            0.188020999999992
+            0.20158300000002782,
+            0.1526250000000573,
+            0.15783399999997982
           ],
-          "runSpreadPct": 2.01912246233907,
-          "samples": 2746,
+          "runSpreadPct": 31.018665179857813,
+          "samples": 3135,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.33979199999998855,
+          "medianMs": 0.27558299999998326,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.3537499999999909,
-            0.33979199999998855,
-            0.3374580000000833
+            0.34266699999989214,
+            0.2740840000001299,
+            0.27558299999998326
           ],
-          "runSpreadPct": 4.794697932826009,
-          "samples": 1510,
+          "runSpreadPct": 24.88651331895161,
+          "samples": 1826,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.6351869999999735,
+          "medianMs": 0.5141660000001593,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            0.6351869999999735,
-            0.6320414999999002,
-            0.6503119999999853
+            0.7330830000000788,
+            0.5112919999999122,
+            0.5141660000001593
           ],
-          "runSpreadPct": 2.8763970295497048,
-          "samples": 810,
+          "runSpreadPct": 43.1360688960565,
+          "samples": 965,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.3397710000000416,
+          "medianMs": 1.0072090000001026,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            1.522083500000008,
-            1.3397710000000416,
-            1.2322500000000218
+            1.6567084999999224,
+            0.9956875000000309,
+            1.0072090000001026
           ],
-          "runSpreadPct": 21.6330626651851,
-          "samples": 383,
+          "runSpreadPct": 65.62898067827275,
+          "samples": 469,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.9165420000001632,
+          "medianMs": 1.4816459999999552,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            1.9272920000000795,
-            1.9165420000001632,
-            1.8133749999999509
+            2.3832290000000285,
+            1.4570830000000115,
+            1.4816459999999552
           ],
-          "runSpreadPct": 5.943882262956873,
-          "samples": 278,
+          "runSpreadPct": 62.50791349620929,
+          "samples": 330,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.4332710000001043,
+          "medianMs": 2.0021659999999883,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            2.4540000000001783,
-            2.416874999999891,
-            2.4332710000001043
+            3.079334000000017,
+            1.9592499999998836,
+            2.0021659999999883
           ],
-          "runSpreadPct": 1.525724015133777,
-          "samples": 222,
+          "runSpreadPct": 55.94361306705539,
+          "samples": 245,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.641750000000002,
+          "medianMs": 2.9947710000000143,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            3.66662499999984,
-            3.634457999999995,
-            3.641750000000002
+            4.641125500000044,
+            2.9645000000000437,
+            2.9947710000000143
           ],
-          "runSpreadPct": 0.8832841353702157,
-          "samples": 147,
+          "runSpreadPct": 55.98509869368951,
+          "samples": 165,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 5.009604000000081,
+          "medianMs": 4.021582999999737,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            5.132291999999779,
-            5.009604000000081,
-            4.923749499999985
+            6.1899585000001025,
+            3.9409579999999096,
+            4.021582999999737
           ],
-          "runSpreadPct": 4.162853990051722,
-          "samples": 107,
+          "runSpreadPct": 55.92326454533799,
+          "samples": 125,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 6.383854500000098,
+          "medianMs": 5.075416000000132,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            6.333208000000013,
-            6.4743750000002365,
-            6.383854500000098
+            6.489375000000109,
+            4.917979000000287,
+            5.075416000000132
           ],
-          "runSpreadPct": 2.2113129301462155,
-          "samples": 84,
+          "runSpreadPct": 30.960930099124518,
+          "samples": 104,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.748374999999896,
+          "medianMs": 5.969125000000076,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            7.748374999999896,
-            7.694042000000081,
-            7.867333000000144
+            9.382125000000087,
+            5.927937500000098,
+            5.969125000000076
           ],
-          "runSpreadPct": 2.236481842967916,
-          "samples": 70,
+          "runSpreadPct": 57.867568529724956,
+          "samples": 82,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.089707999999973,
+          "medianMs": 7.1538125000001855,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            9.447270500000286,
-            9.089707999999973,
-            8.954791000000114
+            10.766187500000342,
+            6.914084000000003,
+            7.1538125000001855
           ],
-          "runSpreadPct": 5.417990324883634,
-          "samples": 56,
+          "runSpreadPct": 53.84686137636735,
+          "samples": 71,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 10.302000000000135,
+          "medianMs": 8.123916000000008,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            10.460500000000138,
-            10.302000000000135,
-            10.229729500000076
+            11.101832999999715,
+            8.07241699999986,
+            8.123916000000008
           ],
-          "runSpreadPct": 2.240055329062894,
-          "samples": 53,
+          "runSpreadPct": 37.290095072374605,
+          "samples": 63,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -802,242 +802,242 @@
     },
     {
       "fit": {
-        "exponent": 0.996,
-        "interceptMs": 0.02207073472563987,
-        "slopeMsPerKiBPower": 0.014814831572665787,
-        "looMapePct": 3.132943863919945,
-        "looMaxErrorPct": 13.516200114664379,
-        "mapePct": 1.0737533112151554,
-        "maxErrorPct": 2.7967708621439886,
-        "model": "offset-power",
-        "rSquared": 0.9998427071547873,
+        "model": "log-quadratic",
+        "logIntercept": -3.3731988071118892,
+        "logLinear": 0.5894655674408884,
+        "logQuadratic": 0.04440194097422698,
+        "looMapePct": 3.795434530571869,
+        "looMaxErrorPct": 8.186088941034532,
+        "mapePct": 2.0405312849923325,
+        "maxErrorPct": 4.325735224009701,
+        "rSquared": 0.9995391638533498,
         "accepted": true,
-        "validationMapePct": 0.9845100013680106,
-        "validationMaxErrorPct": 2.7805328809809966
+        "validationMapePct": 3.716303627702529,
+        "validationMaxErrorPct": 11.92008086600796
       },
       "name": "SWC Next + OXC codegen",
       "points": [
         {
-          "medianMs": 0.03650000000016007,
+          "medianMs": 0.03475000000003092,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.038917000000083135,
-            0.03579200000058336,
-            0.03650000000016007
+            0.061542000000031294,
+            0.033792000000175904,
+            0.03475000000003092
           ],
-          "runSpreadPct": 8.56164383420842,
-          "samples": 14357,
+          "runSpreadPct": 79.85611510742646,
+          "samples": 12766,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.05166699999995217,
+          "medianMs": 0.05208300000003874,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.05166699999995217,
-            0.05566699999997127,
-            0.04912499999954889
+            0.07783300000005511,
+            0.05208300000003874,
+            0.047417000000677945
           ],
-          "runSpreadPct": 12.661853795320868,
-          "samples": 10160,
+          "runSpreadPct": 58.39909375296074,
+          "samples": 8945,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.08333299999992505,
+          "medianMs": 0.0837919999999599,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.08291700000000901,
-            0.08333299999992505,
-            0.08929099999988921
+            0.12389600000005885,
+            0.0837919999999599,
+            0.08345900000006168
           ],
-          "runSpreadPct": 7.648830595185498,
-          "samples": 6166,
+          "runSpreadPct": 48.25878365478389,
+          "samples": 5450,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.14208299999995688,
+          "medianMs": 0.13612499999999272,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.14016700000001947,
-            0.14370800000000372,
-            0.14208299999995688
+            0.22804199999995944,
+            0.13549999999997908,
+            0.13612499999999272
           ],
-          "runSpreadPct": 2.4922052602952682,
-          "samples": 3673,
+          "runSpreadPct": 67.98310376491116,
+          "samples": 3205,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.25477049999989276,
+          "medianMs": 0.2369579999999587,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.25462500000003274,
-            0.2723124999999982,
-            0.25477049999989276
+            0.3564579999999751,
+            0.2369579999999587,
+            0.2356249999999136
           ],
-          "runSpreadPct": 6.942522780295554,
-          "samples": 1939,
+          "runSpreadPct": 50.99342499518165,
+          "samples": 1950,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.4831249999999727,
+          "medianMs": 0.4489169999999376,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            0.4831249999999727,
-            0.4906460000000834,
-            0.4781040000000303
+            0.5833749999999327,
+            0.4485210000000279,
+            0.4489169999999376
           ],
-          "runSpreadPct": 2.596015523943872,
-          "samples": 1086,
+          "runSpreadPct": 30.039851464730344,
+          "samples": 1080,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.9391669999999976,
+          "medianMs": 0.8799579999999878,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            0.9461039999999912,
-            0.9391669999999976,
-            0.9304999999999382
+            1.3612080000002607,
+            0.8688539999999421,
+            0.8799579999999878
           ],
-          "runSpreadPct": 1.6614723473091644,
-          "samples": 558,
+          "runSpreadPct": 55.95198861767555,
+          "samples": 533,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.38018749999992,
+          "medianMs": 1.2996669999999995,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            1.4362080000000788,
-            1.3795414999999593,
-            1.38018749999992
+            2.1420414999997774,
+            1.2874585000000707,
+            1.2996669999999995
           ],
-          "runSpreadPct": 4.1057102748809635,
-          "samples": 377,
+          "runSpreadPct": 65.75399698535911,
+          "samples": 355,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.8660624999997708,
+          "medianMs": 1.7668340000000171,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            1.8660624999997708,
-            1.901437499999929,
-            1.8395209999999906
+            3.0743750000001455,
+            1.7668340000000171,
+            1.7482080000000906
           ],
-          "runSpreadPct": 3.3180292728644423,
-          "samples": 278,
+          "runSpreadPct": 75.0589472468858,
+          "samples": 255,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.7956669999998667,
+          "medianMs": 2.6326045000000704,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            2.8603539999999157,
-            2.7956669999998667,
-            2.7797914999999875
+            4.687625500000195,
+            2.6326045000000704,
+            2.6122080000000096
           ],
-          "runSpreadPct": 2.881691560544657,
-          "samples": 189,
+          "runSpreadPct": 78.83514215675501,
+          "samples": 171,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.7361040000000685,
+          "medianMs": 3.5466250000001764,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            3.770665999999892,
-            3.7361040000000685,
-            3.7076869999998507
+            5.722042000000329,
+            3.4703539999998156,
+            3.5466250000001764
           ],
-          "runSpreadPct": 1.6856864798206912,
-          "samples": 143,
+          "runSpreadPct": 63.48818947592151,
+          "samples": 129,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.653208000000177,
+          "medianMs": 5.110833999999613,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            4.7622919999998885,
-            4.653208000000177,
-            4.597333000000162
+            5.78262500000028,
+            4.326250000000073,
+            5.110833999999613
           ],
-          "runSpreadPct": 3.545059666357485,
-          "samples": 116,
+          "runSpreadPct": 28.495838448290776,
+          "samples": 102,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 5.591020999999955,
+          "medianMs": 5.4275415000001885,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            5.614791500000138,
-            5.591020999999955,
-            5.5080420000001595
+            7.672666999999819,
+            5.286874999999782,
+            5.4275415000001885
           ],
-          "runSpreadPct": 1.9093024333118929,
-          "samples": 96,
+          "runSpreadPct": 43.9571397104924,
+          "samples": 89,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 6.530479000000014,
+          "medianMs": 6.233083500000021,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            6.530479000000014,
-            6.704083999999966,
-            6.487124999999878
+            9.765874999999596,
+            6.109292000000096,
+            6.233083500000021
           ],
-          "runSpreadPct": 3.322252471833806,
-          "samples": 83,
+          "runSpreadPct": 58.664110628383014,
+          "samples": 75,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.510291999999936,
+          "medianMs": 7.5145000000002256,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            7.563500000000204,
-            7.510291999999936,
-            7.410666999999648
+            12.241667000000234,
+            7.229749999999967,
+            7.5145000000002256
           ],
-          "runSpreadPct": 2.03498079702569,
-          "samples": 72,
+          "runSpreadPct": 66.6966132144536,
+          "samples": 61,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -1057,242 +1057,242 @@
     },
     {
       "fit": {
-        "exponent": 1.009,
-        "interceptMs": 0.0329113117173029,
-        "slopeMsPerKiBPower": 0.026411746146787124,
-        "looMapePct": 2.4678473535613175,
-        "looMaxErrorPct": 9.012339369097763,
-        "mapePct": 1.0285586428130735,
-        "maxErrorPct": 2.0832755319722076,
-        "model": "offset-power",
-        "rSquared": 0.9995350978603352,
+        "model": "log-quadratic",
+        "logIntercept": -2.8226919205286185,
+        "logLinear": 0.6568153882146889,
+        "logQuadratic": 0.03778277138699904,
+        "looMapePct": 4.138939477561381,
+        "looMaxErrorPct": 6.711858266229849,
+        "mapePct": 2.4973417055815417,
+        "maxErrorPct": 4.600503715837263,
+        "rSquared": 0.9979106333294184,
         "accepted": true,
-        "validationMapePct": 1.9604643252087273,
-        "validationMaxErrorPct": 3.27885003797626
+        "validationMapePct": 4.307400350371516,
+        "validationMaxErrorPct": 8.900501730224919
       },
       "name": "Yuku + JS plugin",
       "points": [
         {
-          "medianMs": 0.05895799999996143,
+          "medianMs": 0.059917000000496046,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.05895799999996143,
-            0.05929199999991397,
-            0.05641599999989921
+            0.1181454999999687,
+            0.05912499999976717,
+            0.059917000000496046
           ],
-          "runSpreadPct": 4.878048780516023,
-          "samples": 9162,
+          "runSpreadPct": 98.50376353908392,
+          "samples": 6992,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.08333300000003874,
+          "medianMs": 0.08954199999993762,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.08333300000003874,
-            0.09062500000004547,
-            0.08279200000015408
+            0.155083999999988,
+            0.08954199999993762,
+            0.08416699999997945
           ],
-          "runSpreadPct": 9.399637598415703,
-          "samples": 6239,
+          "runSpreadPct": 79.19970516635541,
+          "samples": 5132,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.1419580000000451,
+          "medianMs": 0.1580420000000231,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.14170799999999417,
-            0.1419580000000451,
-            0.15133300000002237
+            0.24354199999993398,
+            0.14079099999992195,
+            0.1580420000000231
           ],
-          "runSpreadPct": 6.780174417803249,
-          "samples": 3745,
+          "runSpreadPct": 65.01499601371597,
+          "samples": 3038,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.2554169999998521,
+          "medianMs": 0.2650830000000042,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.2554169999998521,
-            0.2497089999999389,
-            0.2603545000000054
+            0.4563539999999193,
+            0.2504999999999882,
+            0.2650830000000042
           ],
-          "runSpreadPct": 4.1678901561261155,
-          "samples": 2136,
+          "runSpreadPct": 77.65643213632255,
+          "samples": 1796,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.469124999999849,
+          "medianMs": 0.476709000000028,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.47079200000007404,
-            0.4668539999998984,
-            0.469124999999849
+            0.850458000000117,
+            0.46870799999999235,
+            0.476709000000028
           ],
-          "runSpreadPct": 0.839435118609518,
-          "samples": 1166,
+          "runSpreadPct": 80.08030056074085,
+          "samples": 984,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.8963330000001406,
+          "medianMs": 0.9227079999999432,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            0.8990420000000086,
-            0.8851459999999634,
-            0.8963330000001406
+            1.5323329999999942,
+            0.9227079999999432,
+            0.9108129999999619
           ],
-          "runSpreadPct": 1.5503166791854173,
-          "samples": 614,
+          "runSpreadPct": 67.35825418226248,
+          "samples": 514,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.764020500000015,
+          "medianMs": 1.8058124999998881,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            1.767541499999993,
-            1.747583000000077,
-            1.764020500000015
+            2.665457999999944,
+            1.757562499999949,
+            1.8058124999998881
           ],
-          "runSpreadPct": 1.1314210917569205,
-          "samples": 313,
+          "runSpreadPct": 50.27628837434956,
+          "samples": 275,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.6277504999999337,
+          "medianMs": 2.6780205000000024,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            2.6647495000000845,
-            2.5808750000001055,
-            2.6277504999999337
+            3.620042000000012,
+            2.636271000000079,
+            2.6780205000000024
           ],
-          "runSpreadPct": 3.191874571043982,
-          "samples": 209,
+          "runSpreadPct": 36.73500632276461,
+          "samples": 189,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.5127500000000964,
+          "medianMs": 3.6234589999999116,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            3.5573335000001407,
-            3.4675000000002,
-            3.5127500000000964
+            5.263625000000047,
+            3.507333000000017,
+            3.6234589999999116
           ],
-          "runSpreadPct": 2.5573553483720204,
-          "samples": 158,
+          "runSpreadPct": 48.47003926358966,
+          "samples": 139,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 5.2439999999999145,
+          "medianMs": 5.580042000000049,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            5.320896500000117,
-            5.157936999999947,
-            5.2439999999999145
+            8.370729499999925,
+            5.580042000000049,
+            5.418437499999982
           ],
-          "runSpreadPct": 3.1075419527111494,
-          "samples": 105,
+          "runSpreadPct": 52.908060548646716,
+          "samples": 89,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.097250000000031,
+          "medianMs": 7.109937500000115,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            7.167354499999874,
-            7.041749500000151,
-            7.097250000000031
+            12.166249999999764,
+            7.109937500000115,
+            7.107895500000041
           ],
-          "runSpreadPct": 1.7697699813268877,
-          "samples": 78,
+          "runSpreadPct": 71.14485183589365,
+          "samples": 67,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 8.790208999999777,
+          "medianMs": 10.13924999999972,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            9.056832999999642,
-            8.74474999999984,
-            8.790208999999777
+            14.13872900000024,
+            8.873125000000073,
+            10.13924999999972
           ],
-          "runSpreadPct": 3.5503478927498784,
-          "samples": 63,
+          "runSpreadPct": 51.932874719533615,
+          "samples": 50,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 10.731666000000132,
+          "medianMs": 10.79083300000002,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            10.731666000000132,
-            11.063125000000127,
-            10.577437500000087
+            14.900687500000004,
+            10.703166999999667,
+            10.79083300000002
           ],
-          "runSpreadPct": 4.525741855924644,
-          "samples": 52,
+          "runSpreadPct": 38.89894783841367,
+          "samples": 46,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 12.687667000000147,
+          "medianMs": 12.957124999999905,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            12.687667000000147,
-            12.401083000000199,
-            13.439187500000116
+            19.267916499999956,
+            12.711667000000034,
+            12.957124999999905
           ],
-          "runSpreadPct": 8.181996737460919,
-          "samples": 44,
+          "runSpreadPct": 50.59956973479819,
+          "samples": 40,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 14.641708000000108,
+          "medianMs": 16.033208500000228,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            14.641708000000108,
-            14.695583000000624,
-            14.276499999999942
+            22.486667000000125,
+            15.115166999999929,
+            16.033208500000228
           ],
-          "runSpreadPct": 2.8622548680842397,
-          "samples": 39,
+          "runSpreadPct": 45.97644944241879,
+          "samples": 34,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -1312,242 +1312,242 @@
     },
     {
       "fit": {
-        "exponent": 1.005,
-        "interceptMs": 0.02884727200421121,
-        "slopeMsPerKiBPower": 0.024280639621306666,
-        "looMapePct": 3.5733960437139176,
-        "looMaxErrorPct": 15.283603427130663,
-        "mapePct": 1.2896717730081555,
-        "maxErrorPct": 2.6426425385288326,
+        "exponent": 0.9990000000000001,
+        "interceptMs": 0.027052315569901585,
+        "slopeMsPerKiBPower": 0.026018963066109273,
+        "looMapePct": 4.951047204402811,
+        "looMaxErrorPct": 15.094077150496691,
+        "mapePct": 3.6248711858654894,
+        "maxErrorPct": 13.225531087157016,
         "model": "offset-power",
-        "rSquared": 0.9997596489537867,
+        "rSquared": 0.9973098165095292,
         "accepted": true,
-        "validationMapePct": 1.1246238723114954,
-        "validationMaxErrorPct": 1.657573959083624
+        "validationMapePct": 4.328909271706322,
+        "validationMaxErrorPct": 7.660853897995073
       },
       "name": "Yuku + OXC codegen",
       "points": [
         {
-          "medianMs": 0.05262500000003456,
+          "medianMs": 0.05304199999955017,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.05262500000003456,
-            0.05045799999970768,
-            0.05291699999997945
+            0.06349999999997635,
+            0.05304199999955017,
+            0.04970800000046438
           ],
-          "runSpreadPct": 4.672684086024051,
-          "samples": 10420,
+          "runSpreadPct": 26.0020361216186,
+          "samples": 9716,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.07866600000033941,
+          "medianMs": 0.07674999999994725,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.07620800000006511,
-            0.08241649999996525,
-            0.07866600000033941
+            0.10625000000004547,
+            0.07674999999994725,
+            0.07416699999976117
           ],
-          "runSpreadPct": 7.892227900075451,
-          "samples": 6861,
+          "runSpreadPct": 41.80195439779329,
+          "samples": 6448,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.13008300000001327,
+          "medianMs": 0.13283300000000509,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.12662499999993315,
-            0.13008300000001327,
-            0.13245800000004238
+            0.17868749999990996,
+            0.12389549999994642,
+            0.13283300000000509
           ],
-          "runSpreadPct": 4.484060177047445,
-          "samples": 4220,
+          "runSpreadPct": 41.248786069697616,
+          "samples": 3785,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.22891699999991033,
+          "medianMs": 0.22179199999982302,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.22891699999991033,
-            0.23014600000004748,
-            0.22758299999998144
+            0.34102100000006885,
+            0.22179199999982302,
+            0.22102100000000746
           ],
-          "runSpreadPct": 1.119619774882182,
-          "samples": 2387,
+          "runSpreadPct": 54.104746789855874,
+          "samples": 2173,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.4220839999999271,
+          "medianMs": 0.42052049999995234,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.42637549999994917,
-            0.4205419999998412,
-            0.4220839999999271
+            0.7202910000000884,
+            0.42052049999995234,
+            0.40787499999999
           ],
-          "runSpreadPct": 1.3820708674360953,
-          "samples": 1303,
+          "runSpreadPct": 74.29269203288158,
+          "samples": 1140,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.8123544999999694,
+          "medianMs": 0.7958125000000109,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            0.8208124999999882,
-            0.8050419999999576,
-            0.8123544999999694
+            1.2898329999999305,
+            0.7862920000000031,
+            0.7958125000000109
           ],
-          "runSpreadPct": 1.9413322631968117,
-          "samples": 681,
+          "runSpreadPct": 63.27382392208221,
+          "samples": 607,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.5767499999999472,
+          "medianMs": 1.6984580000000733,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            1.678645500000016,
-            1.5736249999999927,
-            1.5767499999999472
+            2.429167000000234,
+            1.6984580000000733,
+            1.5421250000000555
           ],
-          "runSpreadPct": 6.660567623277425,
-          "samples": 342,
+          "runSpreadPct": 52.22631351497301,
+          "samples": 300,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.379957999999988,
+          "medianMs": 2.350229000000013,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            2.44074999999998,
-            2.3642915000000357,
-            2.379957999999988
+            2.8523954999998296,
+            2.350229000000013,
+            2.303083000000015
           ],
-          "runSpreadPct": 3.212598709722804,
-          "samples": 231,
+          "runSpreadPct": 23.37272240278762,
+          "samples": 222,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.1658955000000333,
+          "medianMs": 3.8506250000000364,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            3.25583400000005,
-            3.1658955000000333,
-            3.164500000000089
+            4.02841699999999,
+            3.2604579999999714,
+            3.8506250000000364
           ],
-          "runSpreadPct": 2.8849341363276126,
-          "samples": 174,
+          "runSpreadPct": 19.94374939133288,
+          "samples": 148,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.7872919999999795,
+          "medianMs": 4.956958499999814,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            4.7872919999999795,
-            4.789209000000028,
-            4.694958500000098
+            7.352542000000085,
+            4.614146000000119,
+            4.956958499999814
           ],
-          "runSpreadPct": 1.968764387046591,
-          "samples": 118,
+          "runSpreadPct": 55.24347238331869,
+          "samples": 102,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 6.429665999999997,
+          "medianMs": 6.357167000000118,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            6.766499999999951,
-            6.399249999999938,
-            6.429665999999997
+            9.523770499999955,
+            6.357167000000118,
+            6.302041999999801
           ],
-          "runSpreadPct": 5.7118052477377965,
-          "samples": 84,
+          "runSpreadPct": 50.678682815790346,
+          "samples": 78,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 8.085417000000234,
+          "medianMs": 7.8540210000001025,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            8.5872710000001,
-            8.085417000000234,
-            7.9540629999999055
+            13.666666000000077,
+            7.8540210000001025,
+            7.782228999999916
           ],
-          "runSpreadPct": 7.8314822847130445,
-          "samples": 69,
+          "runSpreadPct": 74.92260333910599,
+          "samples": 61,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.783791000000292,
+          "medianMs": 9.624416999999994,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            10.01483300000018,
-            9.783791000000292,
-            9.577583000000004
+            15.185625000000073,
+            9.624416999999994,
+            9.402062500000056
           ],
-          "runSpreadPct": 4.46912653796635,
-          "samples": 58,
+          "runSpreadPct": 60.09260093364637,
+          "samples": 53,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 11.384583499999962,
+          "medianMs": 11.57814600000006,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            11.653542000000243,
-            11.384583499999962,
-            11.331645499999922
+            15.503791999999521,
+            10.959499999999935,
+            11.57814600000006
           ],
-          "runSpreadPct": 2.827477175606134,
-          "samples": 48,
+          "runSpreadPct": 39.24887456074196,
+          "samples": 46,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 12.97441700000013,
+          "medianMs": 13.305624999999964,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            13.536187499999869,
-            12.97441700000013,
-            12.83354200000008
+            19.667853999999807,
+            13.21112549999998,
+            13.305624999999964
           ],
-          "runSpreadPct": 5.415622913921932,
-          "samples": 42,
+          "runSpreadPct": 48.52630748273639,
+          "samples": 38,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -1567,92 +1567,92 @@
     },
     {
       "fit": {
-        "exponent": 1.0030000000000001,
-        "interceptMs": 0.032066439824525436,
-        "slopeMsPerKiBPower": 0.057887575467602724,
-        "looMapePct": 1.2042046297968039,
-        "looMaxErrorPct": 2.1856982073378517,
-        "mapePct": 0.6890133653182231,
-        "maxErrorPct": 1.2476684556528468,
+        "exponent": 1.0270000000000001,
+        "interceptMs": 0.04564404967126606,
+        "slopeMsPerKiBPower": 0.053413661154019326,
+        "looMapePct": 6.555530684989916,
+        "looMaxErrorPct": 14.740888562866783,
+        "mapePct": 3.414598960422963,
+        "maxErrorPct": 10.03842343218237,
         "model": "offset-power",
-        "rSquared": 0.999847930784319,
+        "rSquared": 0.9876114213685704,
         "accepted": true,
-        "validationMapePct": 0.8668684578537782,
-        "validationMaxErrorPct": 1.5718315273897314
+        "validationMapePct": 4.292372996657887,
+        "validationMaxErrorPct": 9.393870428533852
       },
       "name": "OXC + Yuku walk plugin",
       "points": [
         {
-          "medianMs": 0.08991699999933189,
+          "medianMs": 0.09837500000048749,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.09158300000001418,
-            0.08833400000003166,
-            0.08991699999933189
+            0.11493749999999636,
+            0.09379200000057608,
+            0.09837500000048749
           ],
-          "runSpreadPct": 3.6133322953464377,
-          "samples": 6285,
+          "runSpreadPct": 21.494790342379158,
+          "samples": 5388,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.1457909999999174,
+          "medianMs": 0.16229149999981018,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.14524999999991905,
-            0.15602050000006784,
-            0.1457909999999174
+            0.19918749999999363,
+            0.15670799999998053,
+            0.16229149999981018
           ],
-          "runSpreadPct": 7.387630237912414,
-          "samples": 3768,
+          "runSpreadPct": 26.174815070452112,
+          "samples": 3084,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.2642910000000711,
+          "medianMs": 0.2723750000000109,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.2592499999999518,
-            0.2642910000000711,
-            0.26729200000002606
+            0.39897900000005393,
+            0.2651250000000118,
+            0.2723750000000109
           ],
-          "runSpreadPct": 3.042858061784966,
-          "samples": 2136,
+          "runSpreadPct": 49.14327673245957,
+          "samples": 1871,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.493082999999956,
+          "medianMs": 0.5029999999999291,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.49041699999997945,
-            0.4986664999998993,
-            0.493082999999956
+            0.7250625000000355,
+            0.49737499999991996,
+            0.5029999999999291
           ],
-          "runSpreadPct": 1.6730449031746377,
-          "samples": 1160,
+          "runSpreadPct": 45.26590457259396,
+          "samples": 1024,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.9782084999999938,
+          "medianMs": 0.9785830000000715,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.9858124999999518,
-            0.9743330000001151,
-            0.9782084999999938
+            1.4931249999999636,
+            0.9751039999998738,
+            0.9785830000000715
           ],
-          "runSpreadPct": 1.1735228225717458,
-          "samples": 585,
+          "runSpreadPct": 52.93582659826013,
+          "samples": 518,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
@@ -1662,147 +1662,147 @@
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            1.9010000000000673,
-            1.897416000000021,
-            1.9140835000000607
+            2.7485834999998815,
+            1.8722085000000561,
+            1.9010000000000673
           ],
-          "runSpreadPct": 0.8767753813802731,
-          "samples": 302,
+          "runSpreadPct": 46.100736454486814,
+          "samples": 273,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.7432494999999335,
+          "medianMs": 3.7608329999998205,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            3.747666999999865,
-            3.735896000000025,
-            3.7432494999999335
+            5.6157499999999345,
+            3.7308744999999135,
+            3.7608329999998205
           ],
-          "runSpreadPct": 0.3144594021809091,
-          "samples": 155,
+          "runSpreadPct": 50.118564158528464,
+          "samples": 138,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 5.59254199999998,
+          "medianMs": 5.6579790000000685,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            5.587999999999965,
-            5.59254199999998,
-            5.672874999999976
+            7.239915999999994,
+            5.6579790000000685,
+            5.595542000000023
           ],
-          "runSpreadPct": 1.5176461795014005,
-          "samples": 103,
+          "runSpreadPct": 29.062921583836754,
+          "samples": 96,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.47308350000003,
+          "medianMs": 7.95029199999999,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            7.46916699999997,
-            7.47308350000003,
-            7.545229500000119
+            8.681458999999904,
+            7.656791000000112,
+            7.95029199999999
           ],
-          "runSpreadPct": 1.0178194850913673,
-          "samples": 78,
+          "runSpreadPct": 12.888432273931494,
+          "samples": 73,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 11.27929099999983,
+          "medianMs": 11.444749999999658,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            11.267041999999947,
-            11.341041000000132,
-            11.27929099999983
+            13.000165999999808,
+            11.444749999999658,
+            11.209583499999894
           ],
-          "runSpreadPct": 0.656060739989654,
-          "samples": 51,
+          "runSpreadPct": 15.64544878656124,
+          "samples": 50,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 15.02895800000033,
+          "medianMs": 15.199917000000369,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            14.979499999999916,
-            15.125083999999788,
-            15.02895800000033
+            17.85649999999987,
+            15.199917000000369,
+            14.974958000000242
           ],
-          "runSpreadPct": 0.9686899118346621,
-          "samples": 39,
+          "runSpreadPct": 18.957616676456567,
+          "samples": 37,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 19.096624999999676,
+          "medianMs": 22.094040999999834,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            22.225167000000056,
-            19.096624999999676,
-            18.951042000000143
+            22.094040999999834,
+            18.728625000000193,
+            26.015583500000048
           ],
-          "runSpreadPct": 17.14504526323352,
-          "samples": 31,
+          "runSpreadPct": 32.9815559770162,
+          "samples": 28,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 22.75233399999979,
+          "medianMs": 23.099874999999884,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            27.986541999999645,
-            22.75233399999979,
-            22.566874999999982
+            27.71404150000012,
+            22.34474999999975,
+            23.099874999999884
           ],
-          "runSpreadPct": 23.82026828544145,
-          "samples": 25,
+          "runSpreadPct": 23.243811925390936,
+          "samples": 26,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 26.57768750000014,
+          "medianMs": 26.500707999999804,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            27.699833500000295,
-            26.4609375,
-            26.57768750000014
+            35.74845849999997,
+            26.35870799999998,
+            26.500707999999804
           ],
-          "runSpreadPct": 4.6614138269188725,
-          "samples": 24,
+          "runSpreadPct": 35.43207411666157,
+          "samples": 22,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 30.577624999999898,
+          "medianMs": 36.02695799999992,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            31.21637500000088,
-            30.234417000000576,
-            30.577624999999898
+            41.91070800000034,
+            30.273207999999613,
+            36.02695799999992
           ],
-          "runSpreadPct": 3.2113612486264307,
-          "samples": 21,
+          "runSpreadPct": 32.30219992484726,
+          "samples": 18,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -1822,242 +1822,242 @@
     },
     {
       "fit": {
-        "exponent": 1.0010000000000001,
-        "interceptMs": 0.023995228818644875,
-        "slopeMsPerKiBPower": 0.024202781832371435,
-        "looMapePct": 1.9798616496695312,
-        "looMaxErrorPct": 8.430810012299341,
-        "mapePct": 0.6571207908190331,
-        "maxErrorPct": 1.4740057536107753,
-        "model": "offset-power",
-        "rSquared": 0.9998973715991968,
+        "model": "log-quadratic",
+        "logIntercept": -3.069933669201008,
+        "logLinear": 0.698018821174648,
+        "logQuadratic": 0.03127080307368678,
+        "looMapePct": 3.056113251707326,
+        "looMaxErrorPct": 5.878039589824446,
+        "mapePct": 1.7019333292600303,
+        "maxErrorPct": 3.2850600956249907,
+        "rSquared": 0.9995495362253413,
         "accepted": true,
-        "validationMapePct": 0.7360871990824495,
-        "validationMaxErrorPct": 1.4760200981672673
+        "validationMapePct": 2.1317541325238922,
+        "validationMaxErrorPct": 5.665134687491807
       },
       "name": "OXC raw transfer + Yuku walk",
       "points": [
         {
-          "medianMs": 0.04795799999965311,
+          "medianMs": 0.046875,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.04975000000001728,
-            0.04729199999928824,
-            0.04795799999965311
+            0.06254200000000765,
+            0.04602049999994051,
+            0.046875
           ],
-          "runSpreadPct": 5.125317988128827,
-          "samples": 11393,
+          "runSpreadPct": 35.24586666680989,
+          "samples": 10514,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.07220800000050076,
+          "medianMs": 0.07235400000004688,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.07183299999996962,
-            0.07762500000001182,
-            0.07220800000050076
+            0.09889549999996916,
+            0.07235400000004688,
+            0.0690840000006574
           ],
-          "runSpreadPct": 8.021271881234822,
-          "samples": 7529,
+          "runSpreadPct": 41.202283217641664,
+          "samples": 6997,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.12274999999999636,
+          "medianMs": 0.12908350000003566,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.12108299999999872,
-            0.12274999999999636,
-            0.13104199999997945
+            0.17579200000000128,
+            0.11495800000000145,
+            0.12908350000003566
           ],
-          "runSpreadPct": 8.113238289190248,
-          "samples": 4526,
+          "runSpreadPct": 47.12763443816059,
+          "samples": 3981,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.21977049999998144,
+          "medianMs": 0.21908300000006875,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            0.2192080000002079,
-            0.21977049999998144,
-            0.22225000000003092
+            0.32035400000006575,
+            0.2055000000000291,
+            0.21908300000006875
           ],
-          "runSpreadPct": 1.3841712148915695,
-          "samples": 2568,
+          "runSpreadPct": 52.42488006828489,
+          "samples": 2341,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.41087500000003274,
+          "medianMs": 0.39591700000005403,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            0.4097500000000309,
-            0.41087500000003274,
-            0.4165419999999358
+            0.6069170000000668,
+            0.38529200000016317,
+            0.39591700000005403
           ],
-          "runSpreadPct": 1.6530574992161442,
-          "samples": 1374,
+          "runSpreadPct": 55.97764177842157,
+          "samples": 1270,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.7901249999999891,
+          "medianMs": 0.7613750000000437,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            0.7901249999999891,
-            0.7873539999999366,
-            0.8072919999999613
+            1.2287294999999858,
+            0.747333000000026,
+            0.7613750000000437
           ],
-          "runSpreadPct": 2.5233981964910535,
-          "samples": 716,
+          "runSpreadPct": 63.227253324568345,
+          "samples": 658,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.5630000000001019,
+          "medianMs": 1.4834999999998217,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            1.5630000000001019,
-            1.5544589999999516,
-            1.5788544999999203
+            2.261874999999918,
+            1.4834999999998217,
+            1.46875
           ],
-          "runSpreadPct": 1.5608125399851003,
-          "samples": 363,
+          "runSpreadPct": 53.46309403437907,
+          "samples": 338,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 2.323791999999912,
+          "medianMs": 2.1881879999999683,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            2.2899790000001303,
-            2.323791999999912,
-            2.3241669999999885
+            3.5461455000001934,
+            2.186333999999988,
+            2.1881879999999683
           ],
-          "runSpreadPct": 1.4712160124425728,
-          "samples": 250,
+          "runSpreadPct": 62.1432664835117,
+          "samples": 225,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.124832999999853,
+          "medianMs": 2.921583000000055,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            3.124832999999853,
-            3.132417000000032,
-            3.123583999999937
+            3.6776660000000447,
+            2.8959374999999454,
+            2.921583000000055
           ],
-          "runSpreadPct": 0.2826711059469591,
-          "samples": 183,
+          "runSpreadPct": 26.757018369838697,
+          "samples": 184,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 4.6534999999998945,
+          "medianMs": 4.429999999999836,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            4.624333000000206,
-            4.680584000000181,
-            4.6534999999998945
+            6.209041999999954,
+            4.258583000000272,
+            4.429999999999836
           ],
-          "runSpreadPct": 1.208789083485033,
-          "samples": 123,
+          "runSpreadPct": 44.02841986455428,
+          "samples": 119,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 6.267916000000241,
+          "medianMs": 5.935895999999957,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            6.452499999999873,
-            6.267916000000241,
-            6.200417000000016
+            8.704291499999727,
+            5.712270499999931,
+            5.935895999999957
           ],
-          "runSpreadPct": 4.0217992710790496,
-          "samples": 91,
+          "runSpreadPct": 50.405549558142816,
+          "samples": 88,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.797583999999915,
+          "medianMs": 7.434312999999975,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            7.7245419999999285,
-            7.805917000000136,
-            7.797583999999915
+            11.373853999999938,
+            7.374562500000138,
+            7.434312999999975
           ],
-          "runSpreadPct": 1.0435924768519103,
-          "samples": 75,
+          "runSpreadPct": 53.79503795441237,
+          "samples": 70,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 9.344167000000198,
+          "medianMs": 8.775854000000209,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            9.537417000000005,
-            9.319875000000138,
-            9.344167000000198
+            12.894500000000335,
+            8.705770499999971,
+            8.775854000000209
           ],
-          "runSpreadPct": 2.3281047952146197,
-          "samples": 62,
+          "runSpreadPct": 47.73016392479027,
+          "samples": 59,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 10.926561999999876,
+          "medianMs": 10.49408399999993,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            11.020000499999924,
-            10.926561999999876,
-            10.905020999999806
+            12.690333500000179,
+            10.49408399999993,
+            10.37558399999989
           ],
-          "runSpreadPct": 1.0522934844475234,
+          "runSpreadPct": 22.057661249903322,
           "samples": 54,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 12.614791999999397,
+          "medianMs": 12.060917000000018,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            12.779000000000451,
-            12.614791999999397,
-            12.493729499999972
+            17.516749499999605,
+            12.056104499999947,
+            12.060917000000018
           ],
-          "runSpreadPct": 2.2613967792769993,
-          "samples": 46,
+          "runSpreadPct": 45.27553750680525,
+          "samples": 44,
           "sizeKiB": 512,
           "sourceBytes": 524288,
           "styledComponents": 1
@@ -2077,241 +2077,241 @@
     },
     {
       "fit": {
-        "exponent": 1.1760000000000002,
-        "interceptMs": 0.09698098747255167,
-        "slopeMsPerKiBPower": 0.134413814760601,
-        "looMapePct": 7.218956523653407,
-        "looMaxErrorPct": 18.914356585505825,
-        "mapePct": 4.902957827243223,
-        "maxErrorPct": 16.146883120966436,
+        "exponent": 1.175,
+        "interceptMs": 0.1007765609765704,
+        "slopeMsPerKiBPower": 0.13225256612491415,
+        "looMapePct": 7.009721488879677,
+        "looMaxErrorPct": 18.465607023872245,
+        "mapePct": 4.383582441754227,
+        "maxErrorPct": 16.10140535919481,
         "model": "offset-power",
-        "rSquared": 0.9971171132941601,
+        "rSquared": 0.9957911919198459,
         "accepted": true,
-        "validationMapePct": 3.148735883146339,
-        "validationMaxErrorPct": 6.711535925914398
+        "validationMapePct": 4.410770555791443,
+        "validationMaxErrorPct": 11.748445756085511
       },
       "name": "OXC lazy + Yuku walk",
       "points": [
         {
-          "medianMs": 0.23133399999994708,
+          "medianMs": 0.23345900000003894,
           "records": 4,
           "role": "training",
           "runMediansMs": [
-            0.23133399999994708,
-            0.22479199999997945,
-            0.23154199999999037
+            0.274291000000062,
+            0.23345900000003894,
+            0.23237500000050204
           ],
-          "runSpreadPct": 2.917859026348249,
-          "samples": 1890,
+          "runSpreadPct": 17.95433031048406,
+          "samples": 1766,
           "sizeKiB": 1,
           "sourceBytes": 1024,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.40791699999999764,
+          "medianMs": 0.45256250000005593,
           "records": 13,
           "role": "validation",
           "runMediansMs": [
-            0.40791699999999764,
-            0.4167089999999689,
-            0.39604099999996834
+            0.45256250000005593,
+            0.39975000000004,
+            0.50131250000004
           ],
-          "runSpreadPct": 5.066717003704356,
-          "samples": 1055,
+          "runSpreadPct": 22.441651705562755,
+          "samples": 979,
           "sizeKiB": 2,
           "sourceBytes": 2048,
           "styledComponents": 1
         },
         {
-          "medianMs": 0.799374499999999,
+          "medianMs": 0.7828339999999798,
           "records": 32,
           "role": "training",
           "runMediansMs": [
-            0.7781250000000455,
-            0.799374499999999,
-            0.8164170000000013
+            0.8733960000000707,
+            0.7753339999999298,
+            0.7828339999999798
           ],
-          "runSpreadPct": 4.790245373095571,
-          "samples": 536,
+          "runSpreadPct": 12.526538193300674,
+          "samples": 542,
           "sizeKiB": 4,
           "sourceBytes": 4096,
           "styledComponents": 1
         },
         {
-          "medianMs": 1.561207999999965,
+          "medianMs": 1.5452920000000177,
           "records": 70,
           "role": "validation",
           "runMediansMs": [
-            1.5239794999999958,
-            1.7876670000000559,
-            1.561207999999965
+            1.7457919999999376,
+            1.5452920000000177,
+            1.5109999999999673
           ],
-          "runSpreadPct": 16.889965975069686,
-          "samples": 262,
+          "runSpreadPct": 15.194021582973813,
+          "samples": 276,
           "sizeKiB": 8,
           "sourceBytes": 8192,
           "styledComponents": 1
         },
         {
-          "medianMs": 3.2627089999999725,
+          "medianMs": 3.2425419999999576,
           "records": 145,
           "role": "training",
           "runMediansMs": [
-            3.236250000000041,
-            3.349333000000115,
-            3.2627089999999725
+            3.8282500000000255,
+            3.2425419999999576,
+            3.0635420000000977
           ],
-          "runSpreadPct": 3.465923562293639,
-          "samples": 136,
+          "runSpreadPct": 23.583595833143807,
+          "samples": 131,
           "sizeKiB": 16,
           "sourceBytes": 16384,
           "styledComponents": 1
         },
         {
-          "medianMs": 7.508916999999883,
+          "medianMs": 7.5464170000000195,
           "records": 294,
           "role": "validation",
           "runMediansMs": [
-            7.508916999999883,
-            8.29002099999991,
-            7.465959000000112
+            8.704895999999849,
+            7.2153335000000425,
+            7.5464170000000195
           ],
-          "runSpreadPct": 10.974445449321276,
-          "samples": 62,
+          "runSpreadPct": 19.73867200818352,
+          "samples": 63,
           "sizeKiB": 32,
           "sourceBytes": 32768,
           "styledComponents": 1
         },
         {
-          "medianMs": 21.44572900000003,
+          "medianMs": 21.008792000000085,
           "records": 592,
           "role": "training",
           "runMediansMs": [
-            21.14202050000017,
-            21.709978999999976,
-            21.44572900000003
+            24.566459000000123,
+            20.984354499999995,
+            21.008792000000085
           ],
-          "runSpreadPct": 2.6483524994641283,
-          "samples": 30,
+          "runSpreadPct": 17.050501999353955,
+          "samples": 29,
           "sizeKiB": 64,
           "sourceBytes": 65536,
           "styledComponents": 1
         },
         {
-          "medianMs": 28.651375000000144,
+          "medianMs": 28.467458999999963,
           "records": 891,
           "role": "validation",
           "runMediansMs": [
-            31.107791000000134,
-            28.651375000000144,
-            28.395040999999992
+            33.008749999999964,
+            28.099290999999994,
+            28.467458999999963
           ],
-          "runSpreadPct": 9.468131983194972,
+          "runSpreadPct": 17.245863074747824,
           "samples": 21,
           "sizeKiB": 96,
           "sourceBytes": 98304,
           "styledComponents": 1
         },
         {
-          "medianMs": 40.716457999999875,
+          "medianMs": 39.586917000000085,
           "records": 1191,
           "role": "training",
           "runMediansMs": [
-            41.8432499999999,
-            40.716457999999875,
-            38.85566599999993
+            42.41604099999995,
+            38.7348750000001,
+            39.586917000000085
           ],
-          "runSpreadPct": 7.337534124407331,
+          "runSpreadPct": 9.298945911852243,
           "samples": 15,
           "sizeKiB": 128,
           "sourceBytes": 131072,
           "styledComponents": 1
         },
         {
-          "medianMs": 64.29122949999987,
+          "medianMs": 62.26637450000021,
           "records": 1788,
           "role": "validation",
           "runMediansMs": [
-            64.29122949999987,
-            67.47495799999979,
-            63.0182920000002
+            64.24879149999992,
+            61.82156250000003,
+            62.26637450000021
           ],
-          "runSpreadPct": 6.931996844141229,
-          "samples": 11,
+          "runSpreadPct": 3.8981376697946164,
+          "samples": 12,
           "sizeKiB": 192,
           "sourceBytes": 196608,
           "styledComponents": 1
         },
         {
-          "medianMs": 94.21554199999991,
+          "medianMs": 91.25483399999985,
           "records": 2386,
           "role": "training",
           "runMediansMs": [
-            94.80970800000023,
-            94.21554199999991,
-            90.04620900000009
+            107.09204200000022,
+            88.89829099999997,
+            91.25483399999985
           ],
-          "runSpreadPct": 5.0559588140989975,
+          "runSpreadPct": 19.93730107492199,
           "samples": 9,
           "sizeKiB": 256,
           "sourceBytes": 262144,
           "styledComponents": 1
         },
         {
-          "medianMs": 112.99804199999971,
+          "medianMs": 112.01079200000004,
           "records": 2983,
           "role": "validation",
           "runMediansMs": [
-            121.55654199999981,
-            112.99804199999971,
-            112.18820800000003
+            116.26229200000034,
+            112.01079200000004,
+            110.47433300000012
           ],
-          "runSpreadPct": 8.29070471858247,
+          "runSpreadPct": 5.167322627269902,
           "samples": 9,
           "sizeKiB": 320,
           "sourceBytes": 327680,
           "styledComponents": 1
         },
         {
-          "medianMs": 143.26816700000018,
+          "medianMs": 144.27708299999995,
           "records": 3581,
           "role": "training",
           "runMediansMs": [
-            153.65545799999973,
-            140.92387499999995,
-            143.26816700000018
+            153.27945799999998,
+            137.54133299999967,
+            144.27708299999995
           ],
-          "runSpreadPct": 8.886540022529749,
+          "runSpreadPct": 10.908263927127162,
           "samples": 9,
           "sizeKiB": 384,
           "sourceBytes": 393216,
           "styledComponents": 1
         },
         {
-          "medianMs": 175.4398339999998,
+          "medianMs": 167.33083299999998,
           "records": 4179,
           "role": "validation",
           "runMediansMs": [
-            175.4398339999998,
-            167.45366700000022,
-            176.1507500000007
+            175.0985409999994,
+            152.91229199999998,
+            167.33083299999998
           ],
-          "runSpreadPct": 4.957302342181015,
+          "runSpreadPct": 13.258912659569088,
           "samples": 9,
           "sizeKiB": 448,
           "sourceBytes": 458752,
           "styledComponents": 1
         },
         {
-          "medianMs": 197.62275000000045,
+          "medianMs": 189.94191600000067,
           "records": 4777,
           "role": "training",
           "runMediansMs": [
-            202.11608400000023,
-            194.96358299999974,
-            197.62275000000045
+            235.98512500000015,
+            189.94191600000067,
+            189.80370799999946
           ],
-          "runSpreadPct": 3.619270048615591,
+          "runSpreadPct": 24.313441694460177,
           "samples": 9,
           "sizeKiB": 512,
           "sourceBytes": 524288,
@@ -2339,16 +2339,16 @@
     "os": "darwin 25.6.0 (arm64)"
   },
   "versions": {
-    "babelCore": "8.0.7",
-    "babelPlugin": "2.3.0",
-    "oxcCodegen": "0.153.0",
-    "oxcParser": "0.153.0",
-    "swcNextCore": "0.4.0",
-    "swcNextWalker": "0.4.0",
-    "swcCore": "1.16.13",
-    "swcPlugin": "17.0.0",
-    "yukuAst": "0.18.0",
-    "yukuCodegen": "0.18.0",
-    "yukuParser": "0.18.0"
+    "babelCore": "8.1.2",
+    "babelPlugin": "2.4.0",
+    "oxcCodegen": "0.159.0",
+    "oxcParser": "0.159.0",
+    "swcNextCore": "0.7.0",
+    "swcNextWalker": "0.7.0",
+    "swcCore": "1.16.22",
+    "swcPlugin": "18.0.3",
+    "yukuAst": "0.19.0",
+    "yukuCodegen": "0.19.0",
+    "yukuParser": "0.19.0"
   }
 }

@@ -1,7 +1,7 @@
 import type { PluginObject, types } from "@babel/core";
 import upstreamPlugin from "babel-plugin-styled-components";
 
-// styled-components 2.3 still calls three deprecated Babel 7 JSX builder aliases.
+// Compatibility aliases for plugins written against Babel 7's JSX builders.
 // Keep compatibility local to this plugin; parsing/traversal/codegen use Babel 8.
 export default function styledComponentsPlugin(api: { types: typeof types }): PluginObject {
   return upstreamPlugin.default({

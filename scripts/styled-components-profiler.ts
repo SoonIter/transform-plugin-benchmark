@@ -5,7 +5,7 @@ import {
 } from "@babel/core";
 import {
   parseSync as swcNextParseSync,
-  printSync as swcNextPrintSync,
+  generateSync as swcNextGenerateSync,
 } from "@swc-next/core";
 import babelStyledComponentsPlugin from "./babel-styled-components-plugin";
 import { printSync as oxcPrintSync } from "oxc-codegen";
@@ -203,7 +203,7 @@ function profileSwcNext(
   const transformedAt = process.hrtime.bigint();
   const output = codegen === "oxc"
     ? printEstreeProgramWithOxc(transformed ?? program)
-    : swcNextPrintSync((transformed ?? program) as unknown as typeof parsed.program, {}, parsed.meta).code;
+    : swcNextGenerateSync((transformed ?? program) as unknown as typeof parsed.program).code;
   const generatedAt = process.hrtime.bigint();
 
   return {
