@@ -430,7 +430,7 @@ function scalingChart(data: ScalingBenchmarkResult): string {
     const curve = result.fit.accepted ? `<polyline points="${curvePoints.join(" ")}" fill="none" stroke="${style.color}"
         stroke-width="4" stroke-linejoin="round" stroke-linecap="round"
         ${style.dash === "" ? "" : `stroke-dasharray="${style.dash}"`} />` : "";
-    return `${curve}\n${observations.join("\n")}`;
+    return `${curve}\n${observations.join("\n")}`.trim();
   });
 
   const legend = data.results.map((result, index) => {

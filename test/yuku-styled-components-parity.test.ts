@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { transformSync as babelTransformSync } from "@babel/core";
-import { parseSync, printSync } from "@swc-next/core";
+import { parseSync, generateSync } from "@swc-next/core";
 import babelStyledComponentsPlugin from "../scripts/babel-styled-components-plugin";
 import { generate } from "yuku-codegen";
 import { parse, type Program } from "yuku-parser";
@@ -340,7 +340,7 @@ function swcNextTransform(testCase: ParityCase, walker: "yuku" | "zimmerframe" |
         testCase.filename ?? "/workspace/src/case.jsx",
         testCase.options,
     );
-    return printSync((transformed ?? program) as unknown as typeof parsed.program, {}, parsed.meta).code;
+    return generateSync((transformed ?? program) as unknown as typeof parsed.program).code;
 }
 
 // Exercise native replacement returns, pure comments, copied scopes/statements,

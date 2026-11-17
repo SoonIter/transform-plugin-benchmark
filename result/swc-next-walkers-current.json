@@ -1,0 +1,426 @@
+{
+  "benchmark": {
+    "runs": 6,
+    "timeMs": 10000,
+    "warmupMs": 3000
+  },
+  "corpus": {
+    "commit": "d19099afeff64ecfb09133c06c1cb18c0d40887e",
+    "files": 87,
+    "name": "react-boilerplate v4.0.0",
+    "repository": "https://github.com/react-boilerplate/react-boilerplate",
+    "sourceBytes": 57051,
+    "styledComponentsFiles": 34
+  },
+  "options": {
+    "cssProp": true,
+    "displayName": true,
+    "fileName": true,
+    "meaninglessFileNames": [
+      "index"
+    ],
+    "minify": true,
+    "namespace": "",
+    "pure": true,
+    "ssr": true,
+    "topLevelImportPaths": [],
+    "transpileTemplateLiterals": true
+  },
+  "profile": {
+    "results": [
+      {
+        "iterations": 6621,
+        "meanMs": 4.4567774118167565,
+        "name": "SWC Next + SWC Next walker",
+        "runs": 6,
+        "stages": [
+          {
+            "meanMs": 0.26195194878712236,
+            "name": "parse",
+            "runMeansMs": [
+              0.3034489215491559,
+              0.2627890767857143,
+              0.25353805277044855,
+              0.26111482078853043,
+              0.28582725160697886,
+              0.24816908072916666
+            ],
+            "runtime": "native",
+            "share": 0.05877608966796942
+          },
+          {
+            "meanMs": 0.15617722139816947,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.17370906752730883,
+              0.1547897098214286,
+              0.13290963060686015,
+              0.1575647329749104,
+              0.16508773921028466,
+              0.14995677256944442
+            ],
+            "runtime": "JS",
+            "share": 0.035042634389610576
+          },
+          {
+            "meanMs": 3.6260176837109577,
+            "name": "plugin transform",
+            "runMeansMs": [
+              4.00148243694141,
+              3.6168819892857145,
+              3.5969155787159193,
+              3.635153378136201,
+              3.680302590449954,
+              3.529872990451389
+            ],
+            "runtime": "JS",
+            "share": 0.8135963160504467
+          },
+          {
+            "meanMs": 0.4126305579205069,
+            "name": "AST encode + codegen",
+            "runMeansMs": [
+              0.4702437527308838,
+              0.41212443035714286,
+              0.4011089190853122,
+              0.41313668548387095,
+              0.43921577869605144,
+              0.39849099131944443
+            ],
+            "runtime": "JS + native",
+            "share": 0.09258495989197328
+          }
+        ],
+        "pipeline": {
+          "parser": "SWC Next parser (binary AST transfer)",
+          "plugin": "styled-components plugin (JS, @swc-next/walker)",
+          "codegen": "SWC Next codegen (JS encode + native)",
+          "lines": [
+            "SWC Next parser (binary AST transfer)",
+            "styled-components plugin (JS, @swc-next/walker)",
+            "SWC Next codegen (JS encode + native)"
+          ],
+          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native)"
+        }
+      },
+      {
+        "iterations": 6314,
+        "meanMs": 4.706508996550867,
+        "name": "SWC Next + Yuku walk",
+        "runs": 6,
+        "stages": [
+          {
+            "meanMs": 0.2509078577406689,
+            "name": "parse",
+            "runMeansMs": [
+              0.2715176045589693,
+              0.2520826210526316,
+              0.25499564683663833,
+              0.2476758894095595,
+              0.24973309442870634,
+              0.2464297162790698
+            ],
+            "runtime": "native",
+            "share": 0.053310820806790137
+          },
+          {
+            "meanMs": 0.15490477573182249,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.1603893696729435,
+              0.15635205454545453,
+              0.15393581680830973,
+              0.15368505060918464,
+              0.15587373465533522,
+              0.14796461488372092
+            ],
+            "runtime": "JS",
+            "share": 0.0329128821054721
+          },
+          {
+            "meanMs": 3.8999269711992444,
+            "name": "plugin transform",
+            "runMeansMs": [
+              4.077941136769078,
+              3.955655475598086,
+              3.8937111860245515,
+              3.87611,
+              3.9061427563739377,
+              3.851439313488372
+            ],
+            "runtime": "JS",
+            "share": 0.8286241403250858
+          },
+          {
+            "meanMs": 0.4007693918791313,
+            "name": "AST encode + codegen",
+            "runMeansMs": [
+              0.4279853587710605,
+              0.405160433492823,
+              0.40507641454202076,
+              0.394467939081537,
+              0.3964623692162418,
+              0.392092328372093
+            ],
+            "runtime": "JS + native",
+            "share": 0.08515215676265198
+          }
+        ],
+        "pipeline": {
+          "parser": "SWC Next parser (binary AST transfer)",
+          "plugin": "styled-components plugin (JS, Yuku walk)",
+          "codegen": "SWC Next codegen (JS encode + native)",
+          "lines": [
+            "SWC Next parser (binary AST transfer)",
+            "styled-components plugin (JS, Yuku walk)",
+            "SWC Next codegen (JS encode + native)"
+          ],
+          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
+        }
+      },
+      {
+        "iterations": 6249,
+        "meanMs": 4.722368495040524,
+        "name": "SWC Next + Zimmerframe",
+        "runs": 6,
+        "stages": [
+          {
+            "meanMs": 0.26077439346142106,
+            "name": "parse",
+            "runMeansMs": [
+              0.258915990521327,
+              0.26263279640151516,
+              0.2525193704396632,
+              0.24924338852304798,
+              0.27579965554465163,
+              0.2904971773049645
+            ],
+            "runtime": "native",
+            "share": 0.05522110223615307
+          },
+          {
+            "meanMs": 0.15723106344337928,
+            "name": "AST decode",
+            "runMeansMs": [
+              0.1580799924170616,
+              0.15638213446969695,
+              0.12603352572497661,
+              0.15193966792097835,
+              0.17440624730127574,
+              0.1706131094224924
+            ],
+            "runtime": "JS",
+            "share": 0.033294958580319355
+          },
+          {
+            "meanMs": 3.888366869580908,
+            "name": "plugin transform",
+            "runMeansMs": [
+              3.8977249402843603,
+              3.877130727272727,
+              3.879008798877456,
+              3.8762823612417687,
+              4.0141512423945045,
+              4.132191777102331
+            ],
+            "runtime": "JS",
+            "share": 0.8233933615440023
+          },
+          {
+            "meanMs": 0.4159961685548156,
+            "name": "AST encode + codegen",
+            "runMeansMs": [
+              0.4078343232227488,
+              0.41981147821969694,
+              0.40599047801683813,
+              0.41218085888993417,
+              0.42527502944062806,
+              0.4542635390070922
+            ],
+            "runtime": "JS + native",
+            "share": 0.08809057763952532
+          }
+        ],
+        "pipeline": {
+          "parser": "SWC Next parser (binary AST transfer)",
+          "plugin": "styled-components plugin (JS, Zimmerframe)",
+          "codegen": "SWC Next codegen (JS encode + native)",
+          "lines": [
+            "SWC Next parser (binary AST transfer)",
+            "styled-components plugin (JS, Zimmerframe)",
+            "SWC Next codegen (JS encode + native)"
+          ],
+          "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Zimmerframe) + SWC Next codegen (JS encode + native)"
+        }
+      }
+    ],
+    "runs": 6,
+    "timeMs": 5000,
+    "warmupMs": 1000
+  },
+  "reproduction": {
+    "command": "npm run bench:walkers",
+    "resultFile": "swc-next-walkers-current.json"
+  },
+  "results": [
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 4.358927250000306,
+      "peakRssMiB": 474.484375,
+      "runPeakRssMiB": [
+        474.484375,
+        460.6875,
+        461.84375,
+        463.25,
+        459.953125,
+        460.734375
+      ],
+      "medianRunRme": 0.6261247325223418,
+      "name": "SWC Next + SWC Next walker",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        4.178624999999556,
+        4.616041999999652,
+        4.382708000000093,
+        4.3663125000002765,
+        4.317458000001352,
+        4.351542000000336
+      ],
+      "runSpreadPct": 10.034969039688955,
+      "runs": 6,
+      "samples": 13084,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32,
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, @swc-next/walker)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, @swc-next/walker)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native)"
+      }
+    },
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 4.575270999999702,
+      "peakRssMiB": 459.875,
+      "runPeakRssMiB": [
+        452.515625,
+        453.546875,
+        459.875,
+        452.03125,
+        452.796875,
+        451.484375
+      ],
+      "medianRunRme": 0.5592987447197568,
+      "name": "SWC Next + Yuku walk",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        4.53216699999939,
+        4.63385449999987,
+        4.65558400000009,
+        4.58849999999984,
+        4.511999999999716,
+        4.562041999999565
+      ],
+      "runSpreadPct": 3.1382621925648335,
+      "runs": 6,
+      "samples": 12536,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32,
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Yuku walk)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, Yuku walk)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Yuku walk) + SWC Next codegen (JS encode + native)"
+      }
+    },
+    {
+      "componentIds": 32,
+      "displayNames": 32,
+      "files": 87,
+      "jsxElements": 137,
+      "median": 4.619312500000433,
+      "peakRssMiB": 456.75,
+      "runPeakRssMiB": [
+        455.828125,
+        455.765625,
+        456.75,
+        455.828125,
+        455.15625,
+        455.21875
+      ],
+      "medianRunRme": 0.6861984194434105,
+      "name": "SWC Next + Zimmerframe",
+      "outputBytes": 45555,
+      "outputCodeUnits": 45555,
+      "pureAnnotations": 0,
+      "runMedians": [
+        4.488041000000521,
+        4.794791000000259,
+        5.00604199999907,
+        4.512083000001439,
+        4.7265419999994265,
+        4.5115829999995185
+      ],
+      "runSpreadPct": 11.213811579071562,
+      "runs": 6,
+      "samples": 12306,
+      "taggedTemplates": 0,
+      "uniqueComponentIds": 32,
+      "withConfigCalls": 32,
+      "pipeline": {
+        "parser": "SWC Next parser (binary AST transfer)",
+        "plugin": "styled-components plugin (JS, Zimmerframe)",
+        "codegen": "SWC Next codegen (JS encode + native)",
+        "lines": [
+          "SWC Next parser (binary AST transfer)",
+          "styled-components plugin (JS, Zimmerframe)",
+          "SWC Next codegen (JS encode + native)"
+        ],
+        "fullLabel": "SWC Next parser (binary AST transfer) + styled-components plugin (JS, Zimmerframe) + SWC Next codegen (JS encode + native)"
+      }
+    }
+  ],
+  "runtime": "Node 24.18.1",
+  "system": {
+    "cores": 18,
+    "cpu": "Apple M5 Max",
+    "memoryGb": 64,
+    "os": "darwin 25.6.0 (arm64)"
+  },
+  "versions": {
+    "babelCore": "8.1.2",
+    "babelPlugin": "2.4.0",
+    "oxcCodegen": "0.159.0",
+    "oxcParser": "0.159.0",
+    "swcNextCore": "0.7.0",
+    "swcNextWalker": "0.7.0",
+    "swcCore": "1.16.22",
+    "swcPlugin": "18.0.3",
+    "yukuAst": "0.19.0",
+    "yukuCodegen": "0.19.0",
+    "yukuParser": "0.19.0",
+    "zimmerframe": "1.1.5"
+  }
+}

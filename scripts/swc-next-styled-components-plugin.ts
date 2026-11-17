@@ -99,7 +99,7 @@ interface PluginState {
     importNames: Map<string, string>;
     options: ResolvedOptions;
     program: Program;
-    styledRequired: string | null;
+    styledRequired: Set<string>;
     topLevelBindings: Set<string>;
     usedNames: Set<string>;
 }
@@ -249,7 +249,7 @@ function collectRequiredBinding(
     const source = requireSource(init);
     if (source === null) return;
     if (!isValidTopLevelImport(source, state)) return;
-    state.styledRequired = declaration.id.name;
+    state.styledRequired.add(declaration.id.name);
 }
 
 function collectImports(statement: ImportDeclaration, state: PluginState): void {
@@ -384,7 +384,7 @@ function importLocalName(name: string, state: PluginState): string | null {
     const imported = state.importNames.get(name);
     if (imported !== undefined) return imported;
     if (state.defaultImportIsNamespace && name !== "default") return name;
-    if (state.styledRequired !== null) return name === "default" ? "styled" : name;
+    if (state.styledRequired.size > 0) return name === "default" ? "styled" : name;
     return null;
 }
 
@@ -474,22 +474,22 @@ function isStyled(expression: Expression | null | undefined, state: PluginState)
     }
 
     const required = state.styledRequired;
-    if (required !== null && expression.type === "MemberExpression") {
+    if (expression.type === "MemberExpression") {
         const object = expression.object;
         if (
             object.type === "MemberExpression" &&
             memberName(object) === "default" &&
-            identifierName(object.object) === required
+            required.has(identifierName(object.object) ?? "")
         ) {
             return true;
         }
     }
-    if (required !== null && expression.type === "CallExpression") {
+    if (expression.type === "CallExpression") {
         const callee = expression.callee;
         if (
             callee.type === "MemberExpression" &&
             memberName(callee) === "default" &&
-            identifierName(callee.object) === required
+            required.has(identifierName(callee.object) ?? "")
         ) {
             return true;
         }
@@ -497,7 +497,7 @@ function isStyled(expression: Expression | null | undefined, state: PluginState)
         if (
             sequence?.type === "MemberExpression" &&
             memberName(sequence) === "default" &&
-            identifierName(sequence.object) === required
+            required.has(identifierName(sequence.object) ?? "")
         ) {
             return true;
         }
@@ -1054,6 +1054,7 @@ function defaultStyledIdentifier(state: PluginState): Identifier {
         );
     }
     state.importNames.set("default", name);
+    state.cssPropDefaultReusable = true;
     state.defaultImportIsNamespace = false;
     state.topLevelBindings.add(name);
     state.bindingStatements.set(name, declaration);
@@ -1250,7 +1251,7 @@ export function transformStyledComponentsSwcNext(
         importNames: new Map(),
         options: resolved,
         program,
-        styledRequired: null,
+        styledRequired: new Set(),
         topLevelBindings: new Set(),
         usedNames: new Set(),
     };
