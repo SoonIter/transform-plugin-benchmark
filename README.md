@@ -17,9 +17,8 @@ The workload is a pinned real-world multi-file corpus. Every timed iteration sta
 
 ## Pipeline labels
 
-Chart labels show all three stages. The stable short `name` in raw JSON remains an ID;
-new measurements and artifact manifests also include structured `pipeline` metadata.
-Historical charts resolve codegen runtime from their recorded dependency versions.
+Chart labels show all three stages. Raw JSON uses a short `name` ID and structured
+`pipeline` metadata.
 
 | Parser and feature | Styled-components plugin | Codegen |
 |---|---|---|
@@ -32,48 +31,6 @@ Historical charts resolve codegen runtime from their recorded dependency version
 | OXC parser (default JSON transfer) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
 | OXC parser (experimentalRawTransfer) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
 | OXC parser (experimentalLazy + ESTree adapter) | styled-components plugin (JS, Yuku walk) | OXC codegen (JS) |
-
-## Dependency update
-
-All 19 direct dependencies and devDependencies were checked against npm registry `latest` on
-2026-11-17; 14 pins changed. The existing `@typescript/native-preview` development release remains
-on its normal `latest` channel. Node 24.18.1 and npm 11.16.0 are unchanged.
-
-| Package | Previous pin | Current pin |
-|---------|--------------|-------------|
-| `@babel/core` | `8.0.7` | `8.1.2` |
-| `@swc-next/core` | `0.4.0` | `0.7.0` |
-| `@swc-next/walker` | `0.4.0` | `0.7.0` |
-| `@swc/core` | `1.16.13` | `1.16.22` |
-| `@swc/plugin-styled-components` | `17.0.0` | `18.0.3` |
-| `babel-plugin-styled-components` | `2.3.0` | `2.4.0` |
-| `oxc-codegen` | `0.153.0` | `0.159.0` |
-| `oxc-parser` | `0.153.0` | `0.159.0` |
-| `picomatch` | `4.0.7` | `4.0.7` |
-| `styled-components` | `6.5.3` | `6.6.0` |
-| `tinybench` | `6.2.1` | `6.2.3` |
-| `yuku-ast` | `0.18.0` | `0.19.0` |
-| `yuku-codegen` | `0.18.0` | `0.19.0` |
-| `yuku-parser` | `0.18.0` | `0.19.0` |
-| `zimmerframe` | `1.1.5` | `1.1.5` |
-| `@types/node` | `26.6.4` | `26.6.6` |
-| `@typescript/native-preview` | `7.0.0-dev.20260707.2` | `7.0.0-dev.20260707.2` |
-| `tsx` | `4.23.15` | `4.23.15` |
-| `typescript` | `7.0.2` | `7.0.2` |
-
-All current results below were rerun with this lockfile. SWC Next 0.7.0 replaces `printSync`
-with `generateSync(program)` and no longer exposes `ParseResult.meta`; the existing parse,
-plugin, and codegen calls and timing boundaries are preserved. The three independent JS plugin
-ports now recognize multiple CommonJS styled-components bindings and reuse the first injected
-CSS-prop default import, matching Babel plugin 2.4.0 in the existing parity suite.
-
-Babel plugin 2.4.0 supports Babel 8. The existing local
-[`babel-styled-components-plugin.ts`](scripts/babel-styled-components-plugin.ts) compatibility
-wrapper and scoped npm override remain in place; parsing, traversal, and printing use Babel 8.
-Yuku 0.19's codegen is JavaScript and uses its public `generate` API.
-
-These measurements change several dependencies together and do not isolate a single package's
-performance effect. Historical walker reports retain their original versions and timings.
 
 ## SWC Next walker comparison
 
@@ -98,8 +55,6 @@ comments through Yuku codegen, nested templates, copied scopes, CSS props, and i
 This compares native plugin implementations end to end; plugin work remains part of the
 measurement, so the result is not a standalone walker speed claim.
 
-Current walker comparison, rerun on 2026-11-17 with the dependency versions below:
-
 | Pipeline | End-to-end median | Run spread | Plugin stage |
 |---|---:|---:|---:|
 | SWC Next parser (binary AST transfer) + styled-components plugin (JS, @swc-next/walker) + SWC Next codegen (JS encode + native) | 4.359 ms | 10.03% | 3.626 ms |
@@ -109,11 +64,7 @@ Current walker comparison, rerun on 2026-11-17 with the dependency versions belo
 End-to-end values are medians of six process medians. Plugin stages are medians of six
 separately measured process means. Compare the observed run spreads before interpreting small differences.
 
-See [the current raw measurements](result/swc-next-walkers-current.json). The earlier
-[native-plugin report](result/swc-next-walkers-native.md) and
-[data](result/swc-next-walkers-native.json), and the
-[adapter report](result/swc-next-walkers.md) and [data](result/swc-next-walkers.json),
-retain their historical dependency versions and timings.
+See [the raw measurements](result/swc-next-walkers-current.json).
 
 ```bash
 fnm use 24.18.1
@@ -125,12 +76,11 @@ npm run bench:walkers
 
 This runs the three SWC Next variants, with six fresh processes per variant and rotating
 order, 3 seconds of warmup and 10 seconds of measurement. Stage profiles run separately with
-1 second of warmup and 5 seconds of measurement. It writes `result/swc-next-walkers-current.json`, preserving the historical measurements.
+1 second of warmup and 5 seconds of measurement. It writes `result/swc-next-walkers-current.json`.
 The separate `node --import tsx scripts/bench-walker-traversal.mjs` command counts identifiers
 on pre-parsed trees with all three walkers, records installed versions, and writes
 [`result/swc-next-walkers-traversal-current.json`](result/swc-next-walkers-traversal-current.json).
-The committed read-only run uses SWC Next 0.7.0 and visits the same 1,916 identifiers with every walker.
-Neither command overwrites historical reports. Read-only traversal uses six fresh processes per
+The read-only run visits the same 1,916 identifiers with every walker and uses six fresh processes per
 walker, 1 second of warmup and 2 seconds of measurement, with rotating order:
 
 | Walker | Read-only median | Run spread |
@@ -184,7 +134,6 @@ Offset-power rows report `p` in `T = a + b × KiB^p`; log-quadratic rows fit `ln
 excluded from fitting. A fit passes only when held-out MAPE is at most 6% and the worst held-out
 point error is at most 15%. Eight of nine fits pass; Babel's held-out MAPE is 6.36%, so its fit is
 rejected. All measurements are retained while the chart omits the rejected fitted curve.
-The thresholds are unchanged.
 
 | Transformer | 1 KiB | 512 KiB | Model / exponent `p` | Held-out MAPE | Worst held-out error | Fit status |
 |-------------|------:|--------:|----------------------:|--------------:|---------------------:|------------|
@@ -367,7 +316,7 @@ adapter initialization does not.
 
 ## Experimental lazy pipeline
 
-The new row calls `parseSync({ experimentalLazy: true })`; it does not also enable
+The lazy pipeline calls `parseSync({ experimentalLazy: true })`; it does not also enable
 `experimentalRawTransfer`, which would take precedence. OXC 0.159.0 exposes read-only native
 node shapes here, not mutable ESTree. The local
 [`oxc-lazy-estree.ts`](scripts/oxc-lazy-estree.ts) adapter creates one root view initially,
